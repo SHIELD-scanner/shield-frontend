@@ -25,9 +25,8 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          (sum: number, item: any) =>
-            sum + (item?.report?.vulnerabilities?.length || 0),
+          (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
+            sum + (item?.report?.vulnerabilities?.length ?? 0),
           0
         );
         setTotalVulnerabilities(total);
@@ -39,9 +38,8 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          (sum: number, item: any) =>
-            sum + (item?.report?.vulnerabilities?.length || 0),
+          (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
+            sum + (item?.report?.vulnerabilities?.length ?? 0),
           0
         );
         setCriticalIssues(total);

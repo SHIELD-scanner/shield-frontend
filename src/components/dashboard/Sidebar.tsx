@@ -121,9 +121,16 @@ export function DashboardSidebar() {
           typeof data[0] === "object" &&
           data[0] !== null &&
           Object.hasOwn(data[0], "cluster") &&
-          Object.hasOwn(data[0], "name")
+          Object.hasOwn(data[0], "name") &&
+          data.every(
+            (item) =>
+              typeof item === "object" &&
+              item !== null &&
+              "cluster" in item &&
+              "name" in item
+          )
         ) {
-          setNamespaces(data);
+          setNamespaces(data as { cluster: string; name: string }[]);
         } else {
           setNamespaces([]);
         }

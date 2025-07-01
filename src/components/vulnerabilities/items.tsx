@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+// ...existing code...
 
 export default function Vulnerabilities() {
-
-    return (
+  return null;
 }

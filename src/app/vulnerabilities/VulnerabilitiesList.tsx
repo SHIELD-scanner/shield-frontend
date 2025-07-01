@@ -171,10 +171,10 @@ export default function VulnerabilitiesList() {
               </svg>
             </a>
             <a
-                href={`/vulnerabilities/${vuln.hash}`}
-                className="text-blue-400 hover:underline"
-                title="View details"
-              >
+              href={`/vulnerabilities/${vuln.hash}`}
+              className="text-blue-400 hover:underline"
+              title="View details"
+            >
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                 <rect
                   x="9"
