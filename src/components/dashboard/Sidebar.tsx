@@ -159,7 +159,7 @@ export function DashboardSidebar() {
         <div className="bg-[#2e3a54] rounded-full w-8 h-8 flex items-center justify-center">
           <span className="font-bold text-lg">🛡️</span>
         </div>
-        <span className="font-bold text-xl">Trivy Dashboard</span>
+        <span className="font-bold text-xl">S.H.I.E.L.D.</span>
       </div>
       <NamespaceDropdown
         value={selectedNamespace}
