@@ -5,7 +5,7 @@ import Link from "next/link";
 import { VulnerabilityReport } from "@/services/vulnerabilityService";
 
 async function fetchVulnerabilityById(
-  id: string
+  id: string,
 ): Promise<VulnerabilityReport | null> {
   try {
     const res = await fetch(`http://localhost:8000/vulnerabilities/${id}`);

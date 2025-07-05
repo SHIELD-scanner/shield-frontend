@@ -11,8 +11,8 @@ export default async function VulnerabilitiesPage() {
   return (
     <div className="p-10">
       <VulnerabilitiesList
-        // cluster={cluster || "all"}
-        // namespace={namespace || "all"}
+      // cluster={cluster || "all"}
+      // namespace={namespace || "all"}
       />
     </div>
   );

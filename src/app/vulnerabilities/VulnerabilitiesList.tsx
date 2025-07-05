@@ -36,19 +36,27 @@ function getNamespaceCookie() {
 
 export default function VulnerabilitiesList() {
   const [search, setSearch] = useState("");
-  const [currentFilters, setCurrentFilters] = useState({ cluster: "all", namespace: "all" });
-  
+  const [currentFilters, setCurrentFilters] = useState({
+    cluster: "all",
+    namespace: "all",
+  });
+
   // Use the cached vulnerability hook
-  const { data: vulnerabilities, loading, error, refetch } = useVulnerabilities(
+  const {
+    data: vulnerabilities,
+    loading,
+    error,
+    refetch,
+  } = useVulnerabilities(
     currentFilters.cluster === "all" ? undefined : currentFilters.cluster,
-    currentFilters.namespace === "all" ? undefined : currentFilters.namespace
+    currentFilters.namespace === "all" ? undefined : currentFilters.namespace,
   );
 
   // Monitor cookie changes and update filters
   useEffect(() => {
     const updateFromCookie = () => {
       const { cluster, namespace } = getNamespaceCookie();
-      setCurrentFilters(prev => {
+      setCurrentFilters((prev) => {
         if (prev.cluster !== cluster || prev.namespace !== namespace) {
           return { cluster, namespace };
         }
@@ -67,9 +75,9 @@ export default function VulnerabilitiesList() {
   const filteredVulnerabilities = React.useMemo(() => {
     if (!vulnerabilities) return [];
     if (!search.trim()) return vulnerabilities;
-    
+
     return vulnerabilities.filter((vuln) =>
-      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase())
+      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase()),
     );
   }, [vulnerabilities, search]);
 
@@ -87,8 +95,8 @@ export default function VulnerabilitiesList() {
       <tr>
         <td colSpan={7} className="text-center py-8 text-red-400">
           Error loading vulnerabilities: {error}
-          <button 
-            onClick={() => void refetch()} 
+          <button
+            onClick={() => void refetch()}
             className="ml-2 px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
           >
             Retry

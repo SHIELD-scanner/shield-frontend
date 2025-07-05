@@ -1,8 +1,11 @@
 // src/hooks/useCompliance.ts
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { ComplianceService, ComplianceData } from '@/services/complianceService';
+import { useState, useEffect, useCallback } from "react";
+import {
+  ComplianceService,
+  ComplianceData,
+} from "@/services/complianceService";
 
 interface UseComplianceResult {
   data: ComplianceData | null;
@@ -26,18 +29,23 @@ export function useCompliance(): UseComplianceResult {
       const result = await ComplianceService.getCompliance();
       setData(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch compliance data');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch compliance data",
+      );
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const setNamespace = useCallback((namespace: string) => {
-    ComplianceService.setSelectedNamespace(namespace);
-    setCurrentNamespace(namespace);
-    // Refetch data when namespace changes
-    void fetchCompliance();
-  }, [fetchCompliance]);
+  const setNamespace = useCallback(
+    (namespace: string) => {
+      ComplianceService.setSelectedNamespace(namespace);
+      setCurrentNamespace(namespace);
+      // Refetch data when namespace changes
+      void fetchCompliance();
+    },
+    [fetchCompliance],
+  );
 
   useEffect(() => {
     // Get initial namespace from cookie
@@ -52,6 +60,6 @@ export function useCompliance(): UseComplianceResult {
     error,
     refetch: fetchCompliance,
     setNamespace,
-    currentNamespace
+    currentNamespace,
   };
 }

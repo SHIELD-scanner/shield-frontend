@@ -10,16 +10,18 @@ export interface ComplianceData {
 }
 
 export class ComplianceService {
-  private static readonly baseUrl = '/api/compliance';
+  private static readonly baseUrl = "/api/compliance";
 
   static async getCompliance(): Promise<ComplianceData> {
     // No need to pass namespace as parameter since it's handled via cookies
     const response = await fetch(this.baseUrl);
-    
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch compliance data: ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch compliance data: ${response.statusText}`,
+      );
     }
-    
+
     return response.json();
   }
 
@@ -30,10 +32,10 @@ export class ComplianceService {
 
   // Helper method to get the current namespace from cookie
   static getSelectedNamespace(): string | null {
-    const cookies = document.cookie.split(';');
+    const cookies = document.cookie.split(";");
     for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split('=');
-      if (name === 'selected-namespace') {
+      const [name, value] = cookie.trim().split("=");
+      if (name === "selected-namespace") {
         return decodeURIComponent(value);
       }
     }

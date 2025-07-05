@@ -1,8 +1,11 @@
 // src/hooks/useVulnerabilities.ts
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { VulnerabilityService, VulnerabilityReport } from '@/services/vulnerabilityService';
+import { useState, useEffect, useCallback } from "react";
+import {
+  VulnerabilityService,
+  VulnerabilityReport,
+} from "@/services/vulnerabilityService";
 
 interface UseVulnerabilitiesResult {
   data: VulnerabilityReport[] | null;
@@ -11,7 +14,10 @@ interface UseVulnerabilitiesResult {
   refetch: () => Promise<void>;
 }
 
-export function useVulnerabilities(cluster?: string, namespace?: string): UseVulnerabilitiesResult {
+export function useVulnerabilities(
+  cluster?: string,
+  namespace?: string,
+): UseVulnerabilitiesResult {
   const [data, setData] = useState<VulnerabilityReport[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,10 +26,17 @@ export function useVulnerabilities(cluster?: string, namespace?: string): UseVul
     try {
       setLoading(true);
       setError(null);
-      const result = await VulnerabilityService.getVulnerabilities(cluster, namespace);
+      const result = await VulnerabilityService.getVulnerabilities(
+        cluster,
+        namespace,
+      );
       setData(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch vulnerabilities data');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to fetch vulnerabilities data",
+      );
     } finally {
       setLoading(false);
     }
@@ -37,6 +50,6 @@ export function useVulnerabilities(cluster?: string, namespace?: string): UseVul
     data,
     loading,
     error,
-    refetch: fetchVulnerabilities
+    refetch: fetchVulnerabilities,
   };
 }

@@ -1,17 +1,21 @@
 // src/components/NamespaceSelector.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
-import { ComplianceService } from '@/services/complianceService';
-import { NamespaceService, type Namespace } from '@/services/namespaceService';
+import { useState, useEffect } from "react";
+import { ComplianceService } from "@/services/complianceService";
+import { NamespaceService, type Namespace } from "@/services/namespaceService";
 
 interface NamespaceSelectorProps {
   readonly className?: string;
   readonly onNamespaceChange?: (namespace: string) => void;
 }
 
-export function NamespaceSelector({ className = "", onNamespaceChange }: NamespaceSelectorProps) {
-  const [currentNamespace, setCurrentNamespace] = useState<string>('acc/default');
+export function NamespaceSelector({
+  className = "",
+  onNamespaceChange,
+}: NamespaceSelectorProps) {
+  const [currentNamespace, setCurrentNamespace] =
+    useState<string>("acc/default");
   const [namespaces, setNamespaces] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,16 +31,20 @@ export function NamespaceSelector({ className = "", onNamespaceChange }: Namespa
       try {
         const namespacesData = await NamespaceService.getNamespaces();
         // If the response is an array of objects with name property
-        if (Array.isArray(namespacesData) && namespacesData.length > 0 && typeof namespacesData[0] === 'object') {
+        if (
+          Array.isArray(namespacesData) &&
+          namespacesData.length > 0 &&
+          typeof namespacesData[0] === "object"
+        ) {
           setNamespaces(namespacesData.map((ns: Namespace) => ns.name ?? ns));
         } else {
           // If the response is an array of strings
           setNamespaces(namespacesData as unknown as string[]);
         }
       } catch (error) {
-        console.error('Failed to fetch namespaces:', error);
+        console.error("Failed to fetch namespaces:", error);
         // Fallback to default namespaces
-        setNamespaces(['acc/default', 'production', 'staging', 'development']);
+        setNamespaces(["acc/default", "production", "staging", "development"]);
       } finally {
         setLoading(false);
       }
