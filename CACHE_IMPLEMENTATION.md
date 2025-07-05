@@ -1,6 +1,7 @@
 # API Caching Implementation
 
 ## Overview
+
 This implementation adds caching to the `/api/compliance`, `/api/namespaces`, and `/api/vulnerabilities` endpoints to reduce the load on the backend server. Different endpoints use different caching strategies based on their usage patterns.
 
 ## Features
@@ -56,29 +57,37 @@ This implementation adds caching to the `/api/compliance`, `/api/namespaces`, an
 ## Usage
 
 ### Compliance API Endpoint
+
 ```
 GET /api/compliance
 ```
+
 The namespace is read from the `selected-namespace` cookie.
 
 ### Namespaces API Endpoint
+
 ```
 GET /api/namespaces
 ```
 
 ### React Hook
+
 ```typescript
-import { useCompliance } from '@/hooks/useCompliance';
+import { useCompliance } from "@/hooks/useCompliance";
 
 function MyComponent() {
-  const { data, loading, error, refetch, setNamespace, currentNamespace } = useCompliance();
-  
+  const { data, loading, error, refetch, setNamespace, currentNamespace } =
+    useCompliance();
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  
+
   return (
     <div>
-      <select value={currentNamespace ?? 'acc/default'} onChange={(e) => setNamespace(e.target.value)}>
+      <select
+        value={currentNamespace ?? "acc/default"}
+        onChange={(e) => setNamespace(e.target.value)}
+      >
         <option value="acc/default">acc/default</option>
         <option value="production">production</option>
       </select>
@@ -89,11 +98,12 @@ function MyComponent() {
 ```
 
 ### Service Class
+
 ```typescript
-import { ComplianceService } from '@/services/complianceService';
+import { ComplianceService } from "@/services/complianceService";
 
 // Set namespace (saves to cookie)
-ComplianceService.setSelectedNamespace('acc/default');
+ComplianceService.setSelectedNamespace("acc/default");
 
 // Get current namespace from cookie
 const currentNamespace = ComplianceService.getSelectedNamespace();
@@ -105,12 +115,14 @@ const data = await ComplianceService.getCompliance();
 ## Cache Behavior
 
 ### Compliance API
+
 1. **First request**: Cache MISS - fetches from backend using namespace from cookie
 2. **Subsequent requests**: Cache HIT - returns cached data (within 1 minute)
 3. **Namespace change**: Cache MISS - fetches data for new namespace
 4. **After expiration**: Cache MISS - fetches fresh data
 
 ### Namespaces API
+
 1. **First request**: Cache MISS - fetches from backend
 2. **Subsequent requests**: Cache HIT - returns cached data (within 5 minutes)
 3. **After expiration**: Cache MISS - fetches fresh data
@@ -125,6 +137,7 @@ const data = await ComplianceService.getCompliance();
 ## Cookie Management
 
 The `selected-namespace` cookie is used to store the current namespace:
+
 - **Name**: `selected-namespace`
 - **Value**: URL-encoded namespace (e.g., `acc%2Fdefault`)
 - **Path**: `/`
@@ -134,6 +147,7 @@ The `selected-namespace` cookie is used to store the current namespace:
 ## Testing
 
 Run the test script to verify caching behavior:
+
 ```bash
 ./test-cache.sh
 ```
@@ -143,11 +157,13 @@ This will test both endpoints for cache hits/misses.
 ## Configuration
 
 ### Compliance Cache Duration
+
 ```typescript
 const CACHE_DURATION = 60 * 1000; // 1 minute in milliseconds
 ```
 
 ### Namespaces Cache Duration
+
 ```typescript
 const NAMESPACES_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 ```
@@ -163,6 +179,7 @@ const NAMESPACES_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 ## Monitoring
 
 The implementation includes console logging to monitor cache behavior:
+
 - Cache hits and misses are logged for both endpoints
 - Backend API calls are logged
 - Cache cleanup operations are visible in server logs

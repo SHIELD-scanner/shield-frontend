@@ -75,7 +75,7 @@ export async function GET() {
 
     if (!res.ok) {
       console.error(
-        `Failed to fetch compliance data: ${res.status} ${res.statusText}`,
+        `Failed to fetch compliance data: ${res.status} ${res.statusText}`
       );
       return new Response("Failed to fetch compliance data", { status: 500 });
     }

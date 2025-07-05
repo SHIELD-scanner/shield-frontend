@@ -16,7 +16,7 @@ interface UseVulnerabilitiesResult {
 
 export function useVulnerabilities(
   cluster?: string,
-  namespace?: string,
+  namespace?: string
 ): UseVulnerabilitiesResult {
   const [data, setData] = useState<VulnerabilityReport[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,14 +28,14 @@ export function useVulnerabilities(
       setError(null);
       const result = await VulnerabilityService.getVulnerabilities(
         cluster,
-        namespace,
+        namespace
       );
       setData(result);
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to fetch vulnerabilities data",
+          : "Failed to fetch vulnerabilities data"
       );
     } finally {
       setLoading(false);
