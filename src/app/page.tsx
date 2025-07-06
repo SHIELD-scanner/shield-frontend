@@ -2,14 +2,6 @@
 import { DashboardTopbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
 import React, { useEffect, useState } from "react";
-import {
-  TrendsCard,
-  CriticalVulnCard,
-} from "@/components/dashboard/TrendsAndCriticalCards";
-import {
-  RecentActivityCard,
-  ComplianceOverviewCard,
-} from "@/components/dashboard/ActivityAndComplianceCards";
 import { VulnerabilitySeverityBarChart } from "@/components/dashboard/VulnerabilitySeverityBarChart";
 import { CompliancePieChart } from "@/components/dashboard/CompliancePieChart";
 
