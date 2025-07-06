@@ -1,0 +1,17 @@
+{
+  "language": "Language",
+  "english": "English",
+  "dutch": "Dutch",
+  "welcome": "Welcome",
+  "selected-namespace": "selected-namespace",
+  "cluster": "cluster",
+  "namespace": "namespace",
+  "all": "all",
+  "nav.dashboard": "Dashboard",
+  "nav.vulnerabilities": "Vulnerabilities",
+  "nav.compliance": "Compliance",
+  "nav.configAudit": "Config Audit",
+  "nav.exposedSecrets": "Exposed Secrets",
+  "nav.rbacAssessment": "RBAC Assessment",
+  "nav.sbomReports": "SBOM Reports"
+}

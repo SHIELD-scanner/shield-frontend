@@ -1,7 +1,6 @@
 "use client";
 import { DashboardTopbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import React, { useEffect, useState } from "react";
 import {
   TrendsCard,

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { VulnerabilityReport } from "@/services/vulnerabilityService";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,10 @@ export default function VulnerabilityDetailPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="p-8 h-full bg-background text-white">Loading...</div>;
+  if (loading)
+    return (
+      <div className="p-8 h-full bg-background text-white">Loading...</div>
+    );
   if (error) return <div className="p-8 text-red-600">{error}</div>;
   if (!vuln) return <div className="p-8">No data found.</div>;
 
@@ -188,15 +192,17 @@ export default function VulnerabilityDetailPage() {
           <Card className="bg-card border-none">
             <CardHeader>
               <CardTitle>
-                <div className="flex gap-2 mr-2">
-                  <img
+                <span className="inline-flex items-center gap-2">
+                  <Image
                     src="/cube.svg"
                     alt="Dark mode"
+                    width={16}
+                    height={16}
                     className="inline w-4 h-4"
                     style={{ filter: "invert(1) brightness(2)" }}
                   />
-                  <div>Package Information</div>
-                </div>
+                  <span>Package Information</span>
+                </span>
               </CardTitle>
             </CardHeader>
             <CardContent>

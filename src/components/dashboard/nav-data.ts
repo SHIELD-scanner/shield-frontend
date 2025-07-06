@@ -1,24 +1,30 @@
+// All fields that are user-facing and should be translated are now keys, not raw strings.
 export const dashboardNav = [
-  { label: "Dashboard", href: "/", badge: undefined, badgeColor: undefined },
   {
-    label: "Vulnerabilities",
+    label: "nav.dashboard",
+    href: "/",
+    badge: undefined,
+    badgeColor: undefined,
+  },
+  {
+    label: "nav.vulnerabilities",
     href: "/vulnerabilities",
     badge: "127",
     badgeColor: "bg-[#e11d48]",
   },
   {
-    label: "Compliance",
+    label: "nav.compliance",
     href: "/compliance",
     badge: "23",
     badgeColor: "bg-[#2563eb]",
   },
-  { label: "Config Audit", href: "/config-audit" },
+  { label: "nav.configAudit", href: "/config-audit" },
   {
-    label: "Exposed Secrets",
+    label: "nav.exposedSecrets",
     href: "/exposed-secrets",
     badge: "5",
     badgeColor: "bg-[#e11d48]",
   },
-  { label: "RBAC Assessment", href: "/rbac-assessment" },
-  { label: "SBOM Reports", href: "/sbom-reports" },
+  { label: "nav.rbacAssessment", href: "/rbac-assessment" },
+  { label: "nav.sbomReports", href: "/sbom-reports" },
 ];
