@@ -29,7 +29,7 @@ function NamespaceDropdown({
     inputValue === "all"
       ? options
       : options.filter((opt) =>
-          opt.toLowerCase().includes(inputValue.toLowerCase()),
+          opt.toLowerCase().includes(inputValue.toLowerCase())
         );
 
   const handleSelect = (opt: string) => {
@@ -113,7 +113,7 @@ export function DashboardSidebar() {
       .then((data) => {
         if (Array.isArray(data) && data.length && typeof data[0] === "string") {
           setNamespaces(
-            data.map((name: string) => ({ cluster: "default", name })),
+            data.map((name: string) => ({ cluster: "default", name }))
           );
         } else if (
           Array.isArray(data) &&
@@ -127,7 +127,7 @@ export function DashboardSidebar() {
               typeof item === "object" &&
               item !== null &&
               "cluster" in item &&
-              "name" in item,
+              "name" in item
           )
         ) {
           setNamespaces(data as { cluster: string; name: string }[]);
@@ -142,7 +142,7 @@ export function DashboardSidebar() {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("namespace", selectedNamespace);
       document.cookie = `namespace=${encodeURIComponent(
-        selectedNamespace,
+        selectedNamespace
       )}; path=/`;
     }
   }, [selectedNamespace]);
@@ -183,6 +183,17 @@ export function DashboardSidebar() {
           </SidebarButton>
         ))}
       </nav>
+      <div className="mt-4">
+        {/* Theme toggle button */}
+        <div className="w-full flex justify-center">
+          {typeof window !== "undefined" &&
+            (() => {
+              const ThemeToggle =
+                require("@/components/ui/ThemeToggle").ThemeToggle;
+              return <ThemeToggle />;
+            })()}
+        </div>
+      </div>
       <div className="mt-auto text-xs text-gray-400 pt-8 border-t border-[#232b3b]">
         <div className="flex items-center gap-2">
           <span className="bg-green-600 w-2 h-2 rounded-full inline-block" />{" "}

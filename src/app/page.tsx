@@ -1,6 +1,7 @@
 "use client";
 import { DashboardTopbar } from "@/components/dashboard/Topbar";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import React, { useEffect, useState } from "react";
 import {
   TrendsCard,
@@ -27,7 +28,7 @@ export default function Home() {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          0,
+          0
         );
         setTotalVulnerabilities(total);
       });
@@ -40,7 +41,7 @@ export default function Home() {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          0,
+          0
         );
         setCriticalIssues(total);
       });
@@ -49,7 +50,10 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <main className="flex-1 flex flex-col min-h-screen bg-[#f7f8fa]">
+    <main className="flex-1 flex flex-col min-h-screen bg-[#232b3b] text-white dark:text-gray-200">
+      {/* <div className="flex justify-end px-10 pt-6">
+        <ThemeToggle />
+      </div> */}
       <DashboardTopbar />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-10 py-6">
         <StatCard
