@@ -6,6 +6,7 @@ import Image from "next/image";
 import { VulnerabilityReport } from "@/services/vulnerabilityService";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/i18n";
 
 async function fetchVulnerabilityById(
   id: string,
@@ -20,6 +21,7 @@ async function fetchVulnerabilityById(
 }
 
 export default function VulnerabilityDetailPage() {
+  const { t } = useLanguage();
   const params = useParams();
   const { id } = params;
   const [vuln, setVuln] = useState<VulnerabilityReport | null>(null);
@@ -40,10 +42,13 @@ export default function VulnerabilityDetailPage() {
 
   if (loading)
     return (
-      <div className="p-8 h-full bg-background text-white">Loading...</div>
+      <div className="p-8 h-full bg-background text-white">
+        {t("vulnerabilities.loading")}
+      </div>
     );
-  if (error) return <div className="p-8 text-red-600">{error}</div>;
-  if (!vuln) return <div className="p-8">No data found.</div>;
+  if (error)
+    return <div className="p-8 text-red-600">{t("vulnerabilities.error")}</div>;
+  if (!vuln) return <div className="p-8">{t("vulnerabilities.noData")}</div>;
 
   // Helper for badge color
   const getSeverityColor = (sev: string) => {
@@ -72,7 +77,7 @@ export default function VulnerabilityDetailPage() {
             href="/vulnerabilities"
             className="text-blue-600 dark:text-blue-400 hover:underline text-lg font-medium flex items-center gap-1"
           >
-            <span className="text-2xl">←</span> Back
+            <span className="text-2xl">←</span> {t("vulnerabilities.back")}
           </Link>
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
@@ -81,7 +86,7 @@ export default function VulnerabilityDetailPage() {
               {vuln.vulnerabilityID}
             </h1>
             <h2 className="text-xl text-muted-foreground">
-              {vuln.title || "No title available"}
+              {vuln.title || t("vulnerabilities.noTitle")}
             </h2>
           </div>
           <div className="flex gap-2 mt-2 md:mt-0">
@@ -107,12 +112,12 @@ export default function VulnerabilityDetailPage() {
           {/* Overview */}
           <Card className="col-span-2 bg-card border-none">
             <CardHeader>
-              <CardTitle>Vulnerability Overview</CardTitle>
+              <CardTitle>{t("vulnerabilities.overview")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
                 <div className="text-sm text-muted-foreground font-semibold mb-1">
-                  Description
+                  {t("vulnerabilities.description")}
                 </div>
                 <div className="text-base text-foreground mb-2">
                   {vuln.description || "-"}
@@ -120,7 +125,7 @@ export default function VulnerabilityDetailPage() {
                 {vuln.links && vuln.links.length > 0 && (
                   <div className="mt-2">
                     <div className="text-sm text-muted-foreground font-semibold mb-1">
-                      References
+                      {t("vulnerabilities.references")}
                     </div>
                     <ul className="list-disc ml-6">
                       {vuln.links.map((link) => (
@@ -145,38 +150,46 @@ export default function VulnerabilityDetailPage() {
           <div className="flex flex-col gap-6">
             <Card className="bg-card border-none">
               <CardHeader>
-                <CardTitle>Actions</CardTitle>
+                <CardTitle>{t("vulnerabilities.actions")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" variant="outline">
-                  Acknowledge
+                  {t("vulnerabilities.acknowledge")}
                 </Button>
               </CardContent>
             </Card>
             {/* Resource Info */}
             <Card className="bg-card border-none">
               <CardHeader>
-                <CardTitle>Resource Information</CardTitle>
+                <CardTitle>{t("vulnerabilities.resourceInfo")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="mb-2">
-                  <span className="text-muted-foreground">Resource Name</span>
+                  <span className="text-muted-foreground">
+                    {t("vulnerabilities.resourceName")}
+                  </span>
                   <div className="text-foreground font-medium">
                     {vuln.resource || "-"}
                   </div>
                 </div>
                 <div className="mb-2">
-                  <span className="text-muted-foreground">Namespace</span>
+                  <span className="text-muted-foreground">
+                    {t("vulnerabilities.namespace")}
+                  </span>
                   <div className="text-foreground font-medium">
                     {vuln.namespace || "-"}
                   </div>
                 </div>
                 <div className="mb-2">
-                  <span className="text-muted-foreground">Resource Kind</span>
+                  <span className="text-muted-foreground">
+                    {t("vulnerabilities.resourceKind")}
+                  </span>
                   <div className="text-foreground font-medium">Secret</div>
                 </div>
                 <div className="mb-2">
-                  <span className="text-muted-foreground">Detected At</span>
+                  <span className="text-muted-foreground">
+                    {t("vulnerabilities.detectedAt")}
+                  </span>
                   <div className="text-foreground font-medium">
                     {vuln.lastModifiedDate
                       ? new Date(vuln.lastModifiedDate).toLocaleString()
@@ -201,26 +214,32 @@ export default function VulnerabilityDetailPage() {
                     className="inline w-4 h-4"
                     style={{ filter: "invert(1) brightness(2)" }}
                   />
-                  <span>Package Information</span>
+                  <span>{t("vulnerabilities.packageInfo")}</span>
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <div className="text-muted-foreground">Package Name</div>
+                  <div className="text-muted-foreground">
+                    {t("vulnerabilities.packageName")}
+                  </div>
                   <div className="text-foreground font-medium">
                     {vuln.target || "-"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">Installed Version</div>
+                  <div className="text-muted-foreground">
+                    {t("vulnerabilities.installedVersion")}
+                  </div>
                   <div className="text-foreground font-medium">
                     {vuln.installedVersion || "-"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-muted-foreground">CVSS Score</div>
+                  <div className="text-muted-foreground">
+                    {t("vulnerabilities.cvssScore")}
+                  </div>
                   <div className="text-foreground font-medium">
                     {vuln.score ? `${vuln.score}/10.0` : "-"}
                   </div>

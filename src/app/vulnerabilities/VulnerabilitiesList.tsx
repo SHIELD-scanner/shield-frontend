@@ -5,6 +5,7 @@ import {
   VulnerabilityReport,
 } from "@/services/vulnerabilityService";
 import { Card } from "@/components/ui/card";
+import { useLanguage } from "@/lib/i18n";
 
 const severityColor = {
   LOW: "bg-green-600 text-white",
@@ -43,6 +44,7 @@ export default function VulnerabilitiesList() {
   );
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
 
   // Fetch vulnerabilities using the current cookie value
   const fetchAndSetVuls = (cluster: string, namespace: string) => {
@@ -80,7 +82,7 @@ export default function VulnerabilitiesList() {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          Loading vulnerabilities...
+          {t("vulnerabilities.loadingTable")}
         </td>
       </tr>
     );
@@ -88,7 +90,7 @@ export default function VulnerabilitiesList() {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          No vulnerabilities found.
+          {t("vulnerabilities.noVulnerabilities")}
         </td>
       </tr>
     );
@@ -109,7 +111,7 @@ export default function VulnerabilitiesList() {
               <a
                 href={`/vulnerabilities/${vuln.hash}`}
                 className="text-blue-400 hover:underline"
-                title="View details"
+                title={t("vulnerabilities.viewDetails")}
               >
                 {vuln.vulnerabilityID}
               </a>
@@ -159,7 +161,7 @@ export default function VulnerabilitiesList() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 hover:underline"
-              title="View details"
+              title={t("vulnerabilities.viewDetails")}
             >
               <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path
@@ -173,7 +175,7 @@ export default function VulnerabilitiesList() {
             <a
               href={`/vulnerabilities/${vuln.hash}`}
               className="text-blue-400 hover:underline"
-              title="View details"
+              title={t("vulnerabilities.viewDetails")}
             >
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                 <rect
@@ -229,10 +231,12 @@ export default function VulnerabilitiesList() {
         </div>
       )}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
-        <h2 className="text-xl font-bold">Recent Vulnerability Findings</h2>
+        <h2 className="text-xl font-bold">
+          {t("vulnerabilities.recentFindings")}
+        </h2>
         <input
           type="text"
-          placeholder="Search vulnerabilities..."
+          placeholder={t("vulnerabilities.searchPlaceholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="bg-[#232b3b] text-white rounded-lg px-3 py-2 border border-[#2e3a54] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-72"
@@ -242,13 +246,27 @@ export default function VulnerabilitiesList() {
         <table className="min-w-full text-sm mt-2">
           <thead>
             <tr className="bg-[#232b3b] text-gray-300 uppercase text-xs">
-              <th className="px-6 py-3 text-left">Vulnerability</th>
-              <th className="px-6 py-3 text-left">Resource</th>
-              <th className="px-6 py-3 text-left">Severity</th>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">Version</th>
-              <th className="px-6 py-3 text-left">CVSS</th>
-              <th className="px-6 py-3 text-left">Actions</th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.vulnerability")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.resource")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.severity")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.status")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.version")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.cvss")}
+              </th>
+              <th className="px-6 py-3 text-left">
+                {t("vulnerabilities.table.actions")}
+              </th>
             </tr>
           </thead>
           <tbody className="bg-[#181f2a] divide-y divide-[#232b3b]">

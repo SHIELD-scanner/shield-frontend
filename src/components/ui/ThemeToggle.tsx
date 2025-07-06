@@ -1,10 +1,12 @@
 "use client";
 import * as React from "react";
+import { useLanguage } from "@/lib/i18n";
 
 export function ThemeToggle() {
   // SSR-safe theme detection
   const [mounted, setMounted] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
+  const { t } = useLanguage();
 
   // Helper to get cookie value
   function getCookie(name: string) {
@@ -60,7 +62,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      aria-label="Toggle dark mode"
+      aria-label={t("themeToggle.ariaLabel")}
       onClick={toggleTheme}
       className="mt-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-[#232b3b] hover:bg-[#2e3a54] text-white dark:text-gray-200 text-sm font-medium w-full justify-center"
     >
@@ -69,7 +71,7 @@ export function ThemeToggle() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/sun.svg"
-            alt="Light mode"
+            alt={t("themeToggle.lightModeAlt")}
             className="inline w-4 h-4"
             style={{ filter: "invert(1) brightness(2)" }}
           />
@@ -79,13 +81,13 @@ export function ThemeToggle() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/moon.svg"
-            alt="Dark mode"
+            alt={t("themeToggle.darkModeAlt")}
             className="inline w-4 h-4"
             style={{ filter: "invert(1) brightness(2)" }}
           />
         </span>
       )}
-      {isDark ? "Light Mode" : "Dark Mode"}
+      {isDark ? t("themeToggle.lightMode") : t("themeToggle.darkMode")}
     </button>
   );
 }

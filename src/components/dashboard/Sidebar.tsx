@@ -22,6 +22,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
   const [inputValue, setInputValue] = useState(value);
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setInputValue(value);
@@ -47,7 +48,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
         htmlFor="namespace-autocomplete"
         className="block text-xs font-semibold text-gray-300 mb-2 tracking-wide uppercase"
       >
-        Namespace
+        {t("sidebar.namespace")}
       </label>
       <input
         id="namespace-autocomplete"
@@ -61,7 +62,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
         onFocus={() => setShowDropdown(true)}
         onBlur={() => setTimeout(() => setShowDropdown(false), 100)}
         autoComplete="off"
-        placeholder="Type to search..."
+        placeholder={t("sidebar.namespacePlaceholder")}
       />
       {showDropdown && (
         <ul className="absolute z-10 w-full bg-[#232b3b] border border-[#2e3a54] rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
@@ -73,7 +74,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
               }`}
               onMouseDown={() => handleSelect("all")}
             >
-              All
+              {t("sidebar.all")}
             </button>
           </li>
           {filtered.map((opt) => (

@@ -1,44 +1,44 @@
+import { useLanguage } from "@/lib/i18n";
 import { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export function TrendsCard({ children }: { children?: ReactNode }) {
+export function TrendsCard({ children }: Readonly<{ children?: ReactNode }>) {
+  const { t } = useLanguage();
   return (
     <Card className="bg-[#232b3b] text-white rounded-2xl shadow-md col-span-2">
       <CardHeader className="flex flex-row items-center justify-between pb-0">
-        <CardTitle>Vulnerability Trends</CardTitle>
+        <CardTitle>{t("trends.title")}</CardTitle>
         <div className="flex gap-2">
           <Button
             size="sm"
             variant="secondary"
             className="bg-[#181f2a] text-white rounded-lg"
           >
-            7D
+            {t("trends.7d")}
           </Button>
           <Button
             size="sm"
             variant="default"
             className="bg-[#2563eb] text-white rounded-lg"
           >
-            30D
+            {t("trends.30d")}
           </Button>
           <Button
             size="sm"
             variant="secondary"
             className="bg-[#181f2a] text-white rounded-lg"
           >
-            90D
+            {t("trends.90d")}
           </Button>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center h-56">
-        {children ? (
-          children
-        ) : (
+        {children ?? (
           <div className="text-gray-400 text-center">
-            Vulnerability Trends Chart
+            {t("trends.chartPlaceholder")}
             <br />
-            Chart implementation with Recharts
+            {t("trends.chartImplementation")}
           </div>
         )}
       </CardContent>
@@ -46,25 +46,26 @@ export function TrendsCard({ children }: { children?: ReactNode }) {
   );
 }
 
-export function CriticalVulnCard({ children }: { children?: ReactNode }) {
+export function CriticalVulnCard({
+  children,
+}: Readonly<{ children?: ReactNode }>) {
+  const { t } = useLanguage();
   return (
     <Card className="bg-[#232b3b] text-white rounded-2xl shadow-md">
       <CardHeader>
-        <CardTitle>Critical Vulnerabilities</CardTitle>
+        <CardTitle>{t("criticalVuln.title")}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center h-56">
-        {children ? (
-          children
-        ) : (
+        {children ?? (
           <>
             <div className="text-gray-400 mb-4">
-              No critical vulnerabilities found
+              {t("criticalVuln.noCritical")}
             </div>
             <Button
               variant="secondary"
               className="bg-[#232b3b] text-white border border-[#232b3b] rounded-lg"
             >
-              View All Vulnerabilities
+              {t("criticalVuln.viewAll")}
             </Button>
           </>
         )}

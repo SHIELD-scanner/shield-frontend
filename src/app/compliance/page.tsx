@@ -1,16 +1,18 @@
 "use client";
 
+import { useLanguage } from "@/lib/i18n";
 import { useCompliance } from "@/hooks/useCompliance";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CompliancePage() {
+  const { t } = useLanguage();
   const { data, loading, error, refetch, setNamespace, currentNamespace } =
     useCompliance();
 
   if (loading) {
     return (
       <div className="p-10">
-        <h2 className="text-2xl font-bold mb-4">Compliance</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("compliance.heading")}</h2>
         <div className="animate-pulse">
           <div className="h-4 bg-gray-300 rounded w-1/4 mb-2"></div>
           <div className="h-4 bg-gray-300 rounded w-1/2"></div>
@@ -22,7 +24,7 @@ export default function CompliancePage() {
   if (error) {
     return (
       <div className="p-10">
-        <h2 className="text-2xl font-bold mb-4">Compliance</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("compliance.heading")}</h2>
         <div className="text-red-500 mb-4">Error: {error}</div>
         <button
           onClick={() => void refetch()}
@@ -37,7 +39,7 @@ export default function CompliancePage() {
   return (
     <div className="p-10">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Compliance</h2>
+        <h2 className="text-2xl font-bold">{t("compliance.heading")}</h2>
         <div className="flex gap-4 items-center">
           <div className="text-sm text-gray-600">
             Current namespace:{" "}
