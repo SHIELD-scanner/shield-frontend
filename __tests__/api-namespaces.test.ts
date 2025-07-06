@@ -69,7 +69,7 @@ describe("/api/namespaces", () => {
     await CustomGET();
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://custom-backend:9000/namespaces/"
+      "http://custom-backend:9000/namespaces/",
     );
   });
 

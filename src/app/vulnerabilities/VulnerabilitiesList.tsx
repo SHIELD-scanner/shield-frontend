@@ -39,7 +39,7 @@ function getNamespaceCookie() {
 
 export default function VulnerabilitiesList() {
   const [vulnerabilities, setVulnerabilities] = useState<VulnerabilityReport[]>(
-    []
+    [],
   );
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -71,7 +71,7 @@ export default function VulnerabilitiesList() {
   let filteredVulnerabilities = vulnerabilities;
   if (search.trim()) {
     filteredVulnerabilities = vulnerabilities.filter((vuln) =>
-      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase())
+      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase()),
     );
   }
 

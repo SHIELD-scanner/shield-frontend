@@ -41,13 +41,13 @@ describe("Config utility", () => {
 
     it("should combine backend URL with endpoint starting with slash", () => {
       expect(getBackendApiUrl("/api/test")).toBe(
-        "http://test-backend:9000/api/test"
+        "http://test-backend:9000/api/test",
       );
     });
 
     it("should add leading slash to endpoint if missing", () => {
       expect(getBackendApiUrl("api/test")).toBe(
-        "http://test-backend:9000/api/test"
+        "http://test-backend:9000/api/test",
       );
     });
 
@@ -61,9 +61,9 @@ describe("Config utility", () => {
 
     it("should work with complex endpoints", () => {
       expect(
-        getBackendApiUrl("/vulnerabilities?cluster=test&namespace=default")
+        getBackendApiUrl("/vulnerabilities?cluster=test&namespace=default"),
       ).toBe(
-        "http://test-backend:9000/vulnerabilities?cluster=test&namespace=default"
+        "http://test-backend:9000/vulnerabilities?cluster=test&namespace=default",
       );
     });
 

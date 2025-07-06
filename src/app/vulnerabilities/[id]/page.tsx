@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 async function fetchVulnerabilityById(
-  id: string
+  id: string,
 ): Promise<VulnerabilityReport | null> {
   try {
     const res = await fetch(`/api/vulnerabilities/${id}`);
@@ -87,7 +87,7 @@ export default function VulnerabilityDetailPage() {
           <div className="flex gap-2 mt-2 md:mt-0">
             <span
               className={`rounded-full px-3 py-1 text-xs font-semibold ${getSeverityColor(
-                vuln.severity
+                vuln.severity,
               )}`}
             >
               {vuln.severity || "-"}

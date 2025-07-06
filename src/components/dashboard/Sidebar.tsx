@@ -32,7 +32,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
     inputValue === "all"
       ? options
       : options.filter((opt) =>
-          opt.toLowerCase().includes(inputValue.toLowerCase())
+          opt.toLowerCase().includes(inputValue.toLowerCase()),
         );
 
   const handleSelect = (opt: string) => {
@@ -117,7 +117,7 @@ export default function DashboardSidebar() {
       .then((data) => {
         if (Array.isArray(data) && data.length && typeof data[0] === "string") {
           setNamespaceList(
-            data.map((name: string) => ({ cluster: "default", name }))
+            data.map((name: string) => ({ cluster: "default", name })),
           );
         } else if (
           Array.isArray(data) &&
@@ -131,7 +131,7 @@ export default function DashboardSidebar() {
               typeof item === "object" &&
               item !== null &&
               "cluster" in item &&
-              "name" in item
+              "name" in item,
           )
         ) {
           setNamespaceList(data as { cluster: string; name: string }[]);
@@ -146,7 +146,7 @@ export default function DashboardSidebar() {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("namespace", selectedNamespace);
       document.cookie = `namespace=${encodeURIComponent(
-        selectedNamespace
+        selectedNamespace,
       )}; path=/`;
     }
   }, [selectedNamespace]);

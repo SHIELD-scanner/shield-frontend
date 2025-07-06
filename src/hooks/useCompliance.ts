@@ -30,7 +30,7 @@ export function useCompliance(): UseComplianceResult {
       setData(result);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to fetch compliance data"
+        err instanceof Error ? err.message : "Failed to fetch compliance data",
       );
     } finally {
       setLoading(false);
@@ -44,7 +44,7 @@ export function useCompliance(): UseComplianceResult {
       // Refetch data when namespace changes
       void fetchCompliance();
     },
-    [fetchCompliance]
+    [fetchCompliance],
   );
 
   useEffect(() => {

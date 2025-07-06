@@ -54,7 +54,7 @@ describe("/api/compliance", () => {
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=60");
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/compliance/?namespace=test-namespace"
+      "http://localhost:8000/compliance/?namespace=test-namespace",
     );
   });
 
@@ -62,7 +62,7 @@ describe("/api/compliance", () => {
     mockCookies.mockResolvedValue(createMockCookies(undefined));
     await GET();
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/compliance/?namespace=acc%2Fdefault"
+      "http://localhost:8000/compliance/?namespace=acc%2Fdefault",
     );
   });
 
@@ -96,7 +96,7 @@ describe("/api/compliance", () => {
     mockCookies.mockResolvedValue(createMockCookies("test-namespace"));
     await GET();
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://custom-backend:9000/compliance/?namespace=test-namespace"
+      "http://custom-backend:9000/compliance/?namespace=test-namespace",
     );
   });
 
@@ -130,7 +130,7 @@ describe("/api/compliance", () => {
     mockCookies.mockResolvedValue(createMockCookies("test/namespace"));
     await GET();
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/compliance/?namespace=test%2Fnamespace"
+      "http://localhost:8000/compliance/?namespace=test%2Fnamespace",
     );
   });
 });

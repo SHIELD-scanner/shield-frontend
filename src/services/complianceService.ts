@@ -18,7 +18,7 @@ export class ComplianceService {
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch compliance data: ${response.statusText}`
+        `Failed to fetch compliance data: ${response.statusText}`,
       );
     }
 
@@ -28,7 +28,7 @@ export class ComplianceService {
   // Helper method to set the namespace cookie
   static setSelectedNamespace(namespace: string): void {
     document.cookie = `selected-namespace=${encodeURIComponent(
-      namespace
+      namespace,
     )}; path=/; max-age=${7 * 24 * 60 * 60}`; // 7 days
   }
 
