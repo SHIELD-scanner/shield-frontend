@@ -21,7 +21,7 @@ export default function Home() {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          0
+          0,
         );
         setTotalVulnerabilities(total);
       });
@@ -34,7 +34,7 @@ export default function Home() {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          1
+          1,
         );
         setCriticalIssues(total);
       });

@@ -22,7 +22,6 @@ export function CompliancePieChart({
   const circumference = 2 * Math.PI * radius;
   const compliantLength = (percent / 100) * circumference;
 
-
   return (
     <div className="bg-[#232b3b] rounded-2xl shadow-md p-6 text-white flex flex-col items-center">
       <div className="text-lg font-semibold mb-4">{title}</div>
@@ -47,7 +46,11 @@ export function CompliancePieChart({
           strokeDasharray={`${compliantLength} ${circumference}`}
           strokeDashoffset={0}
           strokeLinecap="butt"
-          style={{ transition: 'stroke-dasharray 0.5s', transform: 'rotate(-90deg)', transformOrigin: `${center}px ${center}px` }}
+          style={{
+            transition: "stroke-dasharray 0.5s",
+            transform: "rotate(-90deg)",
+            transformOrigin: `${center}px ${center}px`,
+          }}
         />
         <text
           x={center}
@@ -73,8 +76,12 @@ export function CompliancePieChart({
       </svg>
       {/* compliant label is now inside the pie chart */}
       <div className="flex w-full justify-between px-2 mt-2">
-        <div className="text-sm font-bold" style={{ color: compliantColor }}>{compliant}</div>
-        <div className="text-sm font-bold" style={{ color: nonCompliantColor }}>{nonCompliant}</div>
+        <div className="text-sm font-bold" style={{ color: compliantColor }}>
+          {compliant}
+        </div>
+        <div className="text-sm font-bold" style={{ color: nonCompliantColor }}>
+          {nonCompliant}
+        </div>
       </div>
     </div>
   );

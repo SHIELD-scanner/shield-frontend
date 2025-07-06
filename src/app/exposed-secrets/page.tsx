@@ -1,3 +1,4 @@
+"use client";
 import { useLanguage } from "@/lib/i18n";
 
 export default function ExposedSecretsPage() {
