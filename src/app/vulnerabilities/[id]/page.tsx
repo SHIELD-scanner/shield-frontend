@@ -4,11 +4,10 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { VulnerabilityReport } from "@/services/vulnerabilityService";
 
-async function fetchVulnerabilityById(
-  id: string,
-): Promise<VulnerabilityReport | null> {
+
+async function fetchVulnerabilityById(id: string): Promise<VulnerabilityReport | null> {
   try {
-    const res = await fetch(`http://localhost:8000/vulnerabilities/${id}`);
+    const res = await fetch(`/api/vulnerabilities/${id}`);
     if (!res.ok) return null;
     return await res.json();
   } catch {
