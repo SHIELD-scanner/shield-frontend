@@ -2,8 +2,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import en from "./i18n/en.json";
 import nl from "./i18n/nl.json";
+import de from "./i18n/de.json";
 
-const translations: Record<string, Record<string, string>> = { en, nl };
+const translations: Record<string, Record<string, string>> = { en, nl, de };
 
 const defaultLang = "en";
 
