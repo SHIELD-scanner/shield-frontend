@@ -159,7 +159,9 @@ export function DashboardSidebar() {
         <div className="bg-[#2e3a54] rounded-full w-8 h-8 flex items-center justify-center">
           <span className="font-bold text-lg">🛡️</span>
         </div>
-        <span className="font-bold text-xl">S.H.I.E.L.D.</span>
+        <Link href="/" className="text-white no-underline">
+          <span className="font-bold text-xl">S.H.I.E.L.D.</span>
+        </Link>
       </div>
       <NamespaceDropdown
         value={selectedNamespace}
