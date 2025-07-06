@@ -4,18 +4,21 @@ import React, { useEffect, useState, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { dashboardNav } from "./nav-data";
+import { useLanguage } from "@/lib/i18n";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { fetchNamespaces } from "@/services/namespaceService";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 // NamespaceDropdown component for reuse and separation
-function NamespaceDropdown({
-  value,
-  onChange,
-  namespaces,
-}: {
+
+interface NamespaceDropdownProps {
   value: string;
   onChange: (v: string) => void;
-  namespaces: { cluster: string; name: string }[];
-}) {
+  namespaceOptions: { cluster: string; name: string }[];
+}
+
+function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
+  const { value, onChange, namespaceOptions } = props;
   const [inputValue, setInputValue] = useState(value);
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -24,12 +27,12 @@ function NamespaceDropdown({
     setInputValue(value);
   }, [value]);
 
-  const options = namespaces.map((ns) => `${ns.cluster}/${ns.name}`);
+  const options = namespaceOptions.map((ns) => `${ns.cluster}/${ns.name}`);
   const filtered =
     inputValue === "all"
       ? options
       : options.filter((opt) =>
-          opt.toLowerCase().includes(inputValue.toLowerCase()),
+          opt.toLowerCase().includes(inputValue.toLowerCase())
         );
 
   const handleSelect = (opt: string) => {
@@ -92,13 +95,14 @@ function NamespaceDropdown({
   );
 }
 
-export function DashboardSidebar() {
+export default function DashboardSidebar() {
   const pathname = usePathname();
-  const [namespaces, setNamespaces] = useState<
+  const [namespaceList, setNamespaceList] = useState<
     { cluster: string; name: string }[]
   >([]);
   // Always initialize to 'all' for SSR/client parity
   const [selectedNamespace, setSelectedNamespace] = useState<string>("all");
+  const { t } = useLanguage();
 
   // Hydrate from sessionStorage after mount (client only)
   useEffect(() => {
@@ -112,8 +116,8 @@ export function DashboardSidebar() {
     fetchNamespaces()
       .then((data) => {
         if (Array.isArray(data) && data.length && typeof data[0] === "string") {
-          setNamespaces(
-            data.map((name: string) => ({ cluster: "default", name })),
+          setNamespaceList(
+            data.map((name: string) => ({ cluster: "default", name }))
           );
         } else if (
           Array.isArray(data) &&
@@ -127,22 +131,22 @@ export function DashboardSidebar() {
               typeof item === "object" &&
               item !== null &&
               "cluster" in item &&
-              "name" in item,
+              "name" in item
           )
         ) {
-          setNamespaces(data as { cluster: string; name: string }[]);
+          setNamespaceList(data as { cluster: string; name: string }[]);
         } else {
-          setNamespaces([]);
+          setNamespaceList([]);
         }
       })
-      .catch(() => setNamespaces([]));
+      .catch(() => setNamespaceList([]));
   }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("namespace", selectedNamespace);
       document.cookie = `namespace=${encodeURIComponent(
-        selectedNamespace,
+        selectedNamespace
       )}; path=/`;
     }
   }, [selectedNamespace]);
@@ -159,12 +163,15 @@ export function DashboardSidebar() {
         <div className="bg-[#2e3a54] rounded-full w-8 h-8 flex items-center justify-center">
           <span className="font-bold text-lg">🛡️</span>
         </div>
-        <span className="font-bold text-xl">S.H.I.E.L.D.</span>
+        <Link href="/" className="text-white no-underline">
+          <span className="font-bold text-xl">S.H.I.E.L.D.</span>
+        </Link>
       </div>
+      <LanguageSwitcher />
       <NamespaceDropdown
         value={selectedNamespace}
         onChange={setSelectedNamespace}
-        namespaces={namespaces}
+        namespaceOptions={namespaceList}
       />
       <nav className="flex flex-col gap-2 text-base">
         {dashboardNav.map((item) => (
@@ -179,20 +186,28 @@ export function DashboardSidebar() {
                 : pathname.startsWith(item.href || "")
             }
           >
-            {item.label}
+            {t(item.label)}
           </SidebarButton>
         ))}
       </nav>
-      <div className="mt-auto text-xs text-gray-400 pt-8 border-t border-[#232b3b]">
+      <div className="mt-4">
+        {/* Theme toggle button */}
+        <div className="w-full flex justify-center">
+          <ThemeToggle />
+        </div>
+      </div>
+      {/* <div className="mt-auto text-xs text-gray-400 pt-8 border-t border-[#232b3b]">
         <div className="flex items-center gap-2">
           <span className="bg-green-600 w-2 h-2 rounded-full inline-block" />{" "}
           production-cluster
         </div>
         <div>8 nodes • Last scan 2m ago</div>
-      </div>
+      </div> */}
     </aside>
   );
 }
+
+// ...existing code...
 
 function SidebarButton({
   children,

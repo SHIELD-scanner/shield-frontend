@@ -1,0 +1,17 @@
+{
+  "language": "Taal",
+  "english": "Engels",
+  "dutch": "Nederlands",
+  "welcome": "Welkom",
+  "selected-namespace": "",
+  "cluster": "",
+  "namespace": "",
+  "all": "",
+  "nav.dashboard": "Dashboard",
+  "nav.vulnerabilities": "Kwetsbaarheden",
+  "nav.compliance": "Naleving",
+  "nav.configAudit": "Configuratie-audit",
+  "nav.exposedSecrets": "Blootgestelde geheimen",
+  "nav.rbacAssessment": "RBAC-beoordeling",
+  "nav.sbomReports": "SBOM-rapporten"
+}
