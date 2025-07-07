@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // Build the URL for the backend API
-    let url = getBackendApiUrl("/vulnerabilities/");
+    let url = getBackendApiUrl("/vulnerabilities-old/");
     const params = [];
 
     if (cluster && cluster !== "all") {

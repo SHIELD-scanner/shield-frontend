@@ -15,26 +15,26 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/vulnerabilities/")
+    fetch("http://localhost:8000/vulnerabilities-old/")
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          0,
+          0
         );
         setTotalVulnerabilities(total);
       });
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/vulnerabilities")
+    fetch("http://localhost:8000/vulnerabilities-old")
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
           (sum: number, item: { report?: { vulnerabilities?: unknown[] } }) =>
             sum + (item?.report?.vulnerabilities?.length ?? 0),
-          1,
+          1
         );
         setCriticalIssues(total);
       });
