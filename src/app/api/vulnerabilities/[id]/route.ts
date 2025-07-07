@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const backendUrl = getBackendApiUrl(`/vulnerabilities/${id}`);
+    const backendUrl = getBackendApiUrl(`/vulnerabilities-old/${id}`);
     const res = await fetch(backendUrl);
     if (!res.ok) {
       return new Response("Failed to fetch vulnerability", { status: 500 });
