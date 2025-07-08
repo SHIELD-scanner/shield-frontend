@@ -23,8 +23,8 @@ export function CompliancePieChart({
   const compliantLength = (percent / 100) * circumference;
 
   return (
-    <div className="bg-[#232b3b] rounded-2xl shadow-md p-6 text-white flex flex-col items-center">
-      <div className="text-lg font-semibold mb-4">{title}</div>
+    <div className="bg-white dark:bg-[#232b3b] rounded-2xl shadow-md p-6 text-gray-900 dark:text-white flex flex-col items-center transition-colors">
+      <div className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{title}</div>
       <svg width={size} height={size} className="mb-6">
         {/* Full background circle (red) */}
         <circle
@@ -58,7 +58,7 @@ export function CompliancePieChart({
           textAnchor="middle"
           fontSize="44"
           fontWeight="bold"
-          fill="white"
+          fill="currentColor"
           dominantBaseline="middle"
         >
           {percent}%

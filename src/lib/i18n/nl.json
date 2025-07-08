@@ -9,6 +9,7 @@
   "all": "",
   "nav.dashboard": "Dashboard",
   "nav.vulnerabilities": "Kwetsbaarheden",
+  "nav.users": "Gebruikers",
   "nav.compliance": "Naleving",
   "nav.configAudit": "Configuratie-audit",
   "nav.exposedSecrets": "Blootgestelde geheimen",

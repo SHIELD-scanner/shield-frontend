@@ -9,6 +9,7 @@
   "all": "",
   "nav.dashboard": "Dashboard",
   "nav.vulnerabilities": "Schwachstellen",
+  "nav.users": "Benutzer",
   "nav.compliance": "Compliance",
   "nav.configAudit": "Konfigurationsprüfung",
   "nav.exposedSecrets": "Offengelegte Geheimnisse",
