@@ -43,7 +43,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <main className="flex-1 flex flex-col min-h-screen bg-[#232b3b] text-white dark:text-gray-200">
+    <main className="flex-1 flex flex-col min-h-screen bg-gray-50 dark:bg-[#232b3b] text-gray-900 dark:text-gray-200 transition-colors">
       {/* <div className="flex justify-end px-10 pt-6">
         <ThemeToggle />
       </div> */}

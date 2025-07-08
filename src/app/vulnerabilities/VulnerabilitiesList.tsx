@@ -205,7 +205,7 @@ export default function VulnerabilitiesList() {
   }
 
   return (
-    <Card className="bg-[#181f2a] text-white p-0 rounded-2xl shadow-lg border-0 relative h-full">
+    <Card className="bg-white dark:bg-[#181f2a] text-gray-900 dark:text-white p-0 rounded-2xl shadow-lg border-0 relative h-full transition-colors">
       {loading && (
         <div className="absolute inset-0 bg-[#181f2a]/80 flex items-center justify-center z-20">
           <svg
@@ -239,13 +239,13 @@ export default function VulnerabilitiesList() {
           placeholder={t("vulnerabilities.searchPlaceholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-[#232b3b] text-white rounded-lg px-3 py-2 border border-[#2e3a54] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-72"
+          className="bg-gray-100 dark:bg-[#232b3b] text-gray-900 dark:text-white rounded-lg px-3 py-2 border border-gray-300 dark:border-[#2e3a54] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-72 transition-colors"
         />
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm mt-2">
           <thead>
-            <tr className="bg-[#232b3b] text-gray-300 uppercase text-xs">
+            <tr className="bg-gray-100 dark:bg-[#232b3b] text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
               <th className="px-6 py-3 text-left">
                 {t("vulnerabilities.table.vulnerability")}
               </th>
@@ -269,7 +269,7 @@ export default function VulnerabilitiesList() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-[#181f2a] divide-y divide-[#232b3b]">
+          <tbody className="bg-white dark:bg-[#181f2a] divide-y divide-gray-200 dark:divide-[#232b3b] transition-colors">
             {tableBody}
           </tbody>
         </table>

@@ -1,7 +1,9 @@
 // __tests__/api-namespaces.test.ts
 
-// Mock fetch
+// Use a single mockFetch for all tests in this file
+// Mock fetch for all tests in this file
 const mockFetch = jest.fn();
+// @ts-expect-error: Jest mock fetch assignment for test environment
 global.fetch = mockFetch;
 
 describe("/api/namespaces", () => {
@@ -42,7 +44,16 @@ describe("/api/namespaces", () => {
     expect(data).toHaveLength(2);
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=300");
-    expect(mockFetch).toHaveBeenCalledWith("http://localhost:8000/namespaces/");
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://localhost:8000/namespaces/",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Accept: expect.any(String),
+          "Content-Type": expect.any(String),
+        }),
+        signal: expect.any(Object),
+      })
+    );
   });
 
   it("should return cached data on subsequent requests (cache hit)", async () => {
@@ -70,6 +81,13 @@ describe("/api/namespaces", () => {
 
     expect(mockFetch).toHaveBeenCalledWith(
       "http://custom-backend:9000/namespaces/",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Accept: expect.any(String),
+          "Content-Type": expect.any(String),
+        }),
+        signal: expect.any(Object),
+      })
     );
   });
 

@@ -36,10 +36,14 @@ export function NamespaceSelector({
           namespacesData.length > 0 &&
           typeof namespacesData[0] === "object"
         ) {
-          setNamespaces(namespacesData.map((ns: Namespace) => ns.name ?? ns));
+          setNamespaces(
+            (namespacesData as Namespace[]).map(
+              (ns: Namespace) => ns.name ?? (ns as unknown as string)
+            )
+          );
         } else {
           // If the response is an array of strings
-          setNamespaces(namespacesData as unknown as string[]);
+          setNamespaces(namespacesData as string[]);
         }
       } catch (error) {
         console.error("Failed to fetch namespaces:", error);

@@ -104,14 +104,14 @@ export function StatCard({
 }>) {
   const { t } = useLanguage();
   return (
-    <div className="bg-[#0f1419] rounded-lg p-5 border border-gray-800/50 hover:border-gray-700/50 transition-colors">
+    <div className="bg-white dark:bg-[#0f1419] rounded-lg p-5 border border-gray-200 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-700/50 transition-colors shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-gray-500 text-xs font-medium uppercase tracking-wider">
+        <h3 className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">
           {t(title)}
         </h3>
         {icon && <div className="opacity-80">{getIcon(icon)}</div>}
       </div>
-      <div className={`text-3xl font-bold text-white mb-2 ${valueClass}`}>
+      <div className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 ${valueClass}`}>
         {value}
       </div>
       {subtext && (

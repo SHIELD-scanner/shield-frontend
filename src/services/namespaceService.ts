@@ -15,13 +15,17 @@ export async function fetchNamespaces(): Promise<string[]> {
 export class NamespaceService {
   private static readonly baseUrl = "/api/namespaces";
 
-  static async getNamespaces(): Promise<Namespace[]> {
+  static async getNamespaces(): Promise<Namespace[] | string[]> {
     const response = await fetch(this.baseUrl);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch namespaces: ${response.statusText}`);
     }
 
-    return response.json();
+    const data = await response.json();
+
+    // The API may return either an array of namespace objects or an array of strings
+    // We return the data as-is and let the consuming component handle the format
+    return data;
   }
 }

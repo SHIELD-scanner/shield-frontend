@@ -9,6 +9,7 @@
   "all": "all",
   "nav.dashboard": "Dashboard",
   "nav.vulnerabilities": "Vulnerabilities",
+  "nav.users": "Users",
   "nav.compliance": "Compliance",
   "nav.configAudit": "Config Audit",
   "nav.exposedSecrets": "Exposed Secrets",

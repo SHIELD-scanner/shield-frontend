@@ -12,6 +12,12 @@ export const dashboardNav = [
     badge: "127",
     badgeColor: "bg-[#e11d48]",
   },
+  {
+    label: "nav.users",
+    href: "/users",
+    badge: undefined,
+    badgeColor: undefined,
+  },
   // {
   //   label: "nav.compliance",
   //   href: "/compliance",
