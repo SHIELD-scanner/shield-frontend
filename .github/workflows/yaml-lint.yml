@@ -91,18 +91,20 @@ jobs:
         run: |
           echo "Validating Kubernetes manifests..."
 
-          # Install kubectl for basic validation
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
+          # Install kubeval for offline validation
+          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+          tar xf kubeval-linux-amd64.tar.gz
+          sudo mv kubeval /usr/local/bin/
 
-          # Validate each Kubernetes manifest
+          # Validate each Kubernetes manifest offline
           for file in k8s/*.yaml; do
             if [ -f "$file" ]; then
               echo "Validating $file..."
-              kubectl --dry-run=client apply -f "$file" || exit 1
+              kubeval "$file" || exit 1
             fi
           done
+
+          echo "✅ All Kubernetes manifests are valid!"
 
       - name: Check for common YAML issues
         run: |
