@@ -91,18 +91,14 @@ jobs:
         run: |
           echo "Validating Kubernetes manifests..."
 
-          # Install kubeval for offline validation
-          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
-          tar xf kubeval-linux-amd64.tar.gz
-          sudo mv kubeval /usr/local/bin/
+          # Install kubeconform for reliable offline validation
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar xf kubeconform-linux-amd64.tar.gz
+          sudo mv kubeconform /usr/local/bin/
 
-          # Validate each Kubernetes manifest offline
-          for file in k8s/*.yaml; do
-            if [ -f "$file" ]; then
-              echo "Validating $file..."
-              kubeval "$file" || exit 1
-            fi
-          done
+          # Validate each Kubernetes manifest with kubeconform
+          echo "Running kubeconform validation..."
+          kubeconform -summary -output json -verbose k8s/*.yaml || exit 1
 
           echo "✅ All Kubernetes manifests are valid!"
 
