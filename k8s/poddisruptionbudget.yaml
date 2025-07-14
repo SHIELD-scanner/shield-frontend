@@ -1,0 +1,15 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: shield-frontend
+  namespace: shield
+  labels:
+    app.kubernetes.io/name: shield-frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: shield
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shield-frontend
+      app.kubernetes.io/component: frontend

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shield-frontend
+  namespace: shield
+  labels:
+    app.kubernetes.io/name: shield-frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: shield
+  annotations:
+    # Uncomment and configure based on your ingress controller
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  # Uncomment if using TLS
+  # tls:
+  # - hosts:
+  #   - shield.yourdomain.com
+  #   secretName: shield-frontend-tls
+  rules:
+  - host: shield.local  # Replace with your actual domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: shield-frontend
+            port:
+              number: 80
