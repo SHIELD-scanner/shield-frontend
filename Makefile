@@ -88,6 +88,13 @@ status: ## Show the status of all resources
 	@echo ""
 	@echo "🔗 Ingress:"
 	@kubectl get ingress -n $(NAMESPACE) -o wide 2>/dev/null || echo "❌ No ingress found"
+	@echo ""
+	@echo "🌍 NodePort Access:"
+	@echo "   If using NodePort service, access via: http://<node-ip>:30080"
+	@if kubectl get nodes -o wide >/dev/null 2>&1; then \
+		echo "   Available nodes:"; \
+		kubectl get nodes -o wide | awk 'NR>1 {print "     http://" $$6 ":30080"}'; \
+	fi
 
 .PHONY: logs
 logs: ## Show logs from the shield-frontend pods
@@ -132,6 +139,34 @@ port-forward: ## Forward local port 3000 to the shield-frontend service
 
 .PHONY: forward
 forward: port-forward ## Alias for port-forward
+
+# NodePort access
+.PHONY: nodeport-info
+nodeport-info: ## Show NodePort access information
+	@echo "🌍 NodePort Service Access Information"
+	@echo "====================================="
+	@echo ""
+	@echo "🔗 Service Details:"
+	@kubectl get service shield-frontend-nodeport -n $(NAMESPACE) -o wide 2>/dev/null || echo "❌ NodePort service not found"
+	@echo ""
+	@echo "🌐 Access URLs:"
+	@echo "   Local cluster: http://localhost:30080 (if using port forwarding to node)"
+	@echo ""
+	@if kubectl get nodes -o wide >/dev/null 2>&1; then \
+		echo "📍 Node IPs - Access via http://<node-ip>:30080:"; \
+		kubectl get nodes -o wide | awk 'NR==1 {print "     " $$1 " (" $$2 ") - " $$6} NR>1 {print "     http://" $$6 ":30080"}'; \
+	else \
+		echo "❌ Cannot retrieve node information"; \
+	fi
+	@echo ""
+	@echo "💡 Tip: Use 'make nodeport-forward' to forward NodePort to localhost"
+
+.PHONY: nodeport-forward
+nodeport-forward: ## Forward NodePort to localhost:30080 (useful for local clusters)
+	@echo "🔗 Port forwarding NodePort 30080 -> localhost:30080"
+	@echo "Access the application at: http://localhost:30080"
+	@echo "Press Ctrl+C to stop port forwarding"
+	@kubectl port-forward -n $(NAMESPACE) service/shield-frontend-nodeport 30080:80
 
 # Cleanup operations
 .PHONY: delete

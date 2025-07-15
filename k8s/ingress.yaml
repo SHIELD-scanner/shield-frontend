@@ -2,11 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shield-frontend
-  namespace: shield
+  namespace: shield-system
   labels:
     app.kubernetes.io/name: shield-frontend
     app.kubernetes.io/component: frontend
-    app.kubernetes.io/part-of: shield
+    app.kubernetes.io/part-of: shield-system
   annotations:
     # Uncomment and configure based on your ingress controller
     # nginx.ingress.kubernetes.io/rewrite-target: /
