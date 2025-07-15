@@ -1,0 +1,63 @@
+# YAML Linting Configuration
+# This file configures yamllint for the project
+
+extends: default
+
+rules:
+  # Allow longer lines for Kubernetes manifests and documentation
+  line-length:
+    max: 120
+    level: warning
+  
+  # Document start markers are optional
+  document-start:
+    present: false
+  
+  # Allow common truthy values used in Kubernetes
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+  
+  # Indentation configuration for Kubernetes YAML
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+  
+  # Allow empty values which are common in Kubernetes
+  empty-values:
+    forbid-in-block-mappings: false
+    forbid-in-flow-mappings: false
+  
+  # Comments configuration
+  comments:
+    min-spaces-from-content: 1
+    require-starting-space: true
+  
+  # Allow octal values (useful for file permissions)
+  octal-values:
+    forbid-implicit-octal: false
+    forbid-explicit-octal: false
+  
+  # Allow duplicate keys in some contexts
+  key-duplicates: enable
+  
+  # Brackets configuration
+  brackets:
+    max-spaces-inside: 1
+    max-spaces-inside-empty: 0
+  
+  # Braces configuration  
+  braces:
+    max-spaces-inside: 1
+    max-spaces-inside-empty: 0
+
+# Ignore certain directories and files
+ignore: |
+  .github/workflows/
+  node_modules/
+  .next/
+  dist/
+  build/
+  coverage/
+  .nyc_output/

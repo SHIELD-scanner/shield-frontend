@@ -1,0 +1,120 @@
+name: YAML Lint
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.yaml"
+      - "**/*.yml"
+      - ".github/workflows/**"
+
+jobs:
+  yaml-lint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install yamllint
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint
+
+      - name: Create yamllint config
+        run: |
+          cat > .yamllint.yml << EOF
+          extends: default
+
+          rules:
+            # Allow longer lines for Kubernetes manifests
+            line-length:
+              max: 120
+              level: warning
+            
+            # Allow document separators
+            document-start:
+              present: false
+            
+            # Allow truthy values (yes/no, on/off)
+            truthy:
+              allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+              check-keys: false
+            
+            # Be more lenient with indentation in complex YAML
+            indentation:
+              spaces: 2
+              indent-sequences: true
+              check-multi-line-strings: false
+            
+            # Allow empty values
+            empty-values:
+              forbid-in-block-mappings: false
+              forbid-in-flow-mappings: false
+            
+            # Comments configuration
+            comments:
+              min-spaces-from-content: 1
+              require-starting-space: true
+            
+            # Allow octal values (for file permissions)
+            octal-values:
+              forbid-implicit-octal: false
+              forbid-explicit-octal: false
+
+          ignore: |
+            .github/workflows/
+            node_modules/
+            .next/
+            dist/
+            build/
+          EOF
+
+      - name: Lint YAML files
+        run: |
+          echo "Linting YAML files..."
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) \
+            ! -path "./node_modules/*" \
+            ! -path "./.next/*" \
+            ! -path "./dist/*" \
+            ! -path "./build/*" \
+            -exec yamllint -c .yamllint.yml {} \;
+
+      - name: Validate Kubernetes manifests
+        if: hashFiles('k8s/*.yaml') != ''
+        run: |
+          echo "Validating Kubernetes manifests..."
+
+          # Install kubeconform for reliable offline validation
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar xf kubeconform-linux-amd64.tar.gz
+          sudo mv kubeconform /usr/local/bin/
+
+          # Validate each Kubernetes manifest with kubeconform
+          echo "Running kubeconform validation..."
+          kubeconform -summary -output json -verbose k8s/*.yaml || exit 1
+
+          echo "✅ All Kubernetes manifests are valid!"
+
+      - name: Check for common YAML issues
+        run: |
+          echo "Checking for common YAML issues..."
+
+          # Check for tabs instead of spaces
+          if grep -r $'\t' --include="*.yml" --include="*.yaml" . 2>/dev/null; then
+            echo "❌ Found tabs in YAML files. Please use spaces for indentation."
+            exit 1
+          fi
+
+          # Check for trailing whitespace
+          if grep -r ' $' --include="*.yml" --include="*.yaml" . 2>/dev/null; then
+            echo "⚠️  Found trailing whitespace in YAML files."
+          fi
+
+          echo "✅ YAML validation completed successfully!"

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shield-frontend
+  namespace: shield
+  labels:
+    app.kubernetes.io/name: shield-frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: shield
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: shield-frontend
+    app.kubernetes.io/component: frontend
