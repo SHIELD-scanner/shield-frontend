@@ -18,6 +18,9 @@ FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV DISABLE_OPENCOLLECTIVE=1
+ENV ADBLOCK=1
+ENV DISABLE_NPM_UPDATE_NOTIFIER=1
 
 # Copy only necessary files from builder
 COPY --from=builder /app/package.json ./
