@@ -1,23 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  fetchVulnerabilities,
-  VulnerabilityReport,
-} from "@/services/vulnerabilityService";
+  fetchSbom,
+  SbomReport,
+} from "@/services/sbomService";
 import { Card } from "@/components/ui/card";
-import { useLanguage } from "@/lib/i18n";
 
-const severityColor = {
-  LOW: "bg-green-600 text-white",
-  MEDIUM: "bg-yellow-500 text-white",
-  HIGH: "bg-[#e11d48] text-white",
-};
-
-// Helper for status color
-const statusColor = {
-  Open: "bg-[#7c2329] text-white",
-  Acknowledged: "bg-blue-700 text-white",
-  RIF: "bg-[#3b2c1a] text-white",
+const packageTypeColor = {
+  npm: "bg-red-600 text-white",
+  pip: "bg-blue-600 text-white",
+  maven: "bg-orange-600 text-white",
+  nuget: "bg-purple-600 text-white",
+  composer: "bg-yellow-600 text-white",
+  gem: "bg-red-500 text-white",
+  go: "bg-cyan-600 text-white",
+  cargo: "bg-orange-500 text-white",
 };
 
 function getNamespaceCookie() {
@@ -38,42 +35,41 @@ function getNamespaceCookie() {
   return { cluster, namespace };
 }
 
-export default function VulnerabilitiesList() {
-  const [vulnerabilities, setVulnerabilities] = useState<VulnerabilityReport[]>(
-    [],
-  );
+export default function SbomList() {
+  const [sbomReports, setSbomReports] = useState<SbomReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const { t } = useLanguage();
 
-  // Fetch vulnerabilities using the current cookie value
-  const fetchAndSetVuls = (cluster: string, namespace: string) => {
+  // Fetch SBOM using the current cookie value
+  const fetchAndSetSbom = (cluster: string, namespace: string) => {
     setLoading(true);
-    fetchVulnerabilities(cluster, namespace)
+    fetchSbom(cluster, namespace)
       .then((data) => {
-        setVulnerabilities(data);
+        console.log("SBOM response:", data); // Debug log
+        setSbomReports(data);
       })
-      .catch(() => setVulnerabilities([]))
+      .catch(() => setSbomReports([]))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
     let prev = getNamespaceCookie();
-    fetchAndSetVuls(prev.cluster, prev.namespace);
+    fetchAndSetSbom(prev.cluster, prev.namespace);
     const interval = setInterval(() => {
       const curr = getNamespaceCookie();
       if (curr.cluster !== prev.cluster || curr.namespace !== prev.namespace) {
-        fetchAndSetVuls(curr.cluster, curr.namespace);
+        fetchAndSetSbom(curr.cluster, curr.namespace);
         prev = curr;
       }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  let filteredVulnerabilities = vulnerabilities;
+  let filteredSbomReports = sbomReports;
   if (search.trim()) {
-    filteredVulnerabilities = vulnerabilities.filter((vuln) =>
-      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase()),
+    filteredSbomReports = sbomReports.filter((sbom) =>
+      sbom.component.toLowerCase().includes(search.trim().toLowerCase()) ||
+      sbom.packagePURL.toLowerCase().includes(search.trim().toLowerCase())
     );
   }
 
@@ -82,100 +78,86 @@ export default function VulnerabilitiesList() {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          {t("vulnerabilities.loadingTable")}
+          Loading SBOM reports...
         </td>
       </tr>
     );
-  } else if (filteredVulnerabilities.length === 0) {
+  } else if (filteredSbomReports.length === 0) {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          {t("vulnerabilities.noVulnerabilities")}
+          No SBOM reports found
         </td>
       </tr>
     );
   } else {
-    tableBody = filteredVulnerabilities.map((vuln) => {
-      // Always use 'Open' for status, as VulnerabilityReport has no status field
-      const status = "Open";
+    tableBody = filteredSbomReports.map((sbom) => {
       return (
-        <tr key={vuln.uid} className="hover:bg-[#232b3b] transition">
+        <tr key={sbom.uid} className="hover:bg-[#232b3b] transition">
           <td className="px-6 py-4 flex flex-col gap-1 min-w-[180px]">
             <span className="font-semibold text-base flex items-center gap-2">
               <span className="inline-block w-6 h-6 bg-[#2e3a54] rounded-full flex items-center justify-center">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="#e11d48" />
+                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#3b82f6" />
                 </svg>
               </span>
               {/* Link to detail page using uid */}
               <a
-                href={`/vulnerabilities/${vuln.uid}`}
+                href={`/sbom-reports/${sbom.uid}`}
                 className="text-blue-400 hover:underline"
-                title={t("vulnerabilities.viewDetails")}
+                title="View SBOM details"
               >
-                {vuln.vulnerabilityID}
+                {sbom.component}
               </a>
             </span>
-            <span className="text-xs text-gray-400">{vuln.target}</span>
+            <span className="text-xs text-gray-400">{sbom.target}</span>
           </td>
           <td className="px-6 py-4 min-w-[140px]">
-            <div className="font-medium">{vuln.resource}</div>
-            <div className="text-xs text-gray-400">{vuln.namespace}</div>
+            <div className="font-medium">{sbom.resource}</div>
+            <div className="text-xs text-gray-400">{sbom.namespace}</div>
+          </td>
+          <td className="px-6 py-4">
+            <span className="font-mono text-green-400">
+              {sbom.version}
+            </span>
           </td>
           <td className="px-6 py-4">
             <span
               className={`px-2 py-1 rounded-full text-xs font-bold ${
-                severityColor[vuln.severity as keyof typeof severityColor] ||
+                packageTypeColor[sbom.packageType as keyof typeof packageTypeColor] ||
                 "bg-gray-500 text-white"
               }`}
             >
-              {vuln.severity}
+              {sbom.packageType}
             </span>
           </td>
           <td className="px-6 py-4">
-            <span
-              className={`px-2 py-1 rounded-full text-xs font-bold ${
-                statusColor[status as keyof typeof statusColor] ||
-                "bg-gray-700 text-white"
-              }`}
-            >
-              {status}
-            </span>
+            <div className="text-xs text-gray-400 max-w-xs truncate">
+              {sbom.packagePURL}
+            </div>
           </td>
           <td className="px-6 py-4">
-            <span className="text-red-400 font-mono">
-              {vuln.installedVersion}
-            </span>
-            {vuln.fixedVersion && (
-              <span className="text-green-400 font-mono ml-2">
-                &rarr; {vuln.fixedVersion}
-              </span>
-            )}
-          </td>
-          <td className="px-6 py-4 font-mono text-center">
-            {vuln.score?.toFixed(1) ?? "-"}
+            <div className="flex flex-wrap gap-1">
+              {sbom.licenses?.slice(0, 2).map((license) => (
+                <span
+                  key={`${sbom.uid}-${license}`}
+                  className="px-2 py-1 bg-blue-600 text-white rounded-full text-xs"
+                >
+                  {license}
+                </span>
+              ))}
+              {sbom.licenses?.length > 2 && (
+                <span className="px-2 py-1 bg-gray-500 text-white rounded-full text-xs">
+                  +{sbom.licenses.length - 2}
+                </span>
+              )}
+            </div>
           </td>
           <td className="px-6 py-4 flex gap-2 items-center">
             <a
-              href={vuln.primaryLink}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/sbom-reports/${sbom.uid}`}
               className="text-blue-400 hover:underline"
-              title={t("vulnerabilities.viewDetails")}
-            >
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-                <path
-                  d="M12 5v14m7-7H5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </a>
-            <a
-              href={`/vulnerabilities/${vuln.uid}`}
-              className="text-blue-400 hover:underline"
-              title={t("vulnerabilities.viewDetails")}
+              title="View SBOM details"
             >
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
                 <rect
@@ -232,11 +214,11 @@ export default function VulnerabilitiesList() {
       )}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
         <h2 className="text-xl font-bold">
-          {t("vulnerabilities.recentFindings")}
+          SBOM Reports
         </h2>
         <input
           type="text"
-          placeholder={t("vulnerabilities.searchPlaceholder")}
+          placeholder="Search components or packages..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="bg-gray-100 dark:bg-[#232b3b] text-gray-900 dark:text-white rounded-lg px-3 py-2 border border-gray-300 dark:border-[#2e3a54] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-72 transition-colors"
@@ -247,25 +229,25 @@ export default function VulnerabilitiesList() {
           <thead>
             <tr className="bg-gray-100 dark:bg-[#232b3b] text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.vulnerability")}
+                Component
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.resource")}
+                Resource
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.severity")}
+                Version
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.status")}
+                Type
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.version")}
+                Package URL
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.cvss")}
+                Licenses
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.actions")}
+                Actions
               </th>
             </tr>
           </thead>

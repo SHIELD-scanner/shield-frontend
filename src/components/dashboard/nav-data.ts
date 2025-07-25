@@ -25,12 +25,12 @@ export const dashboardNav = [
   //   badgeColor: "bg-[#2563eb]",
   // },
   // { label: "nav.configAudit", href: "/config-audit" },
-  // {
-  //   label: "nav.exposedSecrets",
-  //   href: "/exposed-secrets",
-  //   badge: "5",
-  //   badgeColor: "bg-[#e11d48]",
-  // },
+  {
+    label: "nav.exposedSecrets",
+    href: "/exposed-secrets",
+    badge: "5",
+    badgeColor: "bg-[#e11d48]",
+  },
   // { label: "nav.rbacAssessment", href: "/rbac-assessment" },
-  // { label: "nav.sbomReports", href: "/sbom-reports" },
+  { label: "nav.sbomReports", href: "/sbom-reports" },
 ];

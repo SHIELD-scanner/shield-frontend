@@ -1,23 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  fetchVulnerabilities,
-  VulnerabilityReport,
-} from "@/services/vulnerabilityService";
+  fetchExposedSecrets,
+  ExposedSecretReport,
+} from "@/services/exposedSecretService";
 import { Card } from "@/components/ui/card";
-import { useLanguage } from "@/lib/i18n";
 
 const severityColor = {
   LOW: "bg-green-600 text-white",
   MEDIUM: "bg-yellow-500 text-white",
   HIGH: "bg-[#e11d48] text-white",
+  CRITICAL: "bg-red-700 text-white",
 };
 
-// Helper for status color
-const statusColor = {
-  Open: "bg-[#7c2329] text-white",
-  Acknowledged: "bg-blue-700 text-white",
-  RIF: "bg-[#3b2c1a] text-white",
+const confidenceColor = (confidence: number) => {
+  if (confidence >= 0.8) return "bg-red-600 text-white";
+  if (confidence >= 0.6) return "bg-orange-600 text-white";
+  if (confidence >= 0.4) return "bg-yellow-600 text-white";
+  return "bg-gray-600 text-white";
 };
 
 function getNamespaceCookie() {
@@ -38,42 +38,41 @@ function getNamespaceCookie() {
   return { cluster, namespace };
 }
 
-export default function VulnerabilitiesList() {
-  const [vulnerabilities, setVulnerabilities] = useState<VulnerabilityReport[]>(
-    [],
-  );
+export default function ExposedSecretsList() {
+  const [exposedSecrets, setExposedSecrets] = useState<ExposedSecretReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const { t } = useLanguage();
 
-  // Fetch vulnerabilities using the current cookie value
-  const fetchAndSetVuls = (cluster: string, namespace: string) => {
+  // Fetch exposed secrets using the current cookie value
+  const fetchAndSetSecrets = (cluster: string, namespace: string) => {
     setLoading(true);
-    fetchVulnerabilities(cluster, namespace)
+    fetchExposedSecrets(cluster, namespace)
       .then((data) => {
-        setVulnerabilities(data);
+        setExposedSecrets(data);
       })
-      .catch(() => setVulnerabilities([]))
+      .catch(() => setExposedSecrets([]))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
     let prev = getNamespaceCookie();
-    fetchAndSetVuls(prev.cluster, prev.namespace);
+    fetchAndSetSecrets(prev.cluster, prev.namespace);
     const interval = setInterval(() => {
       const curr = getNamespaceCookie();
       if (curr.cluster !== prev.cluster || curr.namespace !== prev.namespace) {
-        fetchAndSetVuls(curr.cluster, curr.namespace);
+        fetchAndSetSecrets(curr.cluster, curr.namespace);
         prev = curr;
       }
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  let filteredVulnerabilities = vulnerabilities;
+  let filteredSecrets = exposedSecrets;
   if (search.trim()) {
-    filteredVulnerabilities = vulnerabilities.filter((vuln) =>
-      vuln.vulnerabilityID.toLowerCase().includes(search.trim().toLowerCase()),
+    filteredSecrets = exposedSecrets.filter((secret) =>
+      secret.title.toLowerCase().includes(search.trim().toLowerCase()) ||
+      secret.secretType.toLowerCase().includes(search.trim().toLowerCase()) ||
+      secret.ruleID.toLowerCase().includes(search.trim().toLowerCase())
     );
   }
 
@@ -82,122 +81,103 @@ export default function VulnerabilitiesList() {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          {t("vulnerabilities.loadingTable")}
+          Loading exposed secrets...
         </td>
       </tr>
     );
-  } else if (filteredVulnerabilities.length === 0) {
+  } else if (filteredSecrets.length === 0) {
     tableBody = (
       <tr>
         <td colSpan={7} className="text-center py-8 text-gray-400">
-          {t("vulnerabilities.noVulnerabilities")}
+          No exposed secrets found
         </td>
       </tr>
     );
   } else {
-    tableBody = filteredVulnerabilities.map((vuln) => {
-      // Always use 'Open' for status, as VulnerabilityReport has no status field
-      const status = "Open";
+    tableBody = filteredSecrets.map((secret) => {
       return (
-        <tr key={vuln.uid} className="hover:bg-[#232b3b] transition">
+        <tr key={secret.uid} className="hover:bg-[#232b3b] transition">
           <td className="px-6 py-4 flex flex-col gap-1 min-w-[180px]">
             <span className="font-semibold text-base flex items-center gap-2">
               <span className="inline-block w-6 h-6 bg-[#2e3a54] rounded-full flex items-center justify-center">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="#e11d48" />
+                  <path
+                    d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 15v-2h2v2h-2zm0-4V7h2v6h-2z"
+                    fill="#e11d48"
+                  />
                 </svg>
               </span>
               {/* Link to detail page using uid */}
               <a
-                href={`/vulnerabilities/${vuln.uid}`}
+                href={`/exposed-secrets/${secret.uid}`}
                 className="text-blue-400 hover:underline"
-                title={t("vulnerabilities.viewDetails")}
+                title="View secret details"
               >
-                {vuln.vulnerabilityID}
+                {secret.title}
               </a>
             </span>
-            <span className="text-xs text-gray-400">{vuln.target}</span>
+            <span className="text-xs text-gray-400">{secret.target}</span>
           </td>
           <td className="px-6 py-4 min-w-[140px]">
-            <div className="font-medium">{vuln.resource}</div>
-            <div className="text-xs text-gray-400">{vuln.namespace}</div>
+            <div className="font-medium">{secret.resource}</div>
+            <div className="text-xs text-gray-400">{secret.namespace}</div>
+          </td>
+          <td className="px-6 py-4">
+            <span className="px-2 py-1 bg-purple-600 text-white rounded-full text-xs font-bold">
+              {secret.secretType}
+            </span>
           </td>
           <td className="px-6 py-4">
             <span
               className={`px-2 py-1 rounded-full text-xs font-bold ${
-                severityColor[vuln.severity as keyof typeof severityColor] ||
+                severityColor[secret.severity as keyof typeof severityColor] ||
                 "bg-gray-500 text-white"
               }`}
             >
-              {vuln.severity}
+              {secret.severity}
             </span>
           </td>
           <td className="px-6 py-4">
             <span
-              className={`px-2 py-1 rounded-full text-xs font-bold ${
-                statusColor[status as keyof typeof statusColor] ||
-                "bg-gray-700 text-white"
-              }`}
+              className={`px-2 py-1 rounded-full text-xs font-bold ${confidenceColor(
+                secret.confidence
+              )}`}
             >
-              {status}
+              {Math.round(secret.confidence * 100)}%
             </span>
           </td>
           <td className="px-6 py-4">
-            <span className="text-red-400 font-mono">
-              {vuln.installedVersion}
+            <span className="font-mono text-xs text-gray-400">
+              {secret.ruleID}
             </span>
-            {vuln.fixedVersion && (
-              <span className="text-green-400 font-mono ml-2">
-                &rarr; {vuln.fixedVersion}
-              </span>
-            )}
-          </td>
-          <td className="px-6 py-4 font-mono text-center">
-            {vuln.score?.toFixed(1) ?? "-"}
           </td>
           <td className="px-6 py-4 flex gap-2 items-center">
             <a
-              href={vuln.primaryLink}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/exposed-secrets/${secret.uid}`}
               className="text-blue-400 hover:underline"
-              title={t("vulnerabilities.viewDetails")}
+              title="View secret details"
             >
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-                <path
-                  d="M12 5v14m7-7H5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </a>
-            <a
-              href={`/vulnerabilities/${vuln.uid}`}
-              className="text-blue-400 hover:underline"
-              title={t("vulnerabilities.viewDetails")}
-            >
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <rect
-                  x="9"
-                  y="9"
-                  width="13"
-                  height="13"
-                  rx="2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <rect
-                  x="3"
-                  y="3"
-                  width="13"
-                  height="13"
-                  rx="2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </a>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                  <rect
+                    x="9"
+                    y="9"
+                    width="13"
+                    height="13"
+                    rx="2"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <rect
+                    x="3"
+                    y="3"
+                    width="13"
+                    height="13"
+                    rx="2"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </a>
           </td>
         </tr>
       );
@@ -232,11 +212,11 @@ export default function VulnerabilitiesList() {
       )}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
         <h2 className="text-xl font-bold">
-          {t("vulnerabilities.recentFindings")}
+          Exposed Secrets
         </h2>
         <input
           type="text"
-          placeholder={t("vulnerabilities.searchPlaceholder")}
+          placeholder="Search secrets..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="bg-gray-100 dark:bg-[#232b3b] text-gray-900 dark:text-white rounded-lg px-3 py-2 border border-gray-300 dark:border-[#2e3a54] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-72 transition-colors"
@@ -247,25 +227,25 @@ export default function VulnerabilitiesList() {
           <thead>
             <tr className="bg-gray-100 dark:bg-[#232b3b] text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.vulnerability")}
+                Secret
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.resource")}
+                Resource
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.severity")}
+                Type
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.status")}
+                Severity
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.version")}
+                Confidence
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.cvss")}
+                Rule ID
               </th>
               <th className="px-6 py-3 text-left">
-                {t("vulnerabilities.table.actions")}
+                Actions
               </th>
             </tr>
           </thead>
