@@ -140,7 +140,7 @@ export default function SbomList() {
             <div className="flex flex-wrap gap-1">
               {sbom.licenses?.slice(0, 2).map((license) => (
                 <span
-                  key={`${sbom.hash}-${license}`}
+                  key={`${sbom.uid}-${license}`}
                   className="px-2 py-1 bg-blue-600 text-white rounded-full text-xs"
                 >
                   {license}

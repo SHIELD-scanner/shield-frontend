@@ -99,7 +99,7 @@ export default function VulnerabilitiesList() {
       // Always use 'Open' for status, as VulnerabilityReport has no status field
       const status = "Open";
       return (
-        <tr key={vuln.hash} className="hover:bg-[#232b3b] transition">
+        <tr key={vuln.uid} className="hover:bg-[#232b3b] transition">
           <td className="px-6 py-4 flex flex-col gap-1 min-w-[180px]">
             <span className="font-semibold text-base flex items-center gap-2">
               <span className="inline-block w-6 h-6 bg-[#2e3a54] rounded-full flex items-center justify-center">
@@ -107,9 +107,9 @@ export default function VulnerabilitiesList() {
                   <circle cx="12" cy="12" r="10" fill="#e11d48" />
                 </svg>
               </span>
-              {/* Link to detail page using hash */}
+              {/* Link to detail page using uid */}
               <a
-                href={`/vulnerabilities/${vuln.hash}`}
+                href={`/vulnerabilities/${vuln.uid}`}
                 className="text-blue-400 hover:underline"
                 title={t("vulnerabilities.viewDetails")}
               >
@@ -173,7 +173,7 @@ export default function VulnerabilitiesList() {
               </svg>
             </a>
             <a
-              href={`/vulnerabilities/${vuln.hash}`}
+              href={`/vulnerabilities/${vuln.uid}`}
               className="text-blue-400 hover:underline"
               title={t("vulnerabilities.viewDetails")}
             >
