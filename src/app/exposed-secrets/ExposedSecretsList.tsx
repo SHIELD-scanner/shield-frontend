@@ -39,7 +39,9 @@ function getNamespaceCookie() {
 }
 
 export default function ExposedSecretsList() {
-  const [exposedSecrets, setExposedSecrets] = useState<ExposedSecretReport[]>([]);
+  const [exposedSecrets, setExposedSecrets] = useState<ExposedSecretReport[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
@@ -69,10 +71,11 @@ export default function ExposedSecretsList() {
 
   let filteredSecrets = exposedSecrets;
   if (search.trim()) {
-    filteredSecrets = exposedSecrets.filter((secret) =>
-      secret.title.toLowerCase().includes(search.trim().toLowerCase()) ||
-      secret.secretType.toLowerCase().includes(search.trim().toLowerCase()) ||
-      secret.ruleID.toLowerCase().includes(search.trim().toLowerCase())
+    filteredSecrets = exposedSecrets.filter(
+      (secret) =>
+        secret.title.toLowerCase().includes(search.trim().toLowerCase()) ||
+        secret.secretType.toLowerCase().includes(search.trim().toLowerCase()) ||
+        secret.ruleID.toLowerCase().includes(search.trim().toLowerCase())
     );
   }
 
@@ -157,27 +160,27 @@ export default function ExposedSecretsList() {
               className="text-blue-400 hover:underline"
               title="View secret details"
             >
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <rect
-                    x="9"
-                    y="9"
-                    width="13"
-                    height="13"
-                    rx="2"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <rect
-                    x="3"
-                    y="3"
-                    width="13"
-                    height="13"
-                    rx="2"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </a>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                <rect
+                  x="9"
+                  y="9"
+                  width="13"
+                  height="13"
+                  rx="2"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <rect
+                  x="3"
+                  y="3"
+                  width="13"
+                  height="13"
+                  rx="2"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+              </svg>
+            </a>
           </td>
         </tr>
       );
@@ -211,9 +214,7 @@ export default function ExposedSecretsList() {
         </div>
       )}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
-        <h2 className="text-xl font-bold">
-          Exposed Secrets
-        </h2>
+        <h2 className="text-xl font-bold">Exposed Secrets</h2>
         <input
           type="text"
           placeholder="Search secrets..."
@@ -226,27 +227,13 @@ export default function ExposedSecretsList() {
         <table className="min-w-full text-sm mt-2">
           <thead>
             <tr className="bg-gray-100 dark:bg-[#232b3b] text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
-              <th className="px-6 py-3 text-left">
-                Secret
-              </th>
-              <th className="px-6 py-3 text-left">
-                Resource
-              </th>
-              <th className="px-6 py-3 text-left">
-                Type
-              </th>
-              <th className="px-6 py-3 text-left">
-                Severity
-              </th>
-              <th className="px-6 py-3 text-left">
-                Confidence
-              </th>
-              <th className="px-6 py-3 text-left">
-                Rule ID
-              </th>
-              <th className="px-6 py-3 text-left">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-left">Secret</th>
+              <th className="px-6 py-3 text-left">Resource</th>
+              <th className="px-6 py-3 text-left">Type</th>
+              <th className="px-6 py-3 text-left">Severity</th>
+              <th className="px-6 py-3 text-left">Confidence</th>
+              <th className="px-6 py-3 text-left">Rule ID</th>
+              <th className="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-[#181f2a] divide-y divide-gray-200 dark:divide-[#232b3b] transition-colors">

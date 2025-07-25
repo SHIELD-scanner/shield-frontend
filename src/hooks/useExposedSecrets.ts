@@ -16,7 +16,7 @@ interface UseExposedSecretsResult {
 
 export function useExposedSecrets(
   cluster?: string,
-  namespace?: string,
+  namespace?: string
 ): UseExposedSecretsResult {
   const [data, setData] = useState<ExposedSecretReport[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,14 +28,14 @@ export function useExposedSecrets(
       setError(null);
       const result = await ExposedSecretService.getExposedSecrets(
         cluster,
-        namespace,
+        namespace
       );
       setData(result);
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to fetch exposed secrets data",
+          : "Failed to fetch exposed secrets data"
       );
     } finally {
       setLoading(false);

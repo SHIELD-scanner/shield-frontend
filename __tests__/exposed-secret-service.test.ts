@@ -1,5 +1,9 @@
 // __tests__/exposed-secret-service.test.ts
-import { ExposedSecretService, fetchExposedSecrets, type ExposedSecretReport } from "../src/services/exposedSecretService";
+import {
+  ExposedSecretService,
+  fetchExposedSecrets,
+  type ExposedSecretReport,
+} from "../src/services/exposedSecretService";
 
 // Mock fetch
 const mockFetch = jest.fn();
@@ -57,19 +61,25 @@ describe("ExposedSecretService", () => {
     it("should fetch exposed secrets with cluster parameter", async () => {
       await ExposedSecretService.getExposedSecrets("production");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=production");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?cluster=production"
+      );
     });
 
     it("should fetch exposed secrets with namespace parameter", async () => {
       await ExposedSecretService.getExposedSecrets(undefined, "web-app");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?namespace=web-app"
+      );
     });
 
     it("should fetch exposed secrets with both cluster and namespace parameters", async () => {
       await ExposedSecretService.getExposedSecrets("production", "web-app");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=production&namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?cluster=production&namespace=web-app"
+      );
     });
 
     it("should not include 'all' values in query parameters", async () => {
@@ -102,12 +112,17 @@ describe("ExposedSecretService", () => {
     it("should fetch exposed secrets for a specific cluster", async () => {
       await ExposedSecretService.getExposedSecretsByCluster("production");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=production");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?cluster=production"
+      );
     });
 
     it("should return the same result as getExposedSecrets with cluster", async () => {
-      const clusterResult = await ExposedSecretService.getExposedSecretsByCluster("production");
-      const generalResult = await ExposedSecretService.getExposedSecrets("production");
+      const clusterResult =
+        await ExposedSecretService.getExposedSecretsByCluster("production");
+      const generalResult = await ExposedSecretService.getExposedSecrets(
+        "production"
+      );
 
       expect(clusterResult).toEqual(generalResult);
     });
@@ -117,12 +132,18 @@ describe("ExposedSecretService", () => {
     it("should fetch exposed secrets for a specific namespace", async () => {
       await ExposedSecretService.getExposedSecretsByNamespace("web-app");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?namespace=web-app"
+      );
     });
 
     it("should return the same result as getExposedSecrets with namespace", async () => {
-      const namespaceResult = await ExposedSecretService.getExposedSecretsByNamespace("web-app");
-      const generalResult = await ExposedSecretService.getExposedSecrets(undefined, "web-app");
+      const namespaceResult =
+        await ExposedSecretService.getExposedSecretsByNamespace("web-app");
+      const generalResult = await ExposedSecretService.getExposedSecrets(
+        undefined,
+        "web-app"
+      );
 
       expect(namespaceResult).toEqual(generalResult);
     });
@@ -130,14 +151,26 @@ describe("ExposedSecretService", () => {
 
   describe("getExposedSecretsByClusterAndNamespace", () => {
     it("should fetch exposed secrets for specific cluster and namespace", async () => {
-      await ExposedSecretService.getExposedSecretsByClusterAndNamespace("production", "web-app");
+      await ExposedSecretService.getExposedSecretsByClusterAndNamespace(
+        "production",
+        "web-app"
+      );
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=production&namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets?cluster=production&namespace=web-app"
+      );
     });
 
     it("should return the same result as getExposedSecrets with both parameters", async () => {
-      const specificResult = await ExposedSecretService.getExposedSecretsByClusterAndNamespace("production", "web-app");
-      const generalResult = await ExposedSecretService.getExposedSecrets("production", "web-app");
+      const specificResult =
+        await ExposedSecretService.getExposedSecretsByClusterAndNamespace(
+          "production",
+          "web-app"
+        );
+      const generalResult = await ExposedSecretService.getExposedSecrets(
+        "production",
+        "web-app"
+      );
 
       expect(specificResult).toEqual(generalResult);
     });
@@ -157,9 +190,13 @@ describe("ExposedSecretService", () => {
     });
 
     it("should fetch a specific exposed secret by UID", async () => {
-      const result = await ExposedSecretService.getExposedSecretById("secret-specific-123");
+      const result = await ExposedSecretService.getExposedSecretById(
+        "secret-specific-123"
+      );
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets/secret-specific-123");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/exposedsecrets/secret-specific-123"
+      );
       expect(result).toEqual(mockSingleSecret);
     });
 
@@ -169,9 +206,9 @@ describe("ExposedSecretService", () => {
         statusText: "Not Found",
       });
 
-      await expect(ExposedSecretService.getExposedSecretById("nonexistent")).rejects.toThrow(
-        "Failed to fetch exposed secret by UID: Not Found"
-      );
+      await expect(
+        ExposedSecretService.getExposedSecretById("nonexistent")
+      ).rejects.toThrow("Failed to fetch exposed secret by UID: Not Found");
     });
 
     it("should handle server errors", async () => {
@@ -180,7 +217,9 @@ describe("ExposedSecretService", () => {
         statusText: "Internal Server Error",
       });
 
-      await expect(ExposedSecretService.getExposedSecretById("secret-123")).rejects.toThrow(
+      await expect(
+        ExposedSecretService.getExposedSecretById("secret-123")
+      ).rejects.toThrow(
         "Failed to fetch exposed secret by UID: Internal Server Error"
       );
     });
@@ -219,14 +258,18 @@ describe("fetchExposedSecrets function", () => {
   it("should fetch exposed secrets with cluster and namespace", async () => {
     const result = await fetchExposedSecrets("staging", "api");
 
-    expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=staging&namespace=api");
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/exposedsecrets?cluster=staging&namespace=api"
+    );
     expect(result).toEqual(mockExposedSecrets);
   });
 
   it("should fetch exposed secrets with only cluster", async () => {
     await fetchExposedSecrets("staging", "all");
 
-    expect(mockFetch).toHaveBeenCalledWith("/api/exposedsecrets?cluster=staging");
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/exposedsecrets?cluster=staging"
+    );
   });
 
   it("should fetch exposed secrets with only namespace", async () => {

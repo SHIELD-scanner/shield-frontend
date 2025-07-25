@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
     const res = await fetch(url);
     if (!res.ok) {
       console.error(
-        `Failed to fetch exposed secrets: ${res.status} ${res.statusText}`,
+        `Failed to fetch exposed secrets: ${res.status} ${res.statusText}`
       );
       return new Response("Failed to fetch exposed secrets", { status: 500 });
     }
@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
     });
 
     console.log(
-      `Cache miss - stored new exposed secrets data for: ${cacheKey}`,
+      `Cache miss - stored new exposed secrets data for: ${cacheKey}`
     );
 
     // Return response with cache headers

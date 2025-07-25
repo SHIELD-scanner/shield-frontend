@@ -1,5 +1,9 @@
 // __tests__/sbom-service.test.ts
-import { SbomService, fetchSbom, type SbomReport } from "../src/services/sbomService";
+import {
+  SbomService,
+  fetchSbom,
+  type SbomReport,
+} from "../src/services/sbomService";
 
 // Mock fetch
 const mockFetch = jest.fn();
@@ -67,7 +71,9 @@ describe("SbomService", () => {
     it("should fetch SBOM with both cluster and namespace parameters", async () => {
       await SbomService.getSbom("production", "web-app");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/sbom?cluster=production&namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/sbom?cluster=production&namespace=web-app"
+      );
     });
 
     it("should not include 'all' values in query parameters", async () => {
@@ -90,9 +96,7 @@ describe("SbomService", () => {
     it("should handle network errors", async () => {
       mockFetch.mockRejectedValue(new Error("Network error"));
 
-      await expect(SbomService.getSbom()).rejects.toThrow(
-        "Network error"
-      );
+      await expect(SbomService.getSbom()).rejects.toThrow("Network error");
     });
   });
 
@@ -130,11 +134,16 @@ describe("SbomService", () => {
     it("should fetch SBOM for specific cluster and namespace", async () => {
       await SbomService.getSbomByClusterAndNamespace("production", "web-app");
 
-      expect(mockFetch).toHaveBeenCalledWith("/api/sbom?cluster=production&namespace=web-app");
+      expect(mockFetch).toHaveBeenCalledWith(
+        "/api/sbom?cluster=production&namespace=web-app"
+      );
     });
 
     it("should return the same result as getSbom with both parameters", async () => {
-      const specificResult = await SbomService.getSbomByClusterAndNamespace("production", "web-app");
+      const specificResult = await SbomService.getSbomByClusterAndNamespace(
+        "production",
+        "web-app"
+      );
       const generalResult = await SbomService.getSbom("production", "web-app");
 
       expect(specificResult).toEqual(generalResult);
@@ -215,7 +224,9 @@ describe("fetchSbom function", () => {
   it("should fetch SBOM with cluster and namespace", async () => {
     const result = await fetchSbom("staging", "api");
 
-    expect(mockFetch).toHaveBeenCalledWith("/api/sbom?cluster=staging&namespace=api");
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/sbom?cluster=staging&namespace=api"
+    );
     expect(result).toEqual(mockSbomReports);
   });
 

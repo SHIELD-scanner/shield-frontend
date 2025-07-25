@@ -35,12 +35,14 @@ describe("/api/vulnerabilities/[id]", () => {
         packageVersion: "1.1.1",
         fixedVersion: "1.1.1k",
         publishedDate: "2024-01-15T10:00:00Z",
-        lastModifiedDate: "2024-01-20T15:30:00Z"
+        lastModifiedDate: "2024-01-20T15:30:00Z",
       }),
     });
 
     // Import fresh module to reset in-memory cache
-    const routeModule = await import("../src/app/api/vulnerabilities/[id]/route");
+    const routeModule = await import(
+      "../src/app/api/vulnerabilities/[id]/route"
+    );
     GET = routeModule.GET;
   });
 
@@ -50,7 +52,7 @@ describe("/api/vulnerabilities/[id]", () => {
 
   it("should return vulnerability data by ID (cache miss)", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     const response = await GET(mockRequest);
     const data = await response.json();
@@ -62,18 +64,18 @@ describe("/api/vulnerabilities/[id]", () => {
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/vuln-123",
+      "http://localhost:8000/vulnerabilities-old/vuln-123"
     );
   });
 
   it("should return cached data on second request (cache hit)", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
 
     // First request
     await GET(mockRequest);
-    
+
     // Second request should use cache
     const response = await GET(mockRequest);
 
@@ -84,7 +86,7 @@ describe("/api/vulnerabilities/[id]", () => {
 
   it("should return 400 for missing vulnerability ID", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/",
+      "http://localhost:3000/api/vulnerabilities/"
     );
     const response = await GET(mockRequest);
 
@@ -99,14 +101,14 @@ describe("/api/vulnerabilities/[id]", () => {
     });
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/nonexistent",
+      "http://localhost:3000/api/vulnerabilities/nonexistent"
     );
     const response = await GET(mockRequest);
 
     // Backend errors are converted to 500 by the API route
     expect(response.status).toBe(500);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/nonexistent",
+      "http://localhost:8000/vulnerabilities-old/nonexistent"
     );
   });
 
@@ -118,7 +120,7 @@ describe("/api/vulnerabilities/[id]", () => {
     });
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     const response = await GET(mockRequest);
 
@@ -130,7 +132,7 @@ describe("/api/vulnerabilities/[id]", () => {
     mockFetch.mockRejectedValue(new Error("Network error"));
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     const response = await GET(mockRequest);
 
@@ -140,44 +142,46 @@ describe("/api/vulnerabilities/[id]", () => {
 
   it("should create different cache keys for different vulnerability IDs", async () => {
     const mockRequest1 = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     const mockRequest2 = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-456",
+      "http://localhost:3000/api/vulnerabilities/vuln-456"
     );
 
     // First request
     await GET(mockRequest1);
-    
+
     // Second request with different ID should hit backend again
     await GET(mockRequest2);
 
     expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(mockFetch).toHaveBeenNthCalledWith(
       1,
-      "http://localhost:8000/vulnerabilities-old/vuln-123",
+      "http://localhost:8000/vulnerabilities-old/vuln-123"
     );
     expect(mockFetch).toHaveBeenNthCalledWith(
       2,
-      "http://localhost:8000/vulnerabilities-old/vuln-456",
+      "http://localhost:8000/vulnerabilities-old/vuln-456"
     );
   });
 
   it("should use configured backend URL", async () => {
     process.env.BACKEND_API = "http://custom-backend:9000";
-    
+
     // Re-import to pick up new environment variable
     jest.resetModules();
-    const routeModule = await import("../src/app/api/vulnerabilities/[id]/route");
+    const routeModule = await import(
+      "../src/app/api/vulnerabilities/[id]/route"
+    );
     const GET_CUSTOM = routeModule.GET;
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     await GET_CUSTOM(mockRequest);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://custom-backend:9000/vulnerabilities-old/vuln-123",
+      "http://custom-backend:9000/vulnerabilities-old/vuln-123"
     );
   });
 
@@ -190,7 +194,7 @@ describe("/api/vulnerabilities/[id]", () => {
     });
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/vulnerabilities/vuln-123",
+      "http://localhost:3000/api/vulnerabilities/vuln-123"
     );
     const response = await GET(mockRequest);
 

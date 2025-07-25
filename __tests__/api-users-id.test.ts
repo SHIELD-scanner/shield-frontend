@@ -51,7 +51,9 @@ describe("/api/users/[id]", () => {
     });
 
     it("should return 404 for non-existent user", async () => {
-      const mockRequest = new NextRequest("http://localhost:3000/api/users/nonexistent");
+      const mockRequest = new NextRequest(
+        "http://localhost:3000/api/users/nonexistent"
+      );
       const response = await GET(mockRequest);
 
       expect(response.status).toBe(404);
@@ -87,7 +89,7 @@ describe("/api/users/[id]", () => {
 
       // Create a request that would cause an error
       const mockRequest = new NextRequest("http://localhost:3000/api/users/1");
-      
+
       // Override Response.json to throw an error
       const originalResponse = Response.json;
       Response.json = jest.fn().mockImplementation(() => {
@@ -108,15 +110,15 @@ describe("/api/users/[id]", () => {
       const updateData = {
         fullname: "Updated Name",
         role: "SysAdmin",
-        namespaces: ["updated-namespace"]
+        namespaces: ["updated-namespace"],
       };
 
       const mockRequest = new NextRequest("http://localhost:3000/api/users/1", {
         method: "PUT",
         body: JSON.stringify(updateData),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await PUT(mockRequest);
@@ -133,16 +135,19 @@ describe("/api/users/[id]", () => {
 
     it("should return 404 when updating non-existent user", async () => {
       const updateData = {
-        fullname: "Updated Name"
+        fullname: "Updated Name",
       };
 
-      const mockRequest = new NextRequest("http://localhost:3000/api/users/nonexistent", {
-        method: "PUT",
-        body: JSON.stringify(updateData),
-        headers: {
-          "Content-Type": "application/json"
+      const mockRequest = new NextRequest(
+        "http://localhost:3000/api/users/nonexistent",
+        {
+          method: "PUT",
+          body: JSON.stringify(updateData),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       const response = await PUT(mockRequest);
       expect(response.status).toBe(404);
@@ -150,15 +155,15 @@ describe("/api/users/[id]", () => {
 
     it("should return 400 for missing user ID", async () => {
       const updateData = {
-        fullname: "Updated Name"
+        fullname: "Updated Name",
       };
 
       const mockRequest = new NextRequest("http://localhost:3000/api/users/", {
         method: "PUT",
         body: JSON.stringify(updateData),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await PUT(mockRequest);
@@ -172,8 +177,8 @@ describe("/api/users/[id]", () => {
         method: "PUT",
         body: "invalid json",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await PUT(mockRequest);
@@ -194,15 +199,15 @@ describe("/api/users/[id]", () => {
 
       // Update the user
       const updateData = {
-        fullname: "Cache Test Update"
+        fullname: "Cache Test Update",
       };
 
       const putRequest = new NextRequest("http://localhost:3000/api/users/1", {
         method: "PUT",
         body: JSON.stringify(updateData),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       await PUT(putRequest);
@@ -216,7 +221,7 @@ describe("/api/users/[id]", () => {
   describe("DELETE", () => {
     it("should delete an existing user", async () => {
       const mockRequest = new NextRequest("http://localhost:3000/api/users/1", {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       const response = await DELETE(mockRequest);
@@ -225,9 +230,12 @@ describe("/api/users/[id]", () => {
     });
 
     it("should return 404 when deleting non-existent user", async () => {
-      const mockRequest = new NextRequest("http://localhost:3000/api/users/nonexistent", {
-        method: "DELETE"
-      });
+      const mockRequest = new NextRequest(
+        "http://localhost:3000/api/users/nonexistent",
+        {
+          method: "DELETE",
+        }
+      );
 
       const response = await DELETE(mockRequest);
       expect(response.status).toBe(404);
@@ -235,7 +243,7 @@ describe("/api/users/[id]", () => {
 
     it("should return 400 for missing user ID", async () => {
       const mockRequest = new NextRequest("http://localhost:3000/api/users/", {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       const response = await DELETE(mockRequest);
@@ -253,9 +261,12 @@ describe("/api/users/[id]", () => {
       expect(getResponse2.headers.get("X-Cache")).toBe("HIT");
 
       // Delete the user
-      const deleteRequest = new NextRequest("http://localhost:3000/api/users/1", {
-        method: "DELETE"
-      });
+      const deleteRequest = new NextRequest(
+        "http://localhost:3000/api/users/1",
+        {
+          method: "DELETE",
+        }
+      );
 
       await DELETE(deleteRequest);
 

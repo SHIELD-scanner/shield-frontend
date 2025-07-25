@@ -76,9 +76,7 @@ export async function GET(req: NextRequest) {
 
     const res = await fetch(url);
     if (!res.ok) {
-      console.error(
-        `Failed to fetch SBOM: ${res.status} ${res.statusText}`,
-      );
+      console.error(`Failed to fetch SBOM: ${res.status} ${res.statusText}`);
       return new Response("Failed to fetch SBOM", { status: 500 });
     }
 
@@ -90,9 +88,7 @@ export async function GET(req: NextRequest) {
       timestamp: Date.now(),
     });
 
-    console.log(
-      `Cache miss - stored new SBOM data for: ${cacheKey}`,
-    );
+    console.log(`Cache miss - stored new SBOM data for: ${cacheKey}`);
 
     // Return response with cache headers
     const response = Response.json(data);

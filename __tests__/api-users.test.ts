@@ -77,7 +77,7 @@ describe("/api/users", () => {
       data.forEach((user: { namespaces: string[] }) => {
         expect(
           user.namespaces.includes("*") ||
-          user.namespaces.includes("development")
+            user.namespaces.includes("development")
         ).toBe(true);
       });
     });
@@ -95,7 +95,7 @@ describe("/api/users", () => {
         expect(user.role).toBe("Developer");
         expect(
           user.namespaces.includes("*") ||
-          user.namespaces.includes("development")
+            user.namespaces.includes("development")
         ).toBe(true);
       });
     });
@@ -141,7 +141,7 @@ describe("/api/users", () => {
 
       // Create a request that would cause an error in processing
       const mockRequest = new NextRequest("http://localhost:3000/api/users");
-      
+
       // Override the internal filtering logic to throw an error
       const originalResponse = Response.json;
       Response.json = jest.fn().mockImplementation(() => {
@@ -163,15 +163,15 @@ describe("/api/users", () => {
         email: "newuser@example.com",
         fullname: "New User",
         role: "Developer",
-        namespaces: ["test-namespace"]
+        namespaces: ["test-namespace"],
       };
 
       const mockRequest = new NextRequest("http://localhost:3000/api/users", {
         method: "POST",
         body: JSON.stringify(newUserData),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await POST(mockRequest);
@@ -195,8 +195,8 @@ describe("/api/users", () => {
         method: "POST",
         body: "invalid json",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await POST(mockRequest);
@@ -220,15 +220,15 @@ describe("/api/users", () => {
         email: "cachetest@example.com",
         fullname: "Cache Test User",
         role: "Developer",
-        namespaces: ["cache-test"]
+        namespaces: ["cache-test"],
       };
 
       const postRequest = new NextRequest("http://localhost:3000/api/users", {
         method: "POST",
         body: JSON.stringify(newUserData),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       await POST(postRequest);
