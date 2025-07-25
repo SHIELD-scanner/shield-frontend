@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  fetchSbom,
-  SbomReport,
-} from "@/services/sbomService";
+import { fetchSbom, SbomReport } from "@/services/sbomService";
 import { Card } from "@/components/ui/card";
 
 const packageTypeColor = {
@@ -67,9 +64,10 @@ export default function SbomList() {
 
   let filteredSbomReports = sbomReports;
   if (search.trim()) {
-    filteredSbomReports = sbomReports.filter((sbom) =>
-      sbom.component.toLowerCase().includes(search.trim().toLowerCase()) ||
-      sbom.packagePURL.toLowerCase().includes(search.trim().toLowerCase())
+    filteredSbomReports = sbomReports.filter(
+      (sbom) =>
+        sbom.component.toLowerCase().includes(search.trim().toLowerCase()) ||
+        sbom.packagePURL.toLowerCase().includes(search.trim().toLowerCase())
     );
   }
 
@@ -98,7 +96,14 @@ export default function SbomList() {
             <span className="font-semibold text-base flex items-center gap-2">
               <span className="inline-block w-6 h-6 bg-[#2e3a54] rounded-full flex items-center justify-center">
                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#3b82f6" />
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    fill="#3b82f6"
+                  />
                 </svg>
               </span>
               {/* Link to detail page using uid */}
@@ -117,15 +122,14 @@ export default function SbomList() {
             <div className="text-xs text-gray-400">{sbom.namespace}</div>
           </td>
           <td className="px-6 py-4">
-            <span className="font-mono text-green-400">
-              {sbom.version}
-            </span>
+            <span className="font-mono text-green-400">{sbom.version}</span>
           </td>
           <td className="px-6 py-4">
             <span
               className={`px-2 py-1 rounded-full text-xs font-bold ${
-                packageTypeColor[sbom.packageType as keyof typeof packageTypeColor] ||
-                "bg-gray-500 text-white"
+                packageTypeColor[
+                  sbom.packageType as keyof typeof packageTypeColor
+                ] || "bg-gray-500 text-white"
               }`}
             >
               {sbom.packageType}
@@ -213,9 +217,7 @@ export default function SbomList() {
         </div>
       )}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
-        <h2 className="text-xl font-bold">
-          SBOM Reports
-        </h2>
+        <h2 className="text-xl font-bold">SBOM Reports</h2>
         <input
           type="text"
           placeholder="Search components or packages..."
@@ -228,27 +230,13 @@ export default function SbomList() {
         <table className="min-w-full text-sm mt-2">
           <thead>
             <tr className="bg-gray-100 dark:bg-[#232b3b] text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
-              <th className="px-6 py-3 text-left">
-                Component
-              </th>
-              <th className="px-6 py-3 text-left">
-                Resource
-              </th>
-              <th className="px-6 py-3 text-left">
-                Version
-              </th>
-              <th className="px-6 py-3 text-left">
-                Type
-              </th>
-              <th className="px-6 py-3 text-left">
-                Package URL
-              </th>
-              <th className="px-6 py-3 text-left">
-                Licenses
-              </th>
-              <th className="px-6 py-3 text-left">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-left">Component</th>
+              <th className="px-6 py-3 text-left">Resource</th>
+              <th className="px-6 py-3 text-left">Version</th>
+              <th className="px-6 py-3 text-left">Type</th>
+              <th className="px-6 py-3 text-left">Package URL</th>
+              <th className="px-6 py-3 text-left">Licenses</th>
+              <th className="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-[#181f2a] divide-y divide-gray-200 dark:divide-[#232b3b] transition-colors">

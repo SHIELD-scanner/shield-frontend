@@ -16,7 +16,7 @@ export type SbomReport = {
 
 export async function fetchSbom(
   cluster: string,
-  namespace: string,
+  namespace: string
 ): Promise<SbomReport[]> {
   const params = new URLSearchParams();
   if (cluster && cluster !== "all") params.append("cluster", cluster);
@@ -34,7 +34,7 @@ export class SbomService {
 
   static async getSbom(
     cluster?: string,
-    namespace?: string,
+    namespace?: string
   ): Promise<SbomReport[]> {
     const params = new URLSearchParams();
 
@@ -52,29 +52,23 @@ export class SbomService {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to fetch SBOM: ${response.statusText}`,
-      );
+      throw new Error(`Failed to fetch SBOM: ${response.statusText}`);
     }
 
     return response.json();
   }
 
-  static async getSbomByCluster(
-    cluster: string,
-  ): Promise<SbomReport[]> {
+  static async getSbomByCluster(cluster: string): Promise<SbomReport[]> {
     return this.getSbom(cluster);
   }
 
-  static async getSbomByNamespace(
-    namespace: string,
-  ): Promise<SbomReport[]> {
+  static async getSbomByNamespace(namespace: string): Promise<SbomReport[]> {
     return this.getSbom(undefined, namespace);
   }
 
   static async getSbomByClusterAndNamespace(
     cluster: string,
-    namespace: string,
+    namespace: string
   ): Promise<SbomReport[]> {
     return this.getSbom(cluster, namespace);
   }
@@ -83,9 +77,7 @@ export class SbomService {
     const response = await fetch(`${this.baseUrl}/${uid}`);
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to fetch SBOM by UID: ${response.statusText}`,
-      );
+      throw new Error(`Failed to fetch SBOM by UID: ${response.statusText}`);
     }
 
     return response.json();

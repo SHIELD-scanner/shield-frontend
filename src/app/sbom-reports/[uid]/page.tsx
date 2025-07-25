@@ -41,10 +41,8 @@ export default function SbomDetailPage() {
         Loading SBOM details...
       </div>
     );
-  if (error)
-    return <div className="p-8 text-red-600">Error: {error}</div>;
-  if (!sbom)
-    return <div className="p-8 text-gray-600">SBOM not found</div>;
+  if (error) return <div className="p-8 text-red-600">Error: {error}</div>;
+  if (!sbom) return <div className="p-8 text-gray-600">SBOM not found</div>;
 
   const packageTypeColor = {
     npm: "bg-red-600 text-white",
@@ -82,7 +80,9 @@ export default function SbomDetailPage() {
             {/* Basic Information */}
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white">Component Information</CardTitle>
+                <CardTitle className="text-white">
+                  Component Information
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,8 +98,9 @@ export default function SbomDetailPage() {
                     <span className="text-sm text-gray-400">Package Type</span>
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
-                        packageTypeColor[sbom.packageType as keyof typeof packageTypeColor] ||
-                        "bg-gray-500 text-white"
+                        packageTypeColor[
+                          sbom.packageType as keyof typeof packageTypeColor
+                        ] || "bg-gray-500 text-white"
                       }`}
                     >
                       {sbom.packageType}
@@ -120,7 +121,9 @@ export default function SbomDetailPage() {
               </CardHeader>
               <CardContent>
                 <div className="bg-gray-900 p-4 rounded-lg">
-                  <code className="text-blue-400 break-all">{sbom.packagePURL}</code>
+                  <code className="text-blue-400 break-all">
+                    {sbom.packagePURL}
+                  </code>
                 </div>
               </CardContent>
             </Card>
@@ -203,7 +206,9 @@ export default function SbomDetailPage() {
               <CardContent className="space-y-4">
                 <div>
                   <span className="text-sm text-gray-400">UID</span>
-                  <p className="text-white font-mono text-xs break-all">{sbom.uid}</p>
+                  <p className="text-white font-mono text-xs break-all">
+                    {sbom.uid}
+                  </p>
                 </div>
                 <div>
                   <span className="text-sm text-gray-400">Last Modified</span>

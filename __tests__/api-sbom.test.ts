@@ -49,9 +49,7 @@ describe("/api/sbom", () => {
   });
 
   it("should return SBOM data with no parameters (cache miss)", async () => {
-    const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom",
-    );
+    const mockRequest = new NextRequest("http://localhost:3000/api/sbom");
     const response = await GET(mockRequest);
     const data = await response.json();
 
@@ -60,19 +58,15 @@ describe("/api/sbom", () => {
     expect(data).toHaveLength(2);
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
-    expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/",
-    );
+    expect(mockFetch).toHaveBeenCalledWith("http://localhost:8000/sbom/");
   });
 
   it("should return cached data on second request (cache hit)", async () => {
-    const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom",
-    );
+    const mockRequest = new NextRequest("http://localhost:3000/api/sbom");
 
     // First request
     await GET(mockRequest);
-    
+
     // Second request should use cache
     const response = await GET(mockRequest);
 
@@ -83,37 +77,37 @@ describe("/api/sbom", () => {
 
   it("should handle cluster parameter", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom?cluster=production",
+      "http://localhost:3000/api/sbom?cluster=production"
     );
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(200);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/?cluster=production",
+      "http://localhost:8000/sbom/?cluster=production"
     );
   });
 
   it("should handle namespace parameter", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom?namespace=web-app",
+      "http://localhost:3000/api/sbom?namespace=web-app"
     );
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(200);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/?namespace=web-app",
+      "http://localhost:8000/sbom/?namespace=web-app"
     );
   });
 
   it("should handle both cluster and namespace parameters", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom?cluster=production&namespace=web-app",
+      "http://localhost:3000/api/sbom?cluster=production&namespace=web-app"
     );
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(200);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/?cluster=production&namespace=web-app",
+      "http://localhost:8000/sbom/?cluster=production&namespace=web-app"
     );
   });
 
@@ -124,9 +118,7 @@ describe("/api/sbom", () => {
       statusText: "Internal Server Error",
     });
 
-    const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom",
-    );
+    const mockRequest = new NextRequest("http://localhost:3000/api/sbom");
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(500);
@@ -136,9 +128,7 @@ describe("/api/sbom", () => {
   it("should handle network errors", async () => {
     mockFetch.mockRejectedValue(new Error("Network error"));
 
-    const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom",
-    );
+    const mockRequest = new NextRequest("http://localhost:3000/api/sbom");
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(500);
@@ -147,37 +137,35 @@ describe("/api/sbom", () => {
 
   it("should ignore empty or all values for cluster and namespace", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom?cluster=all&namespace=",
+      "http://localhost:3000/api/sbom?cluster=all&namespace="
     );
     const response = await GET(mockRequest);
 
     expect(response.status).toBe(200);
-    expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/",
-    );
+    expect(mockFetch).toHaveBeenCalledWith("http://localhost:8000/sbom/");
   });
 
   it("should create different cache keys for different parameters", async () => {
     // First request with cluster
     const request1 = new NextRequest(
-      "http://localhost:3000/api/sbom?cluster=production",
+      "http://localhost:3000/api/sbom?cluster=production"
     );
     await GET(request1);
 
     // Second request with different cluster should hit backend again
     const request2 = new NextRequest(
-      "http://localhost:3000/api/sbom?cluster=staging",
+      "http://localhost:3000/api/sbom?cluster=staging"
     );
     await GET(request2);
 
     expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(mockFetch).toHaveBeenNthCalledWith(
       1,
-      "http://localhost:8000/sbom/?cluster=production",
+      "http://localhost:8000/sbom/?cluster=production"
     );
     expect(mockFetch).toHaveBeenNthCalledWith(
       2,
-      "http://localhost:8000/sbom/?cluster=staging",
+      "http://localhost:8000/sbom/?cluster=staging"
     );
   });
 });

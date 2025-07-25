@@ -20,7 +20,7 @@ export type ExposedSecretReport = {
 
 export async function fetchExposedSecrets(
   cluster: string,
-  namespace: string,
+  namespace: string
 ): Promise<ExposedSecretReport[]> {
   const params = new URLSearchParams();
   if (cluster && cluster !== "all") params.append("cluster", cluster);
@@ -38,7 +38,7 @@ export class ExposedSecretService {
 
   static async getExposedSecrets(
     cluster?: string,
-    namespace?: string,
+    namespace?: string
   ): Promise<ExposedSecretReport[]> {
     const params = new URLSearchParams();
 
@@ -57,7 +57,7 @@ export class ExposedSecretService {
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch exposed secrets: ${response.statusText}`,
+        `Failed to fetch exposed secrets: ${response.statusText}`
       );
     }
 
@@ -65,20 +65,20 @@ export class ExposedSecretService {
   }
 
   static async getExposedSecretsByCluster(
-    cluster: string,
+    cluster: string
   ): Promise<ExposedSecretReport[]> {
     return this.getExposedSecrets(cluster);
   }
 
   static async getExposedSecretsByNamespace(
-    namespace: string,
+    namespace: string
   ): Promise<ExposedSecretReport[]> {
     return this.getExposedSecrets(undefined, namespace);
   }
 
   static async getExposedSecretsByClusterAndNamespace(
     cluster: string,
-    namespace: string,
+    namespace: string
   ): Promise<ExposedSecretReport[]> {
     return this.getExposedSecrets(cluster, namespace);
   }
@@ -88,7 +88,7 @@ export class ExposedSecretService {
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch exposed secret by UID: ${response.statusText}`,
+        `Failed to fetch exposed secret by UID: ${response.statusText}`
       );
     }
 

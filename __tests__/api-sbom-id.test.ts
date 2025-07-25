@@ -7,7 +7,10 @@ global.fetch = mockFetch;
 
 describe("/api/sbom/[uid]", () => {
   // Import GET function fresh for each test to avoid cache pollution
-  let GET: (req: NextRequest, context: { params: Promise<{ uid: string }> }) => Promise<Response>;
+  let GET: (
+    req: NextRequest,
+    context: { params: Promise<{ uid: string }> }
+  ) => Promise<Response>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -43,10 +46,10 @@ describe("/api/sbom/[uid]", () => {
 
   it("should return SBOM data by UID (cache miss)", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-123",
+      "http://localhost:3000/api/sbom/sbom-123"
     );
     const mockContext = { params: Promise.resolve({ uid: "sbom-123" }) };
-    
+
     const response = await GET(mockRequest, mockContext);
     const data = await response.json();
 
@@ -57,19 +60,19 @@ describe("/api/sbom/[uid]", () => {
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/sbom-123",
+      "http://localhost:8000/sbom/sbom-123"
     );
   });
 
   it("should return cached data on second request (cache hit)", async () => {
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-123",
+      "http://localhost:3000/api/sbom/sbom-123"
     );
     const mockContext = { params: Promise.resolve({ uid: "sbom-123" }) };
 
     // First request
     await GET(mockRequest, mockContext);
-    
+
     // Second request should use cache
     const response = await GET(mockRequest, mockContext);
 
@@ -86,16 +89,16 @@ describe("/api/sbom/[uid]", () => {
     });
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom/nonexistent",
+      "http://localhost:3000/api/sbom/nonexistent"
     );
     const mockContext = { params: Promise.resolve({ uid: "nonexistent" }) };
-    
+
     const response = await GET(mockRequest, mockContext);
 
     // All backend errors are converted to 500 by the API route
     expect(response.status).toBe(500);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/sbom/nonexistent",
+      "http://localhost:8000/sbom/nonexistent"
     );
   });
 
@@ -107,10 +110,10 @@ describe("/api/sbom/[uid]", () => {
     });
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-123",
+      "http://localhost:3000/api/sbom/sbom-123"
     );
     const mockContext = { params: Promise.resolve({ uid: "sbom-123" }) };
-    
+
     const response = await GET(mockRequest, mockContext);
 
     expect(response.status).toBe(500);
@@ -121,10 +124,10 @@ describe("/api/sbom/[uid]", () => {
     mockFetch.mockRejectedValue(new Error("Network error"));
 
     const mockRequest = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-123",
+      "http://localhost:3000/api/sbom/sbom-123"
     );
     const mockContext = { params: Promise.resolve({ uid: "sbom-123" }) };
-    
+
     const response = await GET(mockRequest, mockContext);
 
     expect(response.status).toBe(500);
@@ -133,29 +136,29 @@ describe("/api/sbom/[uid]", () => {
 
   it("should create different cache keys for different UIDs", async () => {
     const mockRequest1 = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-123",
+      "http://localhost:3000/api/sbom/sbom-123"
     );
     const mockContext1 = { params: Promise.resolve({ uid: "sbom-123" }) };
 
     const mockRequest2 = new NextRequest(
-      "http://localhost:3000/api/sbom/sbom-456",
+      "http://localhost:3000/api/sbom/sbom-456"
     );
     const mockContext2 = { params: Promise.resolve({ uid: "sbom-456" }) };
 
     // First request
     await GET(mockRequest1, mockContext1);
-    
+
     // Second request with different UID should hit backend again
     await GET(mockRequest2, mockContext2);
 
     expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(mockFetch).toHaveBeenNthCalledWith(
       1,
-      "http://localhost:8000/sbom/sbom-123",
+      "http://localhost:8000/sbom/sbom-123"
     );
     expect(mockFetch).toHaveBeenNthCalledWith(
       2,
-      "http://localhost:8000/sbom/sbom-456",
+      "http://localhost:8000/sbom/sbom-456"
     );
   });
 });

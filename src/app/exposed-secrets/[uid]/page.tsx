@@ -6,7 +6,9 @@ import { ExposedSecretReport } from "@/services/exposedSecretService";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-async function fetchExposedSecretById(uid: string): Promise<ExposedSecretReport | null> {
+async function fetchExposedSecretById(
+  uid: string
+): Promise<ExposedSecretReport | null> {
   try {
     const res = await fetch(`/api/exposedsecrets/${uid}`);
     if (!res.ok) return null;
@@ -41,8 +43,7 @@ export default function ExposedSecretDetailPage() {
         Loading exposed secret details...
       </div>
     );
-  if (error)
-    return <div className="p-8 text-red-600">Error: {error}</div>;
+  if (error) return <div className="p-8 text-red-600">Error: {error}</div>;
   if (!secret)
     return <div className="p-8 text-gray-600">Exposed secret not found</div>;
 
@@ -93,7 +94,7 @@ export default function ExposedSecretDetailPage() {
                     <span className="text-sm text-gray-400">Title</span>
                     <p className="text-white font-semibold">{secret.title}</p>
                   </div>
-                                    <div>
+                  <div>
                     <span className="text-sm text-gray-400">Secret Type</span>
                     <span className="inline-block px-2 py-1 bg-purple-600 text-white rounded-full text-xs font-bold">
                       {secret.secretType || "Unknown"}
@@ -103,8 +104,9 @@ export default function ExposedSecretDetailPage() {
                     <span className="text-sm text-gray-400">Severity</span>
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${
-                        severityColor[secret.severity as keyof typeof severityColor] ||
-                        "bg-gray-500 text-white"
+                        severityColor[
+                          secret.severity as keyof typeof severityColor
+                        ] || "bg-gray-500 text-white"
                       }`}
                     >
                       {secret.severity || "Unknown"}
@@ -158,7 +160,9 @@ export default function ExposedSecretDetailPage() {
               <CardContent>
                 <div className="bg-red-900/20 border border-red-500/50 p-4 rounded-lg">
                   <code className="text-red-400 break-all">
-                    {secret.secretValue ? secret.secretValue.replace(/./g, "•") : "••••••••"}
+                    {secret.secretValue
+                      ? secret.secretValue.replace(/./g, "•")
+                      : "••••••••"}
                   </code>
                   <p className="text-red-300 text-sm mt-2">
                     ⚠️ This secret has been masked for security reasons
@@ -183,7 +187,9 @@ export default function ExposedSecretDetailPage() {
                   {secret.lineNumber && (
                     <div>
                       <span className="text-sm text-gray-400">Line Number</span>
-                      <p className="text-white font-mono">{secret.lineNumber}</p>
+                      <p className="text-white font-mono">
+                        {secret.lineNumber}
+                      </p>
                     </div>
                   )}
                 </CardContent>
@@ -230,7 +236,9 @@ export default function ExposedSecretDetailPage() {
               <CardContent className="space-y-4">
                 <div>
                   <span className="text-sm text-gray-400">UID</span>
-                  <p className="text-white font-mono text-xs break-all">{secret.uid}</p>
+                  <p className="text-white font-mono text-xs break-all">
+                    {secret.uid}
+                  </p>
                 </div>
                 <div>
                   <span className="text-sm text-gray-400">Last Modified</span>
@@ -248,18 +256,10 @@ export default function ExposedSecretDetailPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 text-yellow-200">
-                  <p className="text-sm">
-                    1. Immediately rotate this secret
-                  </p>
-                  <p className="text-sm">
-                    2. Remove from source code
-                  </p>
-                  <p className="text-sm">
-                    3. Use secure secret management
-                  </p>
-                  <p className="text-sm">
-                    4. Review commit history
-                  </p>
+                  <p className="text-sm">1. Immediately rotate this secret</p>
+                  <p className="text-sm">2. Remove from source code</p>
+                  <p className="text-sm">3. Use secure secret management</p>
+                  <p className="text-sm">4. Review commit history</p>
                 </div>
               </CardContent>
             </Card>
