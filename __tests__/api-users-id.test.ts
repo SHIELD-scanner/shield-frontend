@@ -29,19 +29,19 @@ describe("/api/users/[id]", () => {
 
         // Handle nonexistent users
         if (userId === "nonexistent") {
-          return { 
-            ok: false, 
+          return {
+            ok: false,
             status: 404,
-            text: async () => "User not found"
+            text: async () => "User not found",
           };
         }
 
         if (method === "DELETE") {
           if (deletedUsers.has(userId)) {
-            return { 
-              ok: false, 
+            return {
+              ok: false,
               status: 404,
-              text: async () => "User not found"
+              text: async () => "User not found",
             };
           }
           deletedUsers.add(userId);
@@ -62,10 +62,10 @@ describe("/api/users/[id]", () => {
 
         if (method === "GET") {
           if (deletedUsers.has(userId)) {
-            return { 
-              ok: false, 
+            return {
+              ok: false,
               status: 404,
-              text: async () => "User not found"
+              text: async () => "User not found",
             };
           }
           return {
@@ -85,10 +85,10 @@ describe("/api/users/[id]", () => {
 
         if (method === "PUT") {
           if (deletedUsers.has(userId)) {
-            return { 
-              ok: false, 
+            return {
+              ok: false,
               status: 404,
-              text: async () => "User not found"
+              text: async () => "User not found",
             };
           }
           const body = JSON.parse(options.body as string);

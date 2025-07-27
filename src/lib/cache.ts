@@ -24,7 +24,10 @@ export function getUserByIdCacheKey(id: string): string {
   return `user:${id}`;
 }
 
-export function isValidCacheEntry(entry: CacheEntry, duration: number): boolean {
+export function isValidCacheEntry(
+  entry: CacheEntry,
+  duration: number
+): boolean {
   return Date.now() - entry.timestamp < duration;
 }
 

@@ -23,7 +23,10 @@ export async function GET(req: NextRequest) {
 
   const cacheKey = getUserByIdCacheKey(id);
   const cachedEntry = userByIdCache.get(cacheKey);
-  if (cachedEntry && isValidCacheEntry(cachedEntry, USER_BY_ID_CACHE_DURATION)) {
+  if (
+    cachedEntry &&
+    isValidCacheEntry(cachedEntry, USER_BY_ID_CACHE_DURATION)
+  ) {
     const response = Response.json(cachedEntry.data);
     response.headers.set("X-Cache", "HIT");
     response.headers.set("Cache-Control", "public, max-age=30"); // Reduced to 30 seconds
