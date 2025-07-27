@@ -15,6 +15,7 @@
   "nav.exposedSecrets": "Exposed Secrets",
   "nav.rbacAssessment": "RBAC Assessment",
   "nav.sbomReports": "SBOM Reports",
+  "nav.images": "Images",
   "dashboard.title": "S.H.I.E.L.D. Security Dashboard",
   "dashboard.subtitle": "Strategic Homeland Intervention, Enforcement and Logistics Division",
   "configAudit.heading": "Config Audit",

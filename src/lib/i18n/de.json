@@ -15,6 +15,7 @@
   "nav.exposedSecrets": "Offengelegte Geheimnisse",
   "nav.rbacAssessment": "RBAC-Bewertung",
   "nav.sbomReports": "SBOM-Berichte",
+  "nav.images": "Images",
   "dashboard.title": "S.H.I.E.L.D. Sicherheitsdashboard",
   "dashboard.subtitle": "Abteilung für strategische Inlandseinsätze, Durchsetzung und Logistik",
   "configAudit.heading": "Konfigurationsprüfung",
