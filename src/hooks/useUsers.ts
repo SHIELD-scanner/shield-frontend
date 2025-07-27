@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { User, UserService } from "@/services/userService";
+import { User, UserService, UserFilters, UserRole } from "@/services/userService";
 
 export function useUsers(role?: string, namespace?: string) {
   const [users, setUsers] = useState<User[]>([]);
@@ -11,7 +11,17 @@ export function useUsers(role?: string, namespace?: string) {
       setLoading(true);
       setError(null);
       try {
-        const data = await UserService.getUsers(role, namespace);
+        const filters: UserFilters = {};
+        
+        if (role && role !== "all") {
+          filters.role = role as UserRole;
+        }
+        
+        if (namespace && namespace !== "all") {
+          filters.namespace = namespace;
+        }
+
+        const data = await UserService.getUsers(filters);
         setUsers(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch users");
@@ -24,5 +34,28 @@ export function useUsers(role?: string, namespace?: string) {
     fetchUsers();
   }, [role, namespace]);
 
-  return { users, loading, error, refetch: () => setUsers([]) };
+  const refetch = async () => {
+    const filters: UserFilters = {};
+    
+    if (role && role !== "all") {
+      filters.role = role as UserRole;
+    }
+    
+    if (namespace && namespace !== "all") {
+      filters.namespace = namespace;
+    }
+
+    try {
+      setLoading(true);
+      const data = await UserService.getUsers(filters);
+      setUsers(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { users, loading, error, refetch };
 }

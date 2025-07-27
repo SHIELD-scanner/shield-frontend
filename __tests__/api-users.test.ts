@@ -14,6 +14,69 @@ describe("/api/users", () => {
     jest.clearAllMocks();
     jest.resetModules();
 
+    // Reset environment
+    process.env.BACKEND_API = "http://localhost:8000";
+
+    // Mock successful backend response with smart filtering
+    const mockUsers = [
+      {
+        id: "1",
+        email: "admin@example.com",
+        fullname: "Admin User",
+        role: "ClusterAdmin",
+        namespaces: ["*"],
+        createdAt: "2024-01-15T10:30:00Z",
+        lastLogin: "2025-07-08T14:22:00Z",
+        status: "active",
+      },
+      {
+        id: "2",
+        email: "dev@example.com",
+        fullname: "Developer User",
+        role: "Developer",
+        namespaces: ["development"],
+        createdAt: "2024-02-10T14:20:00Z",
+        lastLogin: "2025-07-07T16:45:00Z",
+        status: "active",
+      },
+      {
+        id: "3",
+        email: "dev2@example.com",
+        fullname: "Developer User 2",
+        role: "Developer",
+        namespaces: ["development", "testing"],
+        createdAt: "2024-03-10T14:20:00Z",
+        lastLogin: "2025-07-07T16:45:00Z",
+        status: "active",
+      },
+    ];
+
+    mockFetch.mockImplementation(async (url: string) => {
+      const urlObj = new URL(url, 'http://localhost:8000');
+      const roleParam = urlObj.searchParams.get('role');
+      const namespaceParam = urlObj.searchParams.get('namespace');
+      
+      let filteredUsers = [...mockUsers];
+      
+      // Filter by role
+      if (roleParam && roleParam !== 'all') {
+        filteredUsers = filteredUsers.filter(user => user.role === roleParam);
+      }
+      
+      // Filter by namespace
+      if (namespaceParam && namespaceParam !== 'all') {
+        filteredUsers = filteredUsers.filter(user => 
+          user.namespaces.includes('*') || 
+          user.namespaces.includes(namespaceParam)
+        );
+      }
+      
+      return {
+        ok: true,
+        json: async () => filteredUsers,
+      };
+    });
+
     // Import fresh module to reset in-memory cache
     const routeModule = await import("../src/app/api/users/route");
     GET = routeModule.GET;
@@ -165,6 +228,19 @@ describe("/api/users", () => {
         role: "Developer",
         namespaces: ["test-namespace"],
       };
+
+      // Mock the POST response for creating a user
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 201,
+        json: async () => ({
+          id: "new-user-id",
+          ...newUserData,
+          createdAt: "2024-01-15T10:30:00Z",
+          lastLogin: null,
+          status: "active",
+        }),
+      });
 
       const mockRequest = new NextRequest("http://localhost:3000/api/users", {
         method: "POST",
