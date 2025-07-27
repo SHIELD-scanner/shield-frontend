@@ -1,34 +1,12 @@
 import { NextRequest } from "next/server";
 import { getBackendApiUrl } from "../../../lib/config";
-
-// Simple in-memory cache for users
-interface CacheEntry {
-  data: unknown;
-  timestamp: number;
-}
-
-const usersCache = new Map<string, CacheEntry>();
-const USERS_CACHE_DURATION = 2 * 60 * 1000; // 2 minutes in milliseconds
-
-function getCacheKey(role?: string, namespace?: string): string {
-  const roleKey = role && role !== "all" ? role : "all";
-  const namespaceKey = namespace && namespace !== "all" ? namespace : "all";
-  return `users:${roleKey}:${namespaceKey}`;
-}
-
-function isValidCacheEntry(entry: CacheEntry): boolean {
-  return Date.now() - entry.timestamp < USERS_CACHE_DURATION;
-}
-
-// Clean up expired cache entries periodically
-function cleanupUsersCache(): void {
-  const now = Date.now();
-  for (const [key, entry] of usersCache.entries()) {
-    if (now - entry.timestamp >= USERS_CACHE_DURATION) {
-      usersCache.delete(key);
-    }
-  }
-}
+import {
+  usersCache,
+  USERS_CACHE_DURATION,
+  getUsersCacheKey,
+  isValidCacheEntry,
+  cleanupUsersCache,
+} from "../../../lib/cache";
 
 // Clean up every 5 minutes (but not in test environment)
 if (process.env.NODE_ENV !== "test") {
@@ -41,17 +19,17 @@ export async function GET(req: NextRequest) {
   const namespace = searchParams.get("namespace") ?? "";
 
   // Generate cache key based on parameters
-  const cacheKey = getCacheKey(role, namespace);
+  const cacheKey = getUsersCacheKey(role, namespace);
 
   // Check if we have a valid cached response
   const cachedEntry = usersCache.get(cacheKey);
-  if (cachedEntry && isValidCacheEntry(cachedEntry)) {
+  if (cachedEntry && isValidCacheEntry(cachedEntry, USERS_CACHE_DURATION)) {
     console.log(`Cache hit for users data: ${cacheKey}`);
 
     // Add cache headers
     const response = Response.json(cachedEntry.data);
     response.headers.set("X-Cache", "HIT");
-    response.headers.set("Cache-Control", "public, max-age=120"); // 2 minutes
+    response.headers.set("Cache-Control", "public, max-age=30"); // Reduced to 30 seconds
     return response;
   }
 
@@ -92,7 +70,7 @@ export async function GET(req: NextRequest) {
     // Return response with cache headers
     const response = Response.json(data);
     response.headers.set("X-Cache", "MISS");
-    response.headers.set("Cache-Control", "public, max-age=120"); // 2 minutes
+    response.headers.set("Cache-Control", "public, max-age=30"); // Reduced to 30 seconds
 
     return response;
   } catch (error) {

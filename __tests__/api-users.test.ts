@@ -98,7 +98,7 @@ describe("/api/users", () => {
       expect(Array.isArray(data)).toBe(true);
       expect(data.length).toBeGreaterThan(0);
       expect(response.headers.get("X-Cache")).toBe("MISS");
-      expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
+      expect(response.headers.get("Cache-Control")).toBe("public, max-age=30");
     });
 
     it("should return cached data on second request (cache hit)", async () => {
