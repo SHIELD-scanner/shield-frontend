@@ -15,9 +15,11 @@ export type CreateUserData = Omit<
   User,
   "id" | "createdAt" | "lastLogin" | "status"
 >;
-export type UpdateUserData = Partial<CreateUserData & { 
-  status?: "active" | "inactive";
-}>;
+export type UpdateUserData = Partial<
+  CreateUserData & {
+    status?: "active" | "inactive";
+  }
+>;
 
 // API Response types
 export type ApiResponse<T> = {
@@ -56,7 +58,7 @@ export type BulkUserUpdate = {
 
 export type BulkUserResult = {
   successful: string[];
-  failed: Array<{ id: string; error: string; }>;
+  failed: Array<{ id: string; error: string }>;
 };
 
 // Legacy function for backward compatibility
@@ -64,7 +66,7 @@ export async function fetchUsers(
   role?: string,
   namespace?: string
 ): Promise<User[]> {
-  console.warn('fetchUsers is deprecated. Use UserService.getUsers() instead.');
+  console.warn("fetchUsers is deprecated. Use UserService.getUsers() instead.");
   return UserService.getUsers({ role: role as UserRole, namespace });
 }
 
@@ -74,46 +76,46 @@ export class UserService {
   private static async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-      
+
       try {
         const errorData: ApiError = await response.json();
         errorMessage = errorData.message || errorMessage;
       } catch {
         // If response is not JSON, use the status text
       }
-      
+
       throw new Error(errorMessage);
     }
 
     const data = await response.json();
-    
+
     // Handle different API response formats
     if (Array.isArray(data)) {
       // Direct array response
       return data as T;
     }
-    
-    if (data && typeof data === 'object') {
+
+    if (data && typeof data === "object") {
       // Check for nested data structure: { data: { users: [...] } }
       if (data.data && data.data.users !== undefined) {
         return data.data.users as T;
       }
-      
+
       // Object response - check for data property
       if (data.data !== undefined) {
         return data.data as T;
       }
-      
+
       // If no data property, check for other common patterns
       if (data.users !== undefined) {
         return data.users as T;
       }
-      
+
       if (data.results !== undefined) {
         return data.results as T;
       }
     }
-    
+
     return data as T;
   }
 
@@ -199,7 +201,9 @@ export class UserService {
   }
 
   // Bulk operations
-  static async bulkUpdateUsers(bulkUpdate: BulkUserUpdate): Promise<BulkUserResult> {
+  static async bulkUpdateUsers(
+    bulkUpdate: BulkUserUpdate
+  ): Promise<BulkUserResult> {
     const response = await fetch(`${this.baseUrl}/bulk`, {
       method: "PATCH",
       headers: {
@@ -247,7 +251,10 @@ export class UserService {
   }
 
   // Namespace operations
-  static async updateUserNamespaces(id: string, namespaces: string[]): Promise<User> {
+  static async updateUserNamespaces(
+    id: string,
+    namespaces: string[]
+  ): Promise<User> {
     const response = await fetch(`${this.baseUrl}/${id}/namespaces`, {
       method: "PUT",
       headers: {
@@ -277,7 +284,9 @@ export class UserService {
   }
 
   // Password reset
-  static async requestPasswordReset(email: string): Promise<{ message: string }> {
+  static async requestPasswordReset(
+    email: string
+  ): Promise<{ message: string }> {
     const response = await fetch(`${this.baseUrl}/password-reset/request`, {
       method: "POST",
       headers: {
@@ -290,20 +299,25 @@ export class UserService {
   }
 
   // User activity
-  static async getUserActivity(id: string, limit?: number): Promise<Array<{
-    id: string;
-    action: string;
-    timestamp: string;
-    metadata?: Record<string, unknown>;
-  }>> {
+  static async getUserActivity(
+    id: string,
+    limit?: number
+  ): Promise<
+    Array<{
+      id: string;
+      action: string;
+      timestamp: string;
+      metadata?: Record<string, unknown>;
+    }>
+  > {
     const params = new URLSearchParams();
     if (limit) {
       params.append("limit", limit.toString());
     }
 
     const queryString = params.toString();
-    const url = queryString 
-      ? `${this.baseUrl}/${id}/activity?${queryString}` 
+    const url = queryString
+      ? `${this.baseUrl}/${id}/activity?${queryString}`
       : `${this.baseUrl}/${id}/activity`;
 
     const response = await fetch(url, {
@@ -317,12 +331,14 @@ export class UserService {
   }
 
   // Get available roles
-  static async getRoles(): Promise<Array<{
-    id: string;
-    name: string;
-    description: string;
-    permissions: string[];
-  }>> {
+  static async getRoles(): Promise<
+    Array<{
+      id: string;
+      name: string;
+      description: string;
+      permissions: string[];
+    }>
+  > {
     const response = await fetch(`${this.baseUrl}/roles`, {
       method: "GET",
       headers: {

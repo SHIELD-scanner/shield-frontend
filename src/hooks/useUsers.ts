@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { User, UserService, UserFilters, UserRole } from "@/services/userService";
+import {
+  User,
+  UserService,
+  UserFilters,
+  UserRole,
+} from "@/services/userService";
 
 export function useUsers(role?: string, namespace?: string) {
   const [users, setUsers] = useState<User[]>([]);
@@ -12,11 +17,11 @@ export function useUsers(role?: string, namespace?: string) {
       setError(null);
       try {
         const filters: UserFilters = {};
-        
+
         if (role && role !== "all") {
           filters.role = role as UserRole;
         }
-        
+
         if (namespace && namespace !== "all") {
           filters.namespace = namespace;
         }
@@ -36,11 +41,11 @@ export function useUsers(role?: string, namespace?: string) {
 
   const refetch = async () => {
     const filters: UserFilters = {};
-    
+
     if (role && role !== "all") {
       filters.role = role as UserRole;
     }
-    
+
     if (namespace && namespace !== "all") {
       filters.namespace = namespace;
     }

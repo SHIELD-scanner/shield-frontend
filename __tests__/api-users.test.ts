@@ -52,25 +52,26 @@ describe("/api/users", () => {
     ];
 
     mockFetch.mockImplementation(async (url: string) => {
-      const urlObj = new URL(url, 'http://localhost:8000');
-      const roleParam = urlObj.searchParams.get('role');
-      const namespaceParam = urlObj.searchParams.get('namespace');
-      
+      const urlObj = new URL(url, "http://localhost:8000");
+      const roleParam = urlObj.searchParams.get("role");
+      const namespaceParam = urlObj.searchParams.get("namespace");
+
       let filteredUsers = [...mockUsers];
-      
+
       // Filter by role
-      if (roleParam && roleParam !== 'all') {
-        filteredUsers = filteredUsers.filter(user => user.role === roleParam);
+      if (roleParam && roleParam !== "all") {
+        filteredUsers = filteredUsers.filter((user) => user.role === roleParam);
       }
-      
+
       // Filter by namespace
-      if (namespaceParam && namespaceParam !== 'all') {
-        filteredUsers = filteredUsers.filter(user => 
-          user.namespaces.includes('*') || 
-          user.namespaces.includes(namespaceParam)
+      if (namespaceParam && namespaceParam !== "all") {
+        filteredUsers = filteredUsers.filter(
+          (user) =>
+            user.namespaces.includes("*") ||
+            user.namespaces.includes(namespaceParam)
         );
       }
-      
+
       return {
         ok: true,
         json: async () => filteredUsers,

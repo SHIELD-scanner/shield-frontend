@@ -32,8 +32,6 @@ if (process.env.NODE_ENV !== "test") {
   setInterval(cleanupUserByIdCache, 5 * 60 * 1000);
 }
 
-
-
 export async function GET(req: NextRequest) {
   const urlObj = new URL(req.url);
   const id = urlObj.pathname.split("/").pop();
@@ -60,7 +58,7 @@ export async function GET(req: NextRequest) {
       return new Response("Failed to fetch user", { status: 500 });
     }
     const data = await res.json();
-    
+
     userByIdCache.set(cacheKey, { data, timestamp: Date.now() });
     const response = Response.json(data);
     response.headers.set("X-Cache", "MISS");
@@ -82,7 +80,7 @@ export async function PUT(req: NextRequest) {
     const userData = await req.json();
 
     const backendUrl = getBackendApiUrl(`/users/${id}`);
-    
+
     const res = await fetch(backendUrl, {
       method: "PUT",
       headers: {
@@ -90,15 +88,17 @@ export async function PUT(req: NextRequest) {
       },
       body: JSON.stringify(userData),
     });
-    
+
     if (!res.ok) {
       const errorText = await res.text();
       console.error("PUT /api/users/[id] - Backend error response:", errorText);
-      
+
       if (res.status === 404) {
         return new Response("User not found", { status: 404 });
       }
-      return new Response(`Failed to update user: ${errorText}`, { status: 500 });
+      return new Response(`Failed to update user: ${errorText}`, {
+        status: 500,
+      });
     }
 
     const updatedUser = await res.json();

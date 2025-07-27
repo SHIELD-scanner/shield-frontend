@@ -209,19 +209,19 @@ export default function NamespaceMultiSelect({
       const clusterName = item.replace(":all", "");
       return `🏢 ${clusterName} (entire cluster)`;
     }
-    
+
     // For namespace access, find the matching option
     const option = options.find((opt) => opt.id === item);
     if (option) {
       return `📁 ${option.name} (${option.cluster})`;
     }
-    
+
     // Fallback: parse cluster:namespace format
     const parts = item.split(":");
     if (parts.length === 2) {
       return `📁 ${parts[1]} (${parts[0]})`;
     }
-    
+
     return item;
   };
 
@@ -311,7 +311,9 @@ export default function NamespaceMultiSelect({
                 }`}
               >
                 <span>{option.displayName}</span>
-                {isSelected(option) && <span className="text-blue-600 dark:text-blue-200">✓</span>}
+                {isSelected(option) && (
+                  <span className="text-blue-600 dark:text-blue-200">✓</span>
+                )}
               </button>
             ));
           })()}

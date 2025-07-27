@@ -75,9 +75,7 @@ export async function GET(req: NextRequest) {
 
     const res = await fetch(url);
     if (!res.ok) {
-      console.error(
-        `Failed to fetch users: ${res.status} ${res.statusText}`,
-      );
+      console.error(`Failed to fetch users: ${res.status} ${res.statusText}`);
       return new Response("Failed to fetch users", { status: 500 });
     }
 
@@ -109,7 +107,7 @@ export async function POST(req: NextRequest) {
 
     // Forward the request to the backend API
     const url = getBackendApiUrl("/users/");
-    
+
     console.log(`Creating user via backend API: ${url}`);
 
     const response = await fetch(url, {
@@ -122,7 +120,7 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       console.error(
-        `Failed to create user: ${response.status} ${response.statusText}`,
+        `Failed to create user: ${response.status} ${response.statusText}`
       );
       return new Response("Failed to create user", { status: response.status });
     }
