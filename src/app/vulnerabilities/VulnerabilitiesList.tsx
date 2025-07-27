@@ -99,12 +99,13 @@ export default function VulnerabilitiesList() {
       // Always use 'Open' for status, as VulnerabilityReport has no status field
       const status = "Open";
       // Create a more unique key by combining multiple properties
-      const uniqueKey = `${vuln.uid || 'no-uid'}-${vuln.vulnerabilityID || 'no-id'}-${vuln.resource || 'no-resource'}-${vuln.namespace || 'no-ns'}-${index}`;
+      const uniqueKey = `${vuln.uid || "no-uid"}-${
+        vuln.vulnerabilityID || "no-id"
+      }-${vuln.resource || "no-resource"}-${
+        vuln.namespace || "no-ns"
+      }-${index}`;
       return (
-        <tr
-          key={uniqueKey}
-          className="hover:bg-[#232b3b] transition"
-        >
+        <tr key={uniqueKey} className="hover:bg-[#232b3b] transition">
           <td className="px-6 py-4 flex flex-col gap-1 min-w-[180px]">
             <span className="font-semibold text-base flex items-center gap-2">
               <span className="inline-block w-6 h-6 bg-[#2e3a54] rounded-full flex items-center justify-center">

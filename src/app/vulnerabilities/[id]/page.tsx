@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/i18n";
 
 async function fetchVulnerabilityById(
-  id: string,
+  id: string
 ): Promise<VulnerabilityReport[] | null> {
   try {
     const res = await fetch(`/api/vulnerabilities/${id}`);
@@ -24,7 +24,9 @@ export default function VulnerabilityDetailPage() {
   const { t } = useLanguage();
   const params = useParams();
   const { id } = params;
-  const [vulnerabilities, setVulnerabilities] = useState<VulnerabilityReport[]>([]);
+  const [vulnerabilities, setVulnerabilities] = useState<VulnerabilityReport[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -49,7 +51,7 @@ export default function VulnerabilityDetailPage() {
         const element = document.getElementById(hash.substring(1));
         if (element) {
           setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
           }, 100);
         }
       }
@@ -60,14 +62,15 @@ export default function VulnerabilityDetailPage() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (!target.closest('.quick-nav-dropdown')) {
+      if (!target.closest(".quick-nav-dropdown")) {
         setIsNavOpen(false);
       }
     };
 
     if (isNavOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isNavOpen]);
 
@@ -79,7 +82,8 @@ export default function VulnerabilityDetailPage() {
     );
   if (error)
     return <div className="p-8 text-red-600">{t("vulnerabilities.error")}</div>;
-  if (!vulnerabilities.length) return <div className="p-8">{t("vulnerabilities.noData")}</div>;
+  if (!vulnerabilities.length)
+    return <div className="p-8">{t("vulnerabilities.noData")}</div>;
 
   // Helper for badge color
   const getSeverityColor = (sev: string) => {
@@ -111,13 +115,15 @@ export default function VulnerabilityDetailPage() {
             <span className="text-2xl">←</span> {t("vulnerabilities.back")}
           </Link>
         </div>
-        
+
         <div className="mb-6">
           <h1 className="text-3xl font-bold tracking-tight mb-2">
             Vulnerability Report
           </h1>
           <p className="text-muted-foreground">
-            {vulnerabilities.length} {vulnerabilities.length === 1 ? 'vulnerability' : 'vulnerabilities'} found
+            {vulnerabilities.length}{" "}
+            {vulnerabilities.length === 1 ? "vulnerability" : "vulnerabilities"}{" "}
+            found
           </p>
         </div>
 
@@ -140,27 +146,38 @@ export default function VulnerabilityDetailPage() {
                   />
                 </svg>
               </button>
-              
+
               {isNavOpen && (
                 <div className="absolute right-0 top-12 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl min-w-[250px] max-h-[400px] overflow-y-auto">
                   <div className="p-3 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Quick Navigation</h3>
+                    <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+                      Quick Navigation
+                    </h3>
                   </div>
                   <div className="p-2">
                     {vulnerabilities.map((vuln, index) => (
                       <button
-                        key={`nav-${index}-${vuln.vulnerabilityID}-${vuln.uid || 'no-uid'}-${vuln.resource || 'no-resource'}`}
+                        key={`nav-${index}-${vuln.vulnerabilityID}-${
+                          vuln.uid || "no-uid"
+                        }-${vuln.resource || "no-resource"}`}
                         onClick={(e) => {
                           e.preventDefault();
                           setIsNavOpen(false);
-                          const element = document.getElementById(vuln.vulnerabilityID);
+                          const element = document.getElementById(
+                            vuln.vulnerabilityID
+                          );
                           if (element) {
-                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            element.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
                           }
                         }}
                         className="w-full text-left block px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                       >
-                        <div className="font-medium">{vuln.vulnerabilityID}</div>
+                        <div className="font-medium">
+                          {vuln.vulnerabilityID}
+                        </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
                           {vuln.resource} • {vuln.namespace}
                         </div>
@@ -175,7 +192,13 @@ export default function VulnerabilityDetailPage() {
 
         {/* Display each vulnerability */}
         {vulnerabilities.map((vuln, index) => (
-          <div key={`vuln-${index}-${vuln.vulnerabilityID}-${vuln.uid || 'no-uid'}-${vuln.resource || 'no-resource'}`} id={vuln.vulnerabilityID} className="mb-8">
+          <div
+            key={`vuln-${index}-${vuln.vulnerabilityID}-${
+              vuln.uid || "no-uid"
+            }-${vuln.resource || "no-resource"}`}
+            id={vuln.vulnerabilityID}
+            className="mb-8"
+          >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight">
@@ -188,7 +211,7 @@ export default function VulnerabilityDetailPage() {
               <div className="flex gap-2 mt-2 md:mt-0">
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-semibold ${getSeverityColor(
-                    vuln.severity,
+                    vuln.severity
                   )}`}
                 >
                   {vuln.severity || "-"}
@@ -204,7 +227,7 @@ export default function VulnerabilityDetailPage() {
                 </span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Overview */}
               <Card className="col-span-2 bg-card border-none">
@@ -243,7 +266,7 @@ export default function VulnerabilityDetailPage() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Actions & Resource Info */}
               <div className="flex flex-col gap-4">
                 <Card className="bg-card border-none">
@@ -256,7 +279,7 @@ export default function VulnerabilityDetailPage() {
                     </Button>
                   </CardContent>
                 </Card>
-                
+
                 <Card className="bg-card border-none">
                   <CardHeader>
                     <CardTitle>{t("vulnerabilities.resourceInfo")}</CardTitle>
@@ -292,7 +315,7 @@ export default function VulnerabilityDetailPage() {
                 </Card>
               </div>
             </div>
-            
+
             {/* Package Info */}
             <div className="mt-4">
               <Card className="bg-card border-none">
@@ -341,7 +364,7 @@ export default function VulnerabilityDetailPage() {
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Separator line between vulnerabilities */}
             {index < vulnerabilities.length - 1 && (
               <hr className="mt-8 border-border" />
