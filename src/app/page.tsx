@@ -15,7 +15,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/vulnerabilities-old/")
+    fetch("http://localhost:8000/vulnerabilities/flatten")
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/vulnerabilities-old")
+    fetch("http://localhost:8000/vulnerabilities/flatten")
       .then((response) => response.json())
       .then((data) => {
         const total = data.reduce(
