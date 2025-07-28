@@ -4,7 +4,7 @@ import {
   fetchExposedSecrets,
   ExposedSecretReport,
 } from "@/services/exposedSecretService";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/custom/card";
 
 const severityColor = {
   LOW: "bg-green-600 text-white",

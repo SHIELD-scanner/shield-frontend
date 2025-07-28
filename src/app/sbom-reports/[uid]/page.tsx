@@ -3,8 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { SbomReport } from "@/services/sbomService";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 
 async function fetchSbomById(uid: string): Promise<SbomReport | null> {
   try {

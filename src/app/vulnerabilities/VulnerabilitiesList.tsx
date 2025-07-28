@@ -4,7 +4,7 @@ import {
   fetchVulnerabilities,
   VulnerabilityReport,
 } from "@/services/vulnerabilityService";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/custom/card";
 import { useLanguage } from "@/lib/i18n";
 
 const severityColor = {

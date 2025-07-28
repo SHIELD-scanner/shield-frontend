@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { fetchSbom, SbomReport } from "@/services/sbomService";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/custom/card";
 
 const packageTypeColor = {
   npm: "bg-red-600 text-white",

@@ -3,8 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ExposedSecretReport } from "@/services/exposedSecretService";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 
 async function fetchExposedSecretById(
   uid: string

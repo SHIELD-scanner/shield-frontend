@@ -1,6 +1,6 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 import { UserRole } from "@/services/userService";
 import NamespaceMultiSelect from "./NamespaceMultiSelect";
 

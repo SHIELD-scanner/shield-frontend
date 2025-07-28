@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  fetchImages,
-  Image,
-} from "@/services/imageService";
-import { Card } from "@/components/ui/card";
+import { fetchImages, Image } from "@/services/imageService";
+import { Card } from "@/components/custom/card";
 import { useLanguage } from "@/lib/i18n";
 
 const severityColor = {
@@ -94,7 +91,9 @@ export default function ImagesList() {
   } else {
     tableBody = filteredImages.map((img, index) => {
       const status = "Open";
-      const uniqueKey = `${img.uid || "no-uid"}-${img.vulnerabilityID || "no-id"}-${img.resource || "no-resource"}-${img.namespace || "no-ns"}-${index}`;
+      const uniqueKey = `${img.uid || "no-uid"}-${
+        img.vulnerabilityID || "no-id"
+      }-${img.resource || "no-resource"}-${img.namespace || "no-ns"}-${index}`;
       return (
         <tr key={uniqueKey} className="hover:bg-[#232b3b] transition">
           <td className="px-6 py-4 flex flex-col gap-1 min-w-[180px]">

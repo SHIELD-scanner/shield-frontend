@@ -8,8 +8,8 @@ import {
   CreateUserData,
   UserService,
 } from "@/services/userService";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 import UserForm from "@/components/users/UserForm";
 import { formatNamespaceDisplay } from "@/utils/namespaceUtils";
 
@@ -242,7 +242,10 @@ export default function UsersList() {
                   );
                 }
                 return filteredUsers.map((user) => (
-                  <tr key={user.id} className="border-b hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <tr
+                    key={user.id}
+                    className="border-b hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  >
                     <td className="py-3 px-4">
                       <Link
                         href={`/users/${user.id}`}

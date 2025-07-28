@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { User, UserService, UserRole } from "@/services/userService";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 import UserForm from "@/components/users/UserForm";
 import { formatNamespaceDisplay } from "@/utils/namespaceUtils";
 

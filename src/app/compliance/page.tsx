@@ -2,7 +2,12 @@
 
 import { useLanguage } from "@/lib/i18n";
 import { useCompliance } from "@/hooks/useCompliance";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/card";
 
 export default function CompliancePage() {
   const { t } = useLanguage();

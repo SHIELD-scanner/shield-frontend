@@ -4,8 +4,13 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { VulnerabilityReport } from "@/services/vulnerabilityService";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/custom/card";
+import { Button } from "@/components/custom/button";
 import { useLanguage } from "@/lib/i18n";
 
 async function fetchVulnerabilityById(
