@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // Build the URL for the backend API
-    let url = getBackendApiUrl("/vulnerabilities/");
+    let url = getBackendApiUrl("/vulnerabilities/flatten");
     const params = [];
 
     if (cluster && cluster !== "all") {
@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
     const res = await fetch(url);
     if (!res.ok) {
       console.error(
-        `Failed to fetch vulnerabilities: ${res.status} ${res.statusText}`,
+        `Failed to fetch vulnerabilities: ${res.status} ${res.statusText}`
       );
       return new Response("Failed to fetch vulnerabilities", { status: 500 });
     }
@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
     });
 
     console.log(
-      `Cache miss - stored new vulnerabilities data for: ${cacheKey}`,
+      `Cache miss - stored new vulnerabilities data for: ${cacheKey}`
     );
 
     // Return response with cache headers

@@ -1,92 +1,17 @@
 import { NextRequest } from "next/server";
-
-// Simple in-memory cache for users
-interface CacheEntry {
-  data: unknown;
-  timestamp: number;
-}
-
-const usersCache = new Map<string, CacheEntry>();
-const USERS_CACHE_DURATION = 2 * 60 * 1000; // 2 minutes in milliseconds
-
-function getCacheKey(role?: string, namespace?: string): string {
-  const roleKey = role && role !== "all" ? role : "all";
-  const namespaceKey = namespace && namespace !== "all" ? namespace : "all";
-  return `users:${roleKey}:${namespaceKey}`;
-}
-
-function isValidCacheEntry(entry: CacheEntry): boolean {
-  return Date.now() - entry.timestamp < USERS_CACHE_DURATION;
-}
-
-// Clean up expired cache entries periodically
-function cleanupUsersCache(): void {
-  const now = Date.now();
-  for (const [key, entry] of usersCache.entries()) {
-    if (now - entry.timestamp >= USERS_CACHE_DURATION) {
-      usersCache.delete(key);
-    }
-  }
-}
+import { getBackendApiUrl } from "../../../lib/config";
+import {
+  usersCache,
+  USERS_CACHE_DURATION,
+  getUsersCacheKey,
+  isValidCacheEntry,
+  cleanupUsersCache,
+} from "../../../lib/cache";
 
 // Clean up every 5 minutes (but not in test environment)
 if (process.env.NODE_ENV !== "test") {
   setInterval(cleanupUsersCache, 5 * 60 * 1000);
 }
-
-// Mock data for users
-const mockUsers = [
-  {
-    id: "1",
-    email: "admin@example.com",
-    fullname: "System Administrator",
-    role: "SysAdmin",
-    namespaces: ["*"], // Access to all namespaces
-    createdAt: "2024-01-15T10:30:00Z",
-    lastLogin: "2025-07-08T08:15:00Z",
-    status: "active",
-  },
-  {
-    id: "2",
-    email: "cluster.admin@example.com",
-    fullname: "Cluster Administrator",
-    role: "ClusterAdmin",
-    namespaces: ["cluster:prod-cluster", "cluster:staging-cluster"], // Full cluster access
-    createdAt: "2024-02-10T14:20:00Z",
-    lastLogin: "2025-07-07T16:45:00Z",
-    status: "active",
-  },
-  {
-    id: "3",
-    email: "dev1@example.com",
-    fullname: "John Developer",
-    role: "Developer",
-    namespaces: ["development", "testing", "feature-branch-1"], // Specific namespaces
-    createdAt: "2024-03-05T09:15:00Z",
-    lastLogin: "2025-07-08T07:30:00Z",
-    status: "active",
-  },
-  {
-    id: "4",
-    email: "dev2@example.com",
-    fullname: "Jane Smith",
-    role: "Developer",
-    namespaces: ["cluster:dev-cluster"], // Full dev cluster access
-    createdAt: "2024-04-12T11:45:00Z",
-    lastLogin: "2025-07-06T15:20:00Z",
-    status: "inactive",
-  },
-  {
-    id: "5",
-    email: "cluster.admin2@example.com",
-    fullname: "Security Admin",
-    role: "ClusterAdmin",
-    namespaces: ["production", "security", "monitoring"], // Mixed access
-    createdAt: "2024-01-20T13:30:00Z",
-    lastLogin: "2025-07-08T06:10:00Z",
-    status: "active",
-  },
-];
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -94,36 +19,45 @@ export async function GET(req: NextRequest) {
   const namespace = searchParams.get("namespace") ?? "";
 
   // Generate cache key based on parameters
-  const cacheKey = getCacheKey(role, namespace);
+  const cacheKey = getUsersCacheKey(role, namespace);
 
   // Check if we have a valid cached response
   const cachedEntry = usersCache.get(cacheKey);
-  if (cachedEntry && isValidCacheEntry(cachedEntry)) {
+  if (cachedEntry && isValidCacheEntry(cachedEntry, USERS_CACHE_DURATION)) {
     console.log(`Cache hit for users data: ${cacheKey}`);
 
     // Add cache headers
     const response = Response.json(cachedEntry.data);
     response.headers.set("X-Cache", "HIT");
-    response.headers.set("Cache-Control", "public, max-age=120"); // 2 minutes
+    response.headers.set("Cache-Control", "public, max-age=30"); // Reduced to 30 seconds
     return response;
   }
 
   try {
-    // Mock implementation - filter users based on parameters
-    let filteredUsers = [...mockUsers];
+    // Build the URL for the backend API
+    let url = getBackendApiUrl("/users/");
+    const params = [];
 
     if (role && role !== "all") {
-      filteredUsers = filteredUsers.filter((user) => user.role === role);
+      params.push(`role=${encodeURIComponent(role)}`);
     }
-
     if (namespace && namespace !== "all") {
-      filteredUsers = filteredUsers.filter(
-        (user) =>
-          user.namespaces.includes("*") || user.namespaces.includes(namespace)
-      );
+      params.push(`namespace=${encodeURIComponent(namespace)}`);
     }
 
-    const data = filteredUsers;
+    if (params.length) {
+      url += `?${params.join("&")}`;
+    }
+
+    console.log(`Fetching users data from: ${url}`);
+
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`Failed to fetch users: ${res.status} ${res.statusText}`);
+      return new Response("Failed to fetch users", { status: 500 });
+    }
+
+    const data = await res.json();
 
     // Store in cache
     usersCache.set(cacheKey, {
@@ -136,7 +70,7 @@ export async function GET(req: NextRequest) {
     // Return response with cache headers
     const response = Response.json(data);
     response.headers.set("X-Cache", "MISS");
-    response.headers.set("Cache-Control", "public, max-age=120"); // 2 minutes
+    response.headers.set("Cache-Control", "public, max-age=30"); // Reduced to 30 seconds
 
     return response;
   } catch (error) {
@@ -149,23 +83,34 @@ export async function POST(req: NextRequest) {
   try {
     const userData = await req.json();
 
-    // Mock implementation - create new user
-    const newUser = {
-      id: Math.random().toString(36).substring(2, 9),
-      ...userData,
-      createdAt: new Date().toISOString(),
-      lastLogin: null,
-      status: "active",
-    };
+    // Forward the request to the backend API
+    const url = getBackendApiUrl("/users/");
 
-    mockUsers.push(newUser);
+    console.log(`Creating user via backend API: ${url}`);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      console.error(
+        `Failed to create user: ${response.status} ${response.statusText}`
+      );
+      return new Response("Failed to create user", { status: response.status });
+    }
+
+    const data = await response.json();
 
     // Clear cache after creating a user
     usersCache.clear();
 
-    const response = Response.json(newUser, { status: 201 });
-    response.headers.set("Cache-Control", "no-cache");
-    return response;
+    const result = Response.json(data, { status: 201 });
+    result.headers.set("Cache-Control", "no-cache");
+    return result;
   } catch (error) {
     console.error("Error creating user:", error);
     return new Response("Internal server error", { status: 500 });

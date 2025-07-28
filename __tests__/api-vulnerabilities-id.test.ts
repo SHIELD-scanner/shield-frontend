@@ -64,7 +64,7 @@ describe("/api/vulnerabilities/[id]", () => {
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/vuln-123"
+      "http://localhost:8000/vulnerabilities/vuln-123"
     );
   });
 
@@ -108,7 +108,7 @@ describe("/api/vulnerabilities/[id]", () => {
     // Backend errors are converted to 500 by the API route
     expect(response.status).toBe(500);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/nonexistent"
+      "http://localhost:8000/vulnerabilities/nonexistent"
     );
   });
 
@@ -157,11 +157,11 @@ describe("/api/vulnerabilities/[id]", () => {
     expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(mockFetch).toHaveBeenNthCalledWith(
       1,
-      "http://localhost:8000/vulnerabilities-old/vuln-123"
+      "http://localhost:8000/vulnerabilities/vuln-123"
     );
     expect(mockFetch).toHaveBeenNthCalledWith(
       2,
-      "http://localhost:8000/vulnerabilities-old/vuln-456"
+      "http://localhost:8000/vulnerabilities/vuln-456"
     );
   });
 
@@ -181,7 +181,7 @@ describe("/api/vulnerabilities/[id]", () => {
     await GET_CUSTOM(mockRequest);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://custom-backend:9000/vulnerabilities-old/vuln-123"
+      "http://custom-backend:9000/vulnerabilities/vuln-123"
     );
   });
 

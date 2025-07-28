@@ -15,6 +15,8 @@
   "nav.exposedSecrets": "Blootgestelde geheimen",
   "nav.rbacAssessment": "RBAC-beoordeling",
   "nav.sbomReports": "SBOM-rapporten",
+  "nav.images": "Images",
+
   "dashboard.title": "S.H.I.E.L.D. Security Dashboard",
   "dashboard.subtitle": "Afdeling Strategische Binnenlandse Interventie, Handhaving en Logistiek",
   "configAudit.heading": "Config Audit",

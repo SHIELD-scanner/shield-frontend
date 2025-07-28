@@ -62,7 +62,7 @@ export default function NamespaceMultiSelect({
         // Add cluster options (allows access to all namespaces in cluster)
         clusters.forEach((cluster) => {
           namespaceOptions.push({
-            id: `cluster:${cluster}`,
+            id: `${cluster}:all`,
             name: cluster,
             cluster: cluster,
             type: "cluster",
@@ -75,7 +75,7 @@ export default function NamespaceMultiSelect({
           const cluster = ns.cluster || "default-cluster";
           const displayName = ns.displayName || ns.name;
           namespaceOptions.push({
-            id: `namespace:${cluster}:${ns.name}`,
+            id: `${cluster}:${ns.name}`,
             name: ns.name,
             cluster: cluster,
             type: "namespace",
@@ -105,7 +105,7 @@ export default function NamespaceMultiSelect({
 
         // Add default cluster option
         fallbackOptions.push({
-          id: "cluster:default-cluster",
+          id: "default-cluster:all",
           name: "default-cluster",
           cluster: "default-cluster",
           type: "cluster",
@@ -115,7 +115,7 @@ export default function NamespaceMultiSelect({
         // Add fallback namespace options
         fallbackNamespaces.forEach((ns) => {
           fallbackOptions.push({
-            id: `namespace:default-cluster:${ns}`,
+            id: `default-cluster:${ns}`,
             name: ns,
             cluster: "default-cluster",
             type: "namespace",
@@ -141,16 +141,15 @@ export default function NamespaceMultiSelect({
 
   const handleSelect = (option: NamespaceOption) => {
     const newValue = [...value];
+    const optionId = option.id; // This is already in backend format
 
     if (option.type === "cluster") {
       // If selecting a cluster, remove all individual namespaces from that cluster
-      // and add the cluster identifier
-      const clusterKey = `cluster:${option.cluster}`;
       const namespacesInCluster = options
         .filter(
           (opt) => opt.type === "namespace" && opt.cluster === option.cluster
         )
-        .map((opt) => opt.name);
+        .map((opt) => opt.id);
 
       // Remove individual namespaces from this cluster
       namespacesInCluster.forEach((ns) => {
@@ -161,26 +160,26 @@ export default function NamespaceMultiSelect({
       });
 
       // Toggle cluster selection
-      const clusterIndex = newValue.indexOf(clusterKey);
+      const clusterIndex = newValue.indexOf(optionId);
       if (clusterIndex > -1) {
         newValue.splice(clusterIndex, 1);
       } else {
-        newValue.push(clusterKey);
+        newValue.push(optionId);
       }
     } else {
       // If selecting a namespace, remove cluster access for that cluster
-      const clusterKey = `cluster:${option.cluster}`;
-      const clusterIndex = newValue.indexOf(clusterKey);
+      const clusterAccess = `${option.cluster}:all`;
+      const clusterIndex = newValue.indexOf(clusterAccess);
       if (clusterIndex > -1) {
         newValue.splice(clusterIndex, 1);
       }
 
       // Toggle namespace selection
-      const namespaceIndex = newValue.indexOf(option.name);
+      const namespaceIndex = newValue.indexOf(optionId);
       if (namespaceIndex > -1) {
         newValue.splice(namespaceIndex, 1);
       } else {
-        newValue.push(option.name);
+        newValue.push(optionId);
       }
     }
 
@@ -189,11 +188,13 @@ export default function NamespaceMultiSelect({
 
   const isSelected = (option: NamespaceOption) => {
     if (option.type === "cluster") {
-      return value.includes(`cluster:${option.cluster}`);
+      // Check if cluster access is selected
+      return value.includes(option.id); // option.id is "cluster:all"
     } else {
+      // Check if individual namespace is selected OR cluster access is selected
       return (
-        value.includes(option.name) ||
-        value.includes(`cluster:${option.cluster}`)
+        value.includes(option.id) || // Direct namespace access
+        value.includes(`${option.cluster}:all`) // Or cluster access
       );
     }
   };
@@ -204,12 +205,24 @@ export default function NamespaceMultiSelect({
   };
 
   const getDisplayText = (item: string) => {
-    if (item.startsWith("cluster:")) {
-      const clusterName = item.replace("cluster:", "");
+    if (item.endsWith(":all")) {
+      const clusterName = item.replace(":all", "");
       return `🏢 ${clusterName} (entire cluster)`;
     }
-    const option = options.find((opt) => opt.name === item);
-    return option ? `📁 ${item} (${option.cluster})` : item;
+
+    // For namespace access, find the matching option
+    const option = options.find((opt) => opt.id === item);
+    if (option) {
+      return `📁 ${option.name} (${option.cluster})`;
+    }
+
+    // Fallback: parse cluster:namespace format
+    const parts = item.split(":");
+    if (parts.length === 2) {
+      return `📁 ${parts[1]} (${parts[0]})`;
+    }
+
+    return item;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -298,7 +311,9 @@ export default function NamespaceMultiSelect({
                 }`}
               >
                 <span>{option.displayName}</span>
-                {isSelected(option) && <span className="text-blue-600 dark:text-blue-200">✓</span>}
+                {isSelected(option) && (
+                  <span className="text-blue-600 dark:text-blue-200">✓</span>
+                )}
               </button>
             ));
           })()}

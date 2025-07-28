@@ -33,4 +33,5 @@ export const dashboardNav = [
   },
   // { label: "nav.rbacAssessment", href: "/rbac-assessment" },
   { label: "nav.sbomReports", href: "/sbom-reports" },
+  { label: "nav.images", href: "/images" },
 ];

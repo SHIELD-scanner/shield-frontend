@@ -47,7 +47,7 @@ describe("/api/vulnerabilities", () => {
     expect(response.headers.get("X-Cache")).toBe("MISS");
     expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/",
+      "http://localhost:8000/vulnerabilities/",
     );
   });
 
@@ -58,7 +58,7 @@ describe("/api/vulnerabilities", () => {
     await GET(mockRequest);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/?cluster=test-cluster&namespace=test-namespace",
+      "http://localhost:8000/vulnerabilities/?cluster=test-cluster&namespace=test-namespace",
     );
   });
 
@@ -107,7 +107,7 @@ describe("/api/vulnerabilities", () => {
 
     // "all" values should not be included in the URL
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/",
+      "http://localhost:8000/vulnerabilities/",
     );
   });
 
@@ -127,7 +127,7 @@ describe("/api/vulnerabilities", () => {
     await CustomGET(mockRequest);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://custom-backend:9000/vulnerabilities-old/",
+      "http://custom-backend:9000/vulnerabilities/",
     );
   });
 
@@ -177,7 +177,7 @@ describe("/api/vulnerabilities", () => {
     await GET(mockRequest);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://localhost:8000/vulnerabilities-old/?cluster=test-cluster&namespace=test%2Fnamespace",
+      "http://localhost:8000/vulnerabilities/?cluster=test-cluster&namespace=test%2Fnamespace",
     );
   });
 });

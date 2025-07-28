@@ -1,6 +1,10 @@
 // __tests__/api-users-id.test.ts
 import { NextRequest } from "next/server";
 
+// Mock fetch
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
+
 describe("/api/users/[id]", () => {
   // Import GET, PUT, and DELETE functions fresh for each test to avoid cache pollution
   let GET: (req: NextRequest) => Promise<Response>;
@@ -10,6 +14,102 @@ describe("/api/users/[id]", () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     jest.resetModules();
+
+    // Reset environment
+    process.env.BACKEND_API = "http://localhost:8000";
+
+    // Track deleted users
+    const deletedUsers = new Set<string>();
+
+    // Mock backend response with state tracking
+    mockFetch.mockImplementation(
+      async (url: string, options: RequestInit = {}) => {
+        const method = options.method || "GET";
+        const userId = url.split("/").pop() || "1";
+
+        // Handle nonexistent users
+        if (userId === "nonexistent") {
+          return {
+            ok: false,
+            status: 404,
+            text: async () => "User not found",
+          };
+        }
+
+        if (method === "DELETE") {
+          if (deletedUsers.has(userId)) {
+            return {
+              ok: false,
+              status: 404,
+              text: async () => "User not found",
+            };
+          }
+          deletedUsers.add(userId);
+          return {
+            ok: true,
+            json: async () => ({
+              id: userId,
+              email: "admin@example.com",
+              fullname: "Admin User",
+              role: "ClusterAdmin",
+              namespaces: ["all"],
+              createdAt: "2024-01-15T10:30:00Z",
+              lastLogin: "2025-07-08T14:22:00Z",
+              status: "active",
+            }),
+          };
+        }
+
+        if (method === "GET") {
+          if (deletedUsers.has(userId)) {
+            return {
+              ok: false,
+              status: 404,
+              text: async () => "User not found",
+            };
+          }
+          return {
+            ok: true,
+            json: async () => ({
+              id: userId,
+              email: "admin@example.com",
+              fullname: "Admin User",
+              role: "ClusterAdmin",
+              namespaces: ["all"],
+              createdAt: "2024-01-15T10:30:00Z",
+              lastLogin: "2025-07-08T14:22:00Z",
+              status: "active",
+            }),
+          };
+        }
+
+        if (method === "PUT") {
+          if (deletedUsers.has(userId)) {
+            return {
+              ok: false,
+              status: 404,
+              text: async () => "User not found",
+            };
+          }
+          const body = JSON.parse(options.body as string);
+          return {
+            ok: true,
+            json: async () => ({
+              id: userId,
+              email: body.email || "admin@example.com",
+              fullname: body.fullname || "Admin User",
+              role: body.role || "ClusterAdmin",
+              namespaces: body.namespaces || ["all"],
+              createdAt: "2024-01-15T10:30:00Z",
+              lastLogin: "2025-07-08T14:22:00Z",
+              status: body.status || "active",
+            }),
+          };
+        }
+
+        return { ok: true, json: async () => ({}) };
+      }
+    );
 
     // Import fresh module to reset in-memory cache
     const routeModule = await import("../src/app/api/users/[id]/route");
@@ -34,7 +134,7 @@ describe("/api/users/[id]", () => {
       expect(data.fullname).toBeDefined();
       expect(data.role).toBeDefined();
       expect(response.headers.get("X-Cache")).toBe("MISS");
-      expect(response.headers.get("Cache-Control")).toBe("public, max-age=120");
+      expect(response.headers.get("Cache-Control")).toBe("public, max-age=30");
     });
 
     it("should return cached data on second request (cache hit)", async () => {

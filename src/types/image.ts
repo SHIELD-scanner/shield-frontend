@@ -1,0 +1,20 @@
+export type ImageOverview = {
+  cluster: string;
+  description: string;
+  fixedVersion: string;
+  installedVersion: string;
+  lastModifiedDate: string;
+  links: string[];
+  namespace: string;
+  packagePURL: string;
+  pod_id: string;
+  primaryLink: string;
+  publishedDate: string;
+  resource: string;
+  score: number;
+  severity: string;
+  target: string;
+  title: string;
+  vulnerabilityID: string;
+  uid: string;
+};
