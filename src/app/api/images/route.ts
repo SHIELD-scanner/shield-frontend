@@ -46,7 +46,10 @@ export async function GET(req: NextRequest) {
       return new Response("Failed to fetch images overview", { status: 500 });
     }
     const data = await res.json();
-    imagesOverviewCache.set(OVERVIEW_CACHE_KEY, { data, timestamp: Date.now() });
+    imagesOverviewCache.set(OVERVIEW_CACHE_KEY, {
+      data,
+      timestamp: Date.now(),
+    });
     const response = Response.json(data);
     response.headers.set("X-Cache", "MISS");
     response.headers.set("Cache-Control", "public, max-age=120");
