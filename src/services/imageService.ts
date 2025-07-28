@@ -1,6 +1,9 @@
 import { ImageOverview } from "@/types/image";
 
-export async function fetchImages(cluster: string, namespace: string): Promise<ImageOverview[]> {
+export async function fetchImages(
+  cluster: string,
+  namespace: string
+): Promise<ImageOverview[]> {
   const params = new URLSearchParams();
   if (cluster && cluster !== "all") params.append("cluster", cluster);
   if (namespace && namespace !== "all") params.append("namespace", namespace);

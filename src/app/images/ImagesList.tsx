@@ -105,7 +105,7 @@ export default function ImagesList() {
                 </svg>
               </span>
               <a
-                href={`/images/${img.uid}#${img.vulnerabilityID}`}
+                href={`/vulnerabilities/${img.uid}#${img.vulnerabilityID}`}
                 className="text-blue-400 hover:underline"
                 title={t("vulnerabilities.viewDetails")}
               >
@@ -169,7 +169,7 @@ export default function ImagesList() {
               </svg>
             </a>
             <a
-              href={`/images/${img.uid}#${img.vulnerabilityID}`}
+              href={`/vulnerabilities/${img.uid}#${img.vulnerabilityID}`}
               className="text-blue-400 hover:underline"
               title={t("vulnerabilities.viewDetails")}
             >
