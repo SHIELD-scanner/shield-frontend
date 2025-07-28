@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import { getBackendApiUrl } from "../../../lib/config";
 
 // Simple in-memory cache for images overview (list)
@@ -30,7 +29,7 @@ if (process.env.NODE_ENV !== "test") {
   setInterval(cleanupImagesOverviewCache, 5 * 60 * 1000);
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const cachedEntry = imagesOverviewCache.get(OVERVIEW_CACHE_KEY);
   if (cachedEntry && isValidCacheEntry(cachedEntry)) {
     const response = Response.json(cachedEntry.data);

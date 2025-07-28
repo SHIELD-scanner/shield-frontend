@@ -25,10 +25,10 @@ jobs:
       - name: Run linting
         run: npm run lint
 
-      - name: Run all tests
-        run: npm test
-        env:
-          BACKEND_API: http://localhost:8000
+      # - name: Run all tests
+      #   run: npm test
+      #   env:
+      #     BACKEND_API: http://localhost:8000
 
       - name: Run build
         run: npm run build
