@@ -9,6 +9,8 @@ import {
   IconKey,
   IconServer,
   IconShield,
+  IconPhoto,
+  IconBug,
 } from "@tabler/icons-react";
 
 import {
@@ -65,17 +67,17 @@ const data = {
     {
       title: "nav.images",
       url: "/images",
-      icon: IconUsers,
+      icon: IconPhoto,
     },
     {
       title: "nav.vulnerabilities",
       url: "/vulnerabilities",
-      icon: IconUsers,
+      icon: IconBug,
     },
     {
       title: "nav.settings",
       url: "/settings",
-      icon: IconUsers,
+      icon: IconSettings,
     },
   ],
   navSecondary: [
