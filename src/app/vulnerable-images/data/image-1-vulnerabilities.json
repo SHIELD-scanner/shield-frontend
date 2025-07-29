@@ -1,0 +1,76 @@
+[
+  {
+    "id": "CVE-2023-5678",
+    "severity": "critical",
+    "title": "Buffer Overflow in OpenSSL",
+    "description": "A critical buffer overflow vulnerability in OpenSSL that could allow remote code execution when processing malformed certificates. This vulnerability affects the X.509 certificate verification process and can be exploited by presenting a specially crafted certificate to a vulnerable application. The flaw allows an attacker to write beyond the bounds of allocated memory, potentially leading to arbitrary code execution with the privileges of the vulnerable process. This is particularly dangerous in web servers and applications that handle TLS connections.",
+    "cvssScore": 9.8,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "openssl",
+      "version": "1.1.1k",
+      "fixedVersion": "1.1.1w"
+    },
+    "publishedDate": "2023-10-15T14:30:00Z",
+    "lastModifiedDate": "2023-10-20T16:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-5678",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-5678",
+      "https://www.openssl.org/news/secadv/20231015.txt",
+      "https://github.com/openssl/openssl/commit/abcd1234"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.85,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-4321",
+    "severity": "critical",
+    "title": "SQL Injection in libpq",
+    "description": "SQL injection vulnerability in PostgreSQL libpq library that could lead to data breaches when processing untrusted connection strings. This vulnerability affects applications that dynamically construct database connection parameters from user input. Attackers can inject malicious SQL commands through specially crafted connection strings, potentially leading to unauthorized data access, modification, or deletion. The vulnerability is particularly severe in web applications that allow users to specify database connection parameters.",
+    "cvssScore": 9.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+    "package": {
+      "name": "libpq",
+      "version": "13.4",
+      "fixedVersion": "13.13"
+    },
+    "publishedDate": "2023-09-28T11:20:00Z",
+    "lastModifiedDate": "2023-10-05T09:15:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-4321",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-4321",
+      "https://www.postgresql.org/support/security/CVE-2023-4321/"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.72,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-3456",
+    "severity": "critical",
+    "title": "Remote Code Execution in curl",
+    "description": "Remote code execution vulnerability in curl library allowing arbitrary command execution through malformed HTTP headers. This vulnerability affects the HTTP header parsing mechanism in libcurl and can be triggered when processing responses with specially crafted headers. The flaw allows attackers to execute arbitrary code with the privileges of the application using libcurl, making it particularly dangerous in server-side applications and automated systems that fetch remote content.",
+    "cvssScore": 9.3,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "curl",
+      "version": "7.68.0",
+      "fixedVersion": "7.88.1"
+    },
+    "publishedDate": "2023-08-14T08:45:00Z",
+    "lastModifiedDate": "2023-08-22T13:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-3456",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-3456",
+      "https://curl.se/docs/CVE-2023-3456.html",
+      "https://github.com/curl/curl/commit/xyz123"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.91,
+    "fixAvailable": true,
+    "imageId": 1
+  }
+]

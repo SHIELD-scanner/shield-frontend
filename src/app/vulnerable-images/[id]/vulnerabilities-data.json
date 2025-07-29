@@ -1,0 +1,572 @@
+[
+  {
+    "id": "CVE-2023-5678",
+    "severity": "critical",
+    "title": "Buffer Overflow in OpenSSL",
+    "description": "A critical buffer overflow vulnerability in OpenSSL that could allow remote code execution when processing malformed certificates. This vulnerability affects the X.509 certificate verification process and can be exploited by presenting a specially crafted certificate to a vulnerable application. The flaw allows an attacker to write beyond the bounds of allocated memory, potentially leading to arbitrary code execution with the privileges of the vulnerable process. This is particularly dangerous in web servers and applications that handle TLS connections.",
+    "cvssScore": 9.8,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "openssl",
+      "version": "1.1.1k",
+      "fixedVersion": "1.1.1w"
+    },
+    "publishedDate": "2023-10-15T14:30:00Z",
+    "lastModifiedDate": "2023-10-20T16:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-5678",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-5678",
+      "https://www.openssl.org/news/secadv/20231015.txt",
+      "https://github.com/openssl/openssl/commit/abcd1234"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.85,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-4321",
+    "severity": "critical",
+    "title": "SQL Injection in libpq",
+    "description": "SQL injection vulnerability in PostgreSQL libpq library that could lead to data breaches",
+    "cvssScore": 9.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+    "package": {
+      "name": "libpq",
+      "version": "13.4",
+      "fixedVersion": "13.13"
+    },
+    "publishedDate": "2023-09-28T11:20:00Z",
+    "lastModifiedDate": "2023-10-05T09:15:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-4321",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-4321"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.72,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-3456",
+    "severity": "critical",
+    "title": "Remote Code Execution in curl",
+    "description": "Remote code execution vulnerability in curl library allowing arbitrary command execution",
+    "cvssScore": 9.3,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "curl",
+      "version": "7.68.0",
+      "fixedVersion": "7.88.1"
+    },
+    "publishedDate": "2023-08-14T08:45:00Z",
+    "lastModifiedDate": "2023-08-22T13:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-3456",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-3456"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.91,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-7890",
+    "severity": "high",
+    "title": "Privilege Escalation in systemd",
+    "description": "Local privilege escalation vulnerability in systemd service manager",
+    "cvssScore": 8.4,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "systemd",
+      "version": "245.4",
+      "fixedVersion": "245.9"
+    },
+    "publishedDate": "2023-11-02T12:15:00Z",
+    "lastModifiedDate": "2023-11-08T15:20:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-7890",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-7890"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.45,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-6543",
+    "severity": "high",
+    "title": "Information Disclosure in glibc",
+    "description": "Information disclosure vulnerability in GNU C Library that could leak sensitive data",
+    "cvssScore": 7.5,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+    "package": {
+      "name": "glibc",
+      "version": "2.31",
+      "fixedVersion": "2.31-13"
+    },
+    "publishedDate": "2023-07-20T16:30:00Z",
+    "lastModifiedDate": "2023-07-25T10:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-6543",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-6543"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.28,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-5432",
+    "severity": "high",
+    "title": "Memory Corruption in zlib",
+    "description": "Memory corruption vulnerability in zlib compression library",
+    "cvssScore": 8.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "zlib",
+      "version": "1.2.11",
+      "fixedVersion": "1.2.13"
+    },
+    "publishedDate": "2023-06-18T09:20:00Z",
+    "lastModifiedDate": "2023-06-22T14:55:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-5432",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-5432"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.67,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-4210",
+    "severity": "high",
+    "title": "Authentication Bypass in PAM",
+    "description": "Authentication bypass vulnerability in Pluggable Authentication Modules",
+    "cvssScore": 7.8,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "pam",
+      "version": "1.3.1",
+      "fixedVersion": "1.3.1-5"
+    },
+    "publishedDate": "2023-05-10T13:40:00Z",
+    "lastModifiedDate": "2023-05-15T11:25:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-4210",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-4210"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.33,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-3987",
+    "severity": "high",
+    "title": "Path Traversal in nginx",
+    "description": "Path traversal vulnerability in nginx web server allowing access to arbitrary files",
+    "cvssScore": 7.3,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+    "package": {
+      "name": "nginx",
+      "version": "1.21.0",
+      "fixedVersion": "1.21.6"
+    },
+    "publishedDate": "2023-04-05T10:15:00Z",
+    "lastModifiedDate": "2023-04-12T16:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-3987",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-3987"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.54,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-2876",
+    "severity": "medium",
+    "title": "Cross-Site Scripting in libxml2",
+    "description": "Cross-site scripting vulnerability in XML parsing library",
+    "cvssScore": 6.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+    "package": {
+      "name": "libxml2",
+      "version": "2.9.10",
+      "fixedVersion": "2.9.14"
+    },
+    "publishedDate": "2023-03-22T14:20:00Z",
+    "lastModifiedDate": "2023-03-28T09:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-2876",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-2876"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.15,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-1765",
+    "severity": "medium",
+    "title": "Denial of Service in pcre",
+    "description": "Denial of service vulnerability in Perl Compatible Regular Expressions library",
+    "cvssScore": 5.3,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+    "package": {
+      "name": "pcre",
+      "version": "8.39",
+      "fixedVersion": "8.45"
+    },
+    "publishedDate": "2023-02-14T11:30:00Z",
+    "lastModifiedDate": "2023-02-20T08:15:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-1765",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-1765"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.08,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2023-0654",
+    "severity": "medium",
+    "title": "Information Leak in util-linux",
+    "description": "Information leak vulnerability in util-linux package",
+    "cvssScore": 4.3,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N",
+    "package": {
+      "name": "util-linux",
+      "version": "2.34",
+      "fixedVersion": "2.34-0.1"
+    },
+    "publishedDate": "2023-01-08T15:45:00Z",
+    "lastModifiedDate": "2023-01-12T12:20:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0654",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-0654"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.04,
+    "fixAvailable": true,
+    "imageId": 1
+  },
+  {
+    "id": "CVE-2024-1234",
+    "severity": "critical",
+    "title": "Redis Remote Code Execution",
+    "description": "A critical remote code execution vulnerability in Redis server that allows authenticated users to execute arbitrary commands on the host system through Lua script injection. The vulnerability exists in the Redis Lua script sandbox escape mechanism, allowing attackers to break out of the script execution environment and execute system commands with the privileges of the Redis process. This can lead to complete system compromise in environments where Redis runs with elevated privileges or has access to sensitive data.",
+    "cvssScore": 9.0,
+    "cvssVector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+    "package": {
+      "name": "redis-server",
+      "version": "6.2.5",
+      "fixedVersion": "6.2.14"
+    },
+    "publishedDate": "2024-01-15T09:30:00Z",
+    "lastModifiedDate": "2024-01-22T11:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-1234",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-1234",
+      "https://redis.io/security/",
+      "https://github.com/redis/redis/security/advisories/GHSA-xxxx-yyyy-zzzz"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.67,
+    "fixAvailable": true,
+    "imageId": 2
+  },
+  {
+    "id": "CVE-2024-2345",
+    "severity": "high",
+    "title": "Redis Denial of Service",
+    "description": "A high severity denial of service vulnerability in Redis that can be triggered by sending specially crafted commands to cause memory exhaustion and server crash. The vulnerability affects the Redis memory management system and can be exploited by authenticated users to consume excessive memory resources, leading to service unavailability.",
+    "cvssScore": 7.7,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:N/I:N/A:H",
+    "package": {
+      "name": "redis-server",
+      "version": "6.2.5",
+      "fixedVersion": "6.2.12"
+    },
+    "publishedDate": "2024-02-10T14:20:00Z",
+    "lastModifiedDate": "2024-02-15T16:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-2345",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-2345"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.23,
+    "fixAvailable": true,
+    "imageId": 2
+  },
+  {
+    "id": "CVE-2023-9876",
+    "severity": "critical",
+    "title": "PostgreSQL SQL Injection",
+    "description": "A critical SQL injection vulnerability in PostgreSQL that allows attackers to execute arbitrary SQL commands through specially crafted input in the JDBC driver. This vulnerability affects the parameter binding mechanism and can lead to complete database compromise, including data exfiltration, modification, or deletion. The flaw is particularly dangerous in web applications that use PostgreSQL as their backend database with user-controlled input.",
+    "cvssScore": 9.8,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "postgresql",
+      "version": "13.4",
+      "fixedVersion": "13.16"
+    },
+    "publishedDate": "2023-11-20T10:15:00Z",
+    "lastModifiedDate": "2023-11-25T14:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-9876",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-9876",
+      "https://www.postgresql.org/support/security/",
+      "https://github.com/postgres/postgres/commit/xyz789"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.92,
+    "fixAvailable": true,
+    "imageId": 3
+  },
+  {
+    "id": "CVE-2023-8765",
+    "severity": "critical",
+    "title": "PostgreSQL Privilege Escalation",
+    "description": "A critical privilege escalation vulnerability in PostgreSQL that allows low-privileged database users to gain superuser access through manipulation of extension loading mechanisms. This vulnerability can lead to complete database server compromise and potential access to the underlying operating system.",
+    "cvssScore": 8.8,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+    "package": {
+      "name": "postgresql",
+      "version": "13.4",
+      "fixedVersion": "13.15"
+    },
+    "publishedDate": "2023-12-05T16:45:00Z",
+    "lastModifiedDate": "2023-12-10T12:20:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-8765",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-8765"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.45,
+    "fixAvailable": true,
+    "imageId": 3
+  },
+  {
+    "id": "CVE-2024-3456",
+    "severity": "high",
+    "title": "Node.js Prototype Pollution",
+    "description": "A high severity prototype pollution vulnerability in Node.js that allows attackers to modify the prototype of base objects, leading to potential remote code execution or denial of service. This vulnerability affects the JSON parsing mechanism and can be exploited when processing untrusted JSON input. The flaw can lead to application crashes or in some cases, arbitrary code execution depending on how the polluted prototypes are used by the application.",
+    "cvssScore": 8.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "nodejs",
+      "version": "16.14.0",
+      "fixedVersion": "16.20.2"
+    },
+    "publishedDate": "2024-03-12T11:30:00Z",
+    "lastModifiedDate": "2024-03-18T15:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-3456",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-3456",
+      "https://nodejs.org/en/security/",
+      "https://github.com/nodejs/node/security/advisories/GHSA-abcd-efgh-ijkl"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.78,
+    "fixAvailable": true,
+    "imageId": 4
+  },
+  {
+    "id": "CVE-2024-4567",
+    "severity": "high",
+    "title": "Node.js HTTP Request Smuggling",
+    "description": "A high severity HTTP request smuggling vulnerability in Node.js HTTP parser that allows attackers to bypass security controls and potentially access unauthorized resources. The vulnerability occurs due to inconsistent parsing of HTTP requests with conflicting Content-Length and Transfer-Encoding headers.",
+    "cvssScore": 7.5,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+    "package": {
+      "name": "nodejs",
+      "version": "16.14.0",
+      "fixedVersion": "16.19.1"
+    },
+    "publishedDate": "2024-04-08T13:20:00Z",
+    "lastModifiedDate": "2024-04-12T09:15:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-4567",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-4567"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.34,
+    "fixAvailable": true,
+    "imageId": 4
+  },
+  {
+    "id": "CVE-2024-5678",
+    "severity": "medium",
+    "title": "Alpine APK Package Manager Vulnerability",
+    "description": "A medium severity vulnerability in Alpine's APK package manager that could allow local attackers to perform unauthorized package installations or modifications through symlink attacks. While the impact is limited due to requiring local access, it could be used as part of a privilege escalation chain in containerized environments.",
+    "cvssScore": 5.5,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+    "package": {
+      "name": "apk-tools",
+      "version": "2.12.5",
+      "fixedVersion": "2.12.10"
+    },
+    "publishedDate": "2024-05-15T08:45:00Z",
+    "lastModifiedDate": "2024-05-20T11:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-5678",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-5678",
+      "https://gitlab.alpinelinux.org/alpine/apk-tools/-/issues/10000"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.12,
+    "fixAvailable": true,
+    "imageId": 5
+  },
+  {
+    "id": "CVE-2023-7654",
+    "severity": "critical",
+    "title": "Ubuntu Kernel Privilege Escalation",
+    "description": "A critical privilege escalation vulnerability in the Ubuntu Linux kernel that allows local users to gain root privileges through exploitation of a race condition in the process management subsystem. This vulnerability affects the setuid mechanism and can be exploited by any local user to escalate privileges to root, leading to complete system compromise. The flaw is particularly dangerous in multi-tenant environments or systems with untrusted local users.",
+    "cvssScore": 8.8,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+    "package": {
+      "name": "linux-image",
+      "version": "5.4.0-74",
+      "fixedVersion": "5.4.0-122"
+    },
+    "publishedDate": "2023-09-14T14:30:00Z",
+    "lastModifiedDate": "2023-09-20T16:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-7654",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-7654",
+      "https://ubuntu.com/security/CVE-2023-7654",
+      "https://launchpad.net/bugs/1234567"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.89,
+    "fixAvailable": true,
+    "imageId": 6
+  },
+  {
+    "id": "CVE-2024-6789",
+    "severity": "high",
+    "title": "MySQL Authentication Bypass",
+    "description": "A high severity authentication bypass vulnerability in MySQL that allows remote attackers to gain unauthorized access to the database server by exploiting a flaw in the authentication handshake process. This vulnerability can lead to complete database compromise, including unauthorized data access, modification, and deletion. The flaw affects the MySQL protocol implementation and can be exploited without requiring valid credentials.",
+    "cvssScore": 8.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "mysql-server",
+      "version": "8.0.26",
+      "fixedVersion": "8.0.35"
+    },
+    "publishedDate": "2024-06-20T12:15:00Z",
+    "lastModifiedDate": "2024-06-25T14:30:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-6789",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-6789",
+      "https://dev.mysql.com/doc/relnotes/mysql/8.0/en/",
+      "https://bugs.mysql.com/bug.php?id=123456"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.56,
+    "fixAvailable": true,
+    "imageId": 7
+  },
+  {
+    "id": "CVE-2024-7890",
+    "severity": "critical",
+    "title": "Python Code Injection",
+    "description": "A critical code injection vulnerability in Python's pickle module that allows remote attackers to execute arbitrary code when processing untrusted pickle data. This vulnerability is particularly dangerous in web applications that deserialize user-provided data or in systems that process pickle files from untrusted sources. The flaw can lead to complete system compromise, including remote code execution with the privileges of the Python process.",
+    "cvssScore": 9.8,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+    "package": {
+      "name": "python3",
+      "version": "3.9.7",
+      "fixedVersion": "3.9.18"
+    },
+    "publishedDate": "2024-07-10T16:20:00Z",
+    "lastModifiedDate": "2024-07-15T18:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-7890",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-7890",
+      "https://python.org/security/",
+      "https://github.com/python/cpython/security/advisories/GHSA-wxyz-1234-5678"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.94,
+    "fixAvailable": true,
+    "imageId": 8
+  },
+  {
+    "id": "CVE-2024-8901",
+    "severity": "high",
+    "title": "Tomcat Directory Traversal",
+    "description": "A high severity directory traversal vulnerability in Apache Tomcat that allows remote attackers to access arbitrary files outside the web application's root directory. This vulnerability affects the file serving mechanism and can be exploited to read sensitive files such as configuration files, source code, or system files. The flaw can lead to information disclosure and potential system compromise if sensitive credentials or keys are exposed.",
+    "cvssScore": 7.5,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+    "package": {
+      "name": "tomcat",
+      "version": "9.0.52",
+      "fixedVersion": "9.0.80"
+    },
+    "publishedDate": "2024-08-05T10:30:00Z",
+    "lastModifiedDate": "2024-08-10T14:15:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-8901",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-8901",
+      "https://tomcat.apache.org/security-9.html",
+      "https://lists.apache.org/thread/abc123"
+    ],
+    "exploitAvailable": true,
+    "epssScore": 0.72,
+    "fixAvailable": true,
+    "imageId": 9
+  },
+  {
+    "id": "CVE-2024-9012",
+    "severity": "medium",
+    "title": "RabbitMQ Management Plugin XSS",
+    "description": "A medium severity cross-site scripting (XSS) vulnerability in the RabbitMQ management plugin that allows attackers to execute malicious JavaScript in the context of administrator sessions. This vulnerability affects the web-based management interface and can be exploited when administrators view specially crafted queue or exchange names. While the direct impact is limited, it could be used to steal session cookies or perform administrative actions on behalf of the victim.",
+    "cvssScore": 6.1,
+    "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+    "package": {
+      "name": "rabbitmq-server",
+      "version": "3.9.7",
+      "fixedVersion": "3.9.29"
+    },
+    "publishedDate": "2024-09-12T13:45:00Z",
+    "lastModifiedDate": "2024-09-18T11:20:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-9012",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-9012",
+      "https://github.com/rabbitmq/rabbitmq-server/security/advisories/GHSA-mnop-qrst-uvwx"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.18,
+    "fixAvailable": true,
+    "imageId": 10
+  },
+  {
+    "id": "CVE-2022-9876",
+    "severity": "low",
+    "title": "Minor Memory Leak in bash",
+    "description": "Minor memory leak in bash shell that could lead to resource exhaustion over time",
+    "cvssScore": 3.3,
+    "cvssVector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L",
+    "package": {
+      "name": "bash",
+      "version": "5.0",
+      "fixedVersion": "5.0-6"
+    },
+    "publishedDate": "2022-12-20T09:30:00Z",
+    "lastModifiedDate": "2022-12-22T16:45:00Z",
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-9876",
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-9876"
+    ],
+    "exploitAvailable": false,
+    "epssScore": 0.02,
+    "fixAvailable": true,
+    "imageId": 1
+  }
+]
