@@ -128,5 +128,7 @@
   "themeToggle.lightMode": "Heller Modus",
   "themeToggle.darkMode": "Dunkler Modus",
   "themeToggle.lightModeAlt": "Heller Modus",
-  "themeToggle.darkModeAlt": "Dunkler Modus"
+  "themeToggle.darkModeAlt": "Dunkler Modus",
+  "role": "",
+  ".quick-nav-dropdown": ""
 }
