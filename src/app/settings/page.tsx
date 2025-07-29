@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useState, ReactNode } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { dashboardNav } from "./nav-data";
 import { useLanguage } from "@/lib/i18n";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { LanguageSwitcher } from "../../components/dashboard/LanguageSwitcher";
 import { fetchNamespaces } from "@/services/namespaceService";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/custom/ThemeToggle";
-
 
 interface NamespaceDropdownProps {
   value: string;
@@ -95,7 +95,7 @@ function NamespaceDropdown(props: Readonly<NamespaceDropdownProps>) {
   );
 }
 
-export default function DashboardSidebar() {
+export default function Page() {
   const pathname = usePathname();
   const [namespaceList, setNamespaceList] = useState<
     { cluster: string; name: string }[]
@@ -156,100 +156,33 @@ export default function DashboardSidebar() {
     if (!href || href === "/") return href ?? "/";
     return `${href}?namespace=${selectedNamespace}`;
   };
-
   return (
-    <aside className="w-64 bg-[#1a2232] text-white flex flex-col py-6 px-4 gap-4 border-r border-[#232b3b] min-h-screen">
-      <div className="flex items-center gap-2 mb-8">
-        <div className="bg-[#2e3a54] rounded-full w-8 h-8 flex items-center justify-center">
-          <span className="font-bold text-lg">🛡️</span>
-        </div>
-        <Link href="/" className="text-white no-underline">
-          <span className="font-bold text-xl">S.H.I.E.L.D.</span>
-        </Link>
-      </div>
-      <LanguageSwitcher />
-      <NamespaceDropdown
-        value={selectedNamespace}
-        onChange={setSelectedNamespace}
-        namespaceOptions={namespaceList}
-      />
-      <nav className="flex flex-col gap-2 text-base">
-        {dashboardNav.map((item) => (
-          <SidebarButton
-            key={item.label}
-            href={withNamespace(item.href)}
-            badge={item.badge}
-            badgeColor={item.badgeColor}
-            active={
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href || "")
-            }
-          >
-            {t(item.label)}
-          </SidebarButton>
-        ))}
-      </nav>
-      <div className="mt-4">
-        {/* Theme toggle button */}
-        <div className="w-full flex justify-center">
-          <ThemeToggle />
-        </div>
-      </div>
-      {/* <div className="mt-auto text-xs text-gray-400 pt-8 border-t border-[#232b3b]">
-        <div className="flex items-center gap-2">
-          <span className="bg-green-600 w-2 h-2 rounded-full inline-block" />{" "}
-          production-cluster
-        </div>
-        <div>8 nodes • Last scan 2m ago</div>
-      </div> */}
-    </aside>
-  );
-}
-
-function SidebarButton({
-  children,
-  badge,
-  badgeColor,
-  active,
-  href,
-}: {
-  children: ReactNode;
-  badge?: string;
-  badgeColor?: string;
-  active?: boolean;
-  href?: string;
-}) {
-  return href ? (
-    <Link
-      href={href}
-      className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg transition-colors no-underline ${
-        active ? "bg-[#232b3b] font-semibold" : "hover:bg-[#232b3b]"
-      }`}
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
     >
-      <span>{children}</span>
-      {badge && (
-        <span
-          className={`text-white text-xs px-2 py-0.5 rounded-full ml-2 ${badgeColor}`}
-        >
-          {badge}
-        </span>
-      )}
-    </Link>
-  ) : (
-    <button
-      className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg transition-colors ${
-        active ? "bg-[#232b3b] font-semibold" : "hover:bg-[#232b3b]"
-      }`}
-    >
-      <span>{children}</span>
-      {badge && (
-        <span
-          className={`text-white text-xs px-2 py-0.5 rounded-full ml-2 ${badgeColor}`}
-        >
-          {badge}
-        </span>
-      )}
-    </button>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              <LanguageSwitcher />
+              <NamespaceDropdown
+                value={selectedNamespace}
+                onChange={setSelectedNamespace}
+                namespaceOptions={namespaceList}
+              />
+                      <ThemeToggle />
+              
+            </div>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

@@ -1,5 +1,5 @@
 "use client"
-
+import { useLanguage } from "@/lib/i18n";
 import * as React from "react"
 import { type Icon } from "@tabler/icons-react"
 
@@ -21,6 +21,8 @@ export function NavSecondary({
     icon: Icon
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const { t } = useLanguage();
+  
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -30,7 +32,7 @@ export function NavSecondary({
               <SidebarMenuButton asChild>
                 <a href={item.url}>
                   <item.icon />
-                  <span>{item.title}</span>
+                  <span>{t(item.title)}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
