@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 
 const LANG_DIR = path.join(__dirname, "..", "src", "lib", "i18n");
-const LANGS = ["en", "nl"]; // Add more language codes here as needed
+const LANGS = ["en", "nl", "de"]; // Add more language codes here as needed
 
 function getAllFiles(dir, ext = ".tsx", files = []) {
   fs.readdirSync(dir).forEach((file) => {

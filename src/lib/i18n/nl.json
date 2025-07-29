@@ -16,7 +16,6 @@
   "nav.rbacAssessment": "RBAC-beoordeling",
   "nav.sbomReports": "SBOM-rapporten",
   "nav.images": "Images",
-
   "dashboard.title": "S.H.I.E.L.D. Security Dashboard",
   "dashboard.subtitle": "Afdeling Strategische Binnenlandse Interventie, Handhaving en Logistiek",
   "configAudit.heading": "Config Audit",
@@ -129,5 +128,7 @@
   "themeToggle.lightMode": "Lichte modus",
   "themeToggle.darkMode": "Donkere modus",
   "themeToggle.lightModeAlt": "Lichte modus",
-  "themeToggle.darkModeAlt": "Donkere modus"
+  "themeToggle.darkModeAlt": "Donkere modus",
+  "role": "",
+  ".quick-nav-dropdown": ""
 }

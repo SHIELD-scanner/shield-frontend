@@ -82,5 +82,7 @@
   "themeToggle.lightMode": "Light Mode",
   "themeToggle.darkMode": "Dark Mode",
   "themeToggle.lightModeAlt": "Light mode",
-  "themeToggle.darkModeAlt": "Dark mode"
+  "themeToggle.darkModeAlt": "Dark mode",
+  "role": "role",
+  ".quick-nav-dropdown": ".quick-nav-dropdown"
 }
