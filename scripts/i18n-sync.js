@@ -46,6 +46,7 @@ function saveLangFile(lang, obj) {
 function main() {
   const srcDir = path.join(__dirname, "..", "src");
   const files = getAllFiles(srcDir);
+  console.log("Found files:", files);
   const allKeys = new Set();
   files.forEach((f) => extractKeysFromFile(f).forEach((k) => allKeys.add(k)));
 
