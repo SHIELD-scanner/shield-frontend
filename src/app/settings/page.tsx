@@ -146,17 +146,17 @@ export default function SettingsPage() {
   >([]);
   const [selectedNamespace, setSelectedNamespace] = useState<string>("all");
   const { lang, setLang, t } = useLanguage();
-  const [notifications, setNotifications] = useState({
-    vulnerabilities: true,
-    secrets: true,
-    compliance: false,
-    updates: true,
-  });
-  const [securitySettings, setSecuritySettings] = useState({
-    autoScan: true,
-    realTimeMonitoring: true,
-    alertThreshold: "medium",
-  });
+  // const [notifications, setNotifications] = useState({
+  //   vulnerabilities: true,
+  //   secrets: true,
+  //   compliance: false,
+  //   updates: true,
+  // });
+  // const [securitySettings, setSecuritySettings] = useState({
+  //   autoScan: true,
+  //   realTimeMonitoring: true,
+  //   alertThreshold: "medium",
+  // });
 
   // Hydrate from sessionStorage after mount (client only)
   useEffect(() => {

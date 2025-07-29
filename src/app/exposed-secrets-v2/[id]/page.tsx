@@ -6,7 +6,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   IconArrowLeft,
   IconEye,
@@ -101,12 +100,37 @@ function getCategoryIcon(category: string) {
       return IconKey;
   }
 }
+interface Secret {
+  id: string;
+  secretType: string;
+  ruleId: string;
+  category: string;
+  severity: string;
+  title: string;
+  description: string;
+  match: string;
+  file: string;
+  line: number;
+  column: number;
+  code: string;
+  imageId: number;
+  imageName: string;
+  tag: string;
+  namespace: string;
+  workload: string;
+  detectedDate: string;
+  status: string;
+  falsePositive: boolean;
+  suppressed: boolean;
+  confidence: string;
+  entropy: number;
+}
 
 export default function SecretDetailPage({ params }: PageProps) {
   const secretId = params.id;
   const [showSecret, setShowSecret] = useState(false);
 
-  const secret = exposedSecretsData.find((s: any) => s.id === secretId);
+  const secret = exposedSecretsData.find((s: Secret) => s.id === secretId);
 
   if (!secret) {
     return (
