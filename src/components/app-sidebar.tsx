@@ -1,4 +1,5 @@
 "use client";
+
 import {
   IconDashboard,
   IconHelp,
@@ -24,8 +25,6 @@ import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import { NavThemeToggle } from "@/components/nav-theme-toggle";
-import { ThemeToggle } from "@/components/custom/ThemeToggle";
-
 const data = {
   user: {
     name: "SHIELD User",
@@ -34,28 +33,48 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "nav.dashboard",
       url: "/dashboard",
       icon: IconDashboard,
     },
     {
-      title: "Vulnerable Images",
+      title: "nav.vulnerable-images",
       url: "/vulnerable-images",
       icon: IconListDetails,
     },
     {
-      title: "Exposed Secrets",
+      title: "nav.exposed-secrets",
       url: "/exposed-secrets",
       icon: IconKey,
     },
     {
-      title: "Cluster Audits",
+      title: "nav.cluster-audits",
       url: "/cluster-audits",
       icon: IconServer,
     },
     {
-      title: "RBAC Audits",
+      title: "nav.rbac-audits",
       url: "/rbac-audits",
+      icon: IconUsers,
+    },
+    {
+      title: "nav.users",
+      url: "/users",
+      icon: IconUsers,
+    },
+    {
+      title: "nav.images",
+      url: "/images",
+      icon: IconUsers,
+    },
+    {
+      title: "nav.vulnerabilities",
+      url: "/vulnerabilities",
+      icon: IconUsers,
+    },
+    {
+      title: "nav.settings",
+      url: "/settings",
       icon: IconUsers,
     },
   ],
@@ -95,7 +114,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
         <NavThemeToggle />
-        <ThemeToggle />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
