@@ -2,7 +2,6 @@
 
 import { ThemeToggle } from "@/components/custom/ThemeToggle";
 
-
 import React, { useEffect, useState } from "react";
 import { useLanguage, availableLanguages } from "@/lib/i18n";
 import { fetchNamespaces } from "@/services/namespaceService";
@@ -13,29 +12,26 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  IconSettings, 
-  IconPalette, 
-  IconBell, 
-  IconShield, 
+import {
+  IconSettings,
+  IconPalette,
   IconGlobe,
   IconServer,
-  IconKey,
   IconMoon,
   IconSun,
-  IconCheck,
-  IconRefresh
 } from "@tabler/icons-react";
 
 interface NamespaceSelectorProps {
@@ -133,7 +129,11 @@ function ThemeToggleCard() {
         </p>
       </div>
       <div className="flex items-center space-x-2">
-        {isDark ? <IconMoon className="h-4 w-4" /> : <IconSun className="h-4 w-4" />}
+        {isDark ? (
+          <IconMoon className="h-4 w-4" />
+        ) : (
+          <IconSun className="h-4 w-4" />
+        )}
         <Switch checked={isDark} onCheckedChange={toggleTheme} />
       </div>
     </div>
