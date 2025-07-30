@@ -1,5 +1,8 @@
 // Setup file for Jest
 
+// Import jest-dom matchers
+require('@testing-library/jest-dom');
+
 // Set test environment
 process.env.NODE_ENV = "test";
 

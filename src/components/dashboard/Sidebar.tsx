@@ -9,7 +9,6 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { fetchNamespaces } from "@/services/namespaceService";
 import { ThemeToggle } from "@/components/custom/ThemeToggle";
 
-// NamespaceDropdown component for reuse and separation
 
 interface NamespaceDropdownProps {
   value: string;
@@ -207,8 +206,6 @@ export default function DashboardSidebar() {
     </aside>
   );
 }
-
-// ...existing code...
 
 function SidebarButton({
   children,

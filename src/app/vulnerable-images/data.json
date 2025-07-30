@@ -1,0 +1,292 @@
+[
+  {
+    "id": 1,
+    "imageName": "nginx",
+    "tag": "1.21.0",
+    "registry": "docker.io",
+    "repository": "library/nginx",
+    "fullName": "docker.io/library/nginx:1.21.0",
+    "digest": "sha256:8b13cd1e39c847",
+    "size": "142MB",
+    "vulnerabilityCount": {
+      "critical": 3,
+      "high": 8,
+      "medium": 15,
+      "low": 24,
+      "total": 50
+    },
+    "secretCount": {
+      "critical": 2,
+      "high": 1,
+      "medium": 1,
+      "low": 0,
+      "total": 4
+    },
+    "lastScanned": "2025-01-28T10:30:00Z",
+    "riskScore": 8.7,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["web-frontend", "api-gateway"]
+  },
+  {
+    "id": 2,
+    "imageName": "redis",
+    "tag": "6.2.5",
+    "registry": "docker.io",
+    "repository": "library/redis",
+    "fullName": "docker.io/library/redis:6.2.5",
+    "digest": "sha256:9b13cd1e39c848",
+    "size": "105MB",
+    "vulnerabilityCount": {
+      "critical": 1,
+      "high": 4,
+      "medium": 12,
+      "low": 18,
+      "total": 35
+    },
+    "secretCount": {
+      "critical": 1,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T09:15:00Z",
+    "riskScore": 6.4,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["cache-service"]
+  },
+  {
+    "id": 3,
+    "imageName": "postgres",
+    "tag": "13.4",
+    "registry": "docker.io",
+    "repository": "library/postgres",
+    "fullName": "docker.io/library/postgres:13.4",
+    "digest": "sha256:ac13cd1e39c849",
+    "size": "376MB",
+    "vulnerabilityCount": {
+      "critical": 5,
+      "high": 12,
+      "medium": 28,
+      "low": 45,
+      "total": 90
+    },
+    "secretCount": {
+      "critical": 1,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T08:45:00Z",
+    "riskScore": 9.2,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["database"]
+  },
+  {
+    "id": 4,
+    "imageName": "node",
+    "tag": "16.14.0",
+    "registry": "docker.io",
+    "repository": "library/node",
+    "fullName": "docker.io/library/node:16.14.0",
+    "digest": "sha256:bd13cd1e39c850",
+    "size": "942MB",
+    "vulnerabilityCount": {
+      "critical": 2,
+      "high": 6,
+      "medium": 22,
+      "low": 38,
+      "total": 68
+    },
+    "secretCount": {
+      "critical": 1,
+      "high": 2,
+      "medium": 0,
+      "low": 0,
+      "total": 3
+    },
+    "lastScanned": "2025-01-28T07:20:00Z",
+    "riskScore": 7.1,
+    "status": "Active",
+    "namespace": "staging",
+    "workloads": ["app-backend", "worker-service"]
+  },
+  {
+    "id": 5,
+    "imageName": "alpine",
+    "tag": "3.14.2",
+    "registry": "docker.io",
+    "repository": "library/alpine",
+    "fullName": "docker.io/library/alpine:3.14.2",
+    "digest": "sha256:ce13cd1e39c851",
+    "size": "5.6MB",
+    "vulnerabilityCount": {
+      "critical": 0,
+      "high": 1,
+      "medium": 3,
+      "low": 8,
+      "total": 12
+    },
+    "secretCount": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 1,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T11:00:00Z",
+    "riskScore": 2.3,
+    "status": "Active",
+    "namespace": "development",
+    "workloads": ["init-container"]
+  },
+  {
+    "id": 6,
+    "imageName": "ubuntu",
+    "tag": "20.04",
+    "registry": "docker.io",
+    "repository": "library/ubuntu",
+    "fullName": "docker.io/library/ubuntu:20.04",
+    "digest": "sha256:df13cd1e39c852",
+    "size": "72.8MB",
+    "vulnerabilityCount": {
+      "critical": 4,
+      "high": 11,
+      "medium": 19,
+      "low": 29,
+      "total": 63
+    },
+    "secretCount": {
+      "critical": 0,
+      "high": 1,
+      "medium": 0,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T06:30:00Z",
+    "riskScore": 8.1,
+    "status": "Deprecated",
+    "namespace": "production",
+    "workloads": ["legacy-app"]
+  },
+  {
+    "id": 7,
+    "imageName": "mysql",
+    "tag": "8.0.26",
+    "registry": "docker.io",
+    "repository": "library/mysql",
+    "fullName": "docker.io/library/mysql:8.0.26",
+    "digest": "sha256:ef13cd1e39c853",
+    "size": "521MB",
+    "vulnerabilityCount": {
+      "critical": 1,
+      "high": 3,
+      "medium": 14,
+      "low": 21,
+      "total": 39
+    },
+    "secretCount": {
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T05:45:00Z",
+    "riskScore": 5.8,
+    "status": "Active",
+    "namespace": "staging",
+    "workloads": ["analytics-db"]
+  },
+  {
+    "id": 8,
+    "imageName": "python",
+    "tag": "3.9.7",
+    "registry": "docker.io",
+    "repository": "library/python",
+    "fullName": "docker.io/library/python:3.9.7",
+    "digest": "sha256:ff13cd1e39c854",
+    "size": "885MB",
+    "vulnerabilityCount": {
+      "critical": 6,
+      "high": 14,
+      "medium": 31,
+      "low": 52,
+      "total": 103
+    },
+    "secretCount": {
+      "critical": 2,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "total": 2
+    },
+    "lastScanned": "2025-01-28T04:15:00Z",
+    "riskScore": 9.5,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["ml-service", "data-processor"]
+  },
+  {
+    "id": 9,
+    "imageName": "tomcat",
+    "tag": "9.0.52",
+    "registry": "docker.io",
+    "repository": "library/tomcat",
+    "fullName": "docker.io/library/tomcat:9.0.52",
+    "digest": "sha256:ag13cd1e39c855",
+    "size": "667MB",
+    "vulnerabilityCount": {
+      "critical": 2,
+      "high": 7,
+      "medium": 18,
+      "low": 26,
+      "total": 53
+    },
+    "secretCount": {
+      "critical": 0,
+      "high": 1,
+      "medium": 0,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T03:30:00Z",
+    "riskScore": 7.3,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["java-app"]
+  },
+  {
+    "id": 10,
+    "imageName": "rabbitmq",
+    "tag": "3.9.7",
+    "registry": "docker.io",
+    "repository": "library/rabbitmq",
+    "fullName": "docker.io/library/rabbitmq:3.9.7",
+    "digest": "sha256:bg13cd1e39c856",
+    "size": "263MB",
+    "vulnerabilityCount": {
+      "critical": 0,
+      "high": 2,
+      "medium": 9,
+      "low": 15,
+      "total": 26
+    },
+    "secretCount": {
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 0,
+      "total": 1
+    },
+    "lastScanned": "2025-01-28T02:45:00Z",
+    "riskScore": 4.2,
+    "status": "Active",
+    "namespace": "production",
+    "workloads": ["message-queue"]
+  }
+]

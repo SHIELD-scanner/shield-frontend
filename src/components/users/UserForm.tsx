@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "@/components/custom/card";
 import { Button } from "@/components/custom/button";
+import { Input } from "@/components/ui/input";
 import { UserRole } from "@/services/userService";
 import NamespaceMultiSelect from "./NamespaceMultiSelect";
 
@@ -55,14 +56,14 @@ export default function UserForm({
             >
               Full Name
             </label>
-            <input
+            <Input
               id="fullname"
               type="text"
               value={formData.fullname}
               onChange={(e) =>
                 setFormData({ ...formData, fullname: e.target.value })
               }
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full"
               required
             />
           </div>

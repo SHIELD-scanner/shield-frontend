@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import DashboardSidebar from "@/components/dashboard/Sidebar";
 import { LanguageProvider } from "@/lib/i18n";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,26 +26,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LanguageProvider>
-      <html lang="en">
-        <head>
-          <title>S.H.I.E.L.D. Security Dashboard</title>
-          <meta
-            name="description"
-            content="S.H.I.E.L.D. Security Dashboard - Your Kubernetes Security Hub"
-          />
-        </head>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <div className="min-h-screen flex bg-[#151c24] text-white">
-            <DashboardSidebar />
-            <div className="flex-1 flex flex-col min-h-screen bg-[#f7f8fa] text-black">
-              {children}
-            </div>
-          </div>
-        </body>
-      </html>
-    </LanguageProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <LanguageProvider>
+          <ThemeProvider>
+            <SidebarProvider>
+              <SidebarInset>{children}</SidebarInset>
+            </SidebarProvider>
+          </ThemeProvider>
+        </LanguageProvider>
+      </body>
+    </html>
   );
 }
