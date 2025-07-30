@@ -1,8 +1,5 @@
 import {
-  IconActivity,
   IconHeart,
-  IconPercentage,
-  IconScoreboard,
   IconTrendingDown,
   IconTrendingUp,
 } from "@tabler/icons-react";

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { TimeDisplay } from "@/components/ui/time-display";
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -9,12 +10,11 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconDotsVertical,
-  IconGripVertical,
   IconLayoutColumns,
-  IconPlus,
-  IconAlertTriangle,
   IconShield,
-  IconClock,
+  IconAlertTriangle,
+  // IconPackage,
+  // IconCode,
   IconKey,
 } from "@tabler/icons-react";
 import {
@@ -27,7 +27,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Row,
   SortingState,
   useReactTable,
   VisibilityState,
@@ -113,23 +112,6 @@ function getStatusBadgeVariant(status: string) {
     default:
       return "outline";
   }
-}
-
-function formatTimeAgo(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInHours = Math.floor(
-    (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-  );
-
-  if (diffInHours < 1) return "Just now";
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) return `${diffInDays}d ago`;
-
-  const diffInWeeks = Math.floor(diffInDays / 7);
-  return `${diffInWeeks}w ago`;
 }
 
 const columns: ColumnDef<VulnerableImage>[] = [
@@ -292,12 +274,7 @@ const columns: ColumnDef<VulnerableImage>[] = [
   {
     accessorKey: "lastScanned",
     header: "Last Scanned",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-1 text-sm">
-        <IconClock className="h-3 w-3 text-muted-foreground" />
-        {formatTimeAgo(row.original.lastScanned)}
-      </div>
-    ),
+    cell: ({ row }) => <TimeDisplay dateString={row.original.lastScanned} />,
   },
   {
     accessorKey: "workloads",

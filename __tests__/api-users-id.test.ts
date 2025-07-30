@@ -187,20 +187,19 @@ describe("/api/users/[id]", () => {
       // Mock console.error to avoid test output pollution
       const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
-      // Create a request that would cause an error
+      // Mock fetch to throw an error instead of overriding Response.json
+      const originalFetch = global.fetch;
+      global.fetch = jest.fn().mockRejectedValue(new Error("Network error"));
+
       const mockRequest = new NextRequest("http://localhost:3000/api/users/1");
-
-      // Override Response.json to throw an error
-      const originalResponse = Response.json;
-      Response.json = jest.fn().mockImplementation(() => {
-        throw new Error("Mock error");
-      });
-
       const response = await GET(mockRequest);
+      
       expect(response.status).toBe(500);
+      const errorData = await response.json();
+      expect(errorData.error).toBe("Failed to fetch user from backend");
 
-      // Restore original Response.json
-      Response.json = originalResponse;
+      // Restore original fetch
+      global.fetch = originalFetch;
       consoleErrorSpy.mockRestore();
     });
   });

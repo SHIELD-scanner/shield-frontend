@@ -15,16 +15,17 @@ import Link from "next/link";
 
 import vulnerableImagesData from "../data.json";
 import vulnerabilitiesData from "./vulnerabilities-data.json";
-
 // Function to get vulnerabilities for a specific image
 function getVulnerabilitiesForImage(imageId: number) {
-  return vulnerabilitiesData.filter((vuln: any) => vuln.imageId === imageId);
+  return vulnerabilitiesData.filter(
+    (vuln: { imageId: number }) => vuln.imageId === imageId
+  );
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 function getRiskScoreBadgeVariant(score: number) {
@@ -51,8 +52,9 @@ function formatTimeAgo(dateString: string) {
   return `${diffInWeeks}w ago`;
 }
 
-export default function ImageDetailPage({ params }: PageProps) {
-  const imageId = parseInt(params.id);
+export default async function ImageDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const imageId = parseInt(id);
   const image = vulnerableImagesData.find((img) => img.id === imageId);
   const imageVulnerabilities = getVulnerabilitiesForImage(imageId);
 
