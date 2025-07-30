@@ -23,9 +23,9 @@ function getVulnerabilitiesForImage(imageId: number) {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 function getRiskScoreBadgeVariant(score: number) {
@@ -52,8 +52,9 @@ function formatTimeAgo(dateString: string) {
   return `${diffInWeeks}w ago`;
 }
 
-export default function ImageDetailPage({ params }: PageProps) {
-  const imageId = parseInt(params.id);
+export default async function ImageDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const imageId = parseInt(id);
   const image = vulnerableImagesData.find((img) => img.id === imageId);
   const imageVulnerabilities = getVulnerabilitiesForImage(imageId);
 

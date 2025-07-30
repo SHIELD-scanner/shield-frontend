@@ -76,15 +76,24 @@ export class UserService {
   private static async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      let errorDetails: Record<string, unknown> = {};
 
       try {
         const errorData: ApiError = await response.json();
         errorMessage = errorData.message || errorMessage;
+        errorDetails = errorData.details || {};
       } catch {
         // If response is not JSON, use the status text
       }
 
-      throw new Error(errorMessage);
+      const error = new Error(errorMessage) as Error & { 
+        status: number; 
+        details: Record<string, unknown> 
+      };
+      error.status = response.status;
+      error.details = errorDetails;
+      
+      throw error;
     }
 
     const data = await response.json();
@@ -120,84 +129,109 @@ export class UserService {
   }
 
   static async getUsers(filters?: UserFilters): Promise<User[]> {
-    const params = new URLSearchParams();
+    try {
+      const params = new URLSearchParams();
 
-    if (filters?.role && filters.role !== "all") {
-      params.append("role", filters.role);
-    }
-    if (filters?.namespace && filters.namespace !== "all") {
-      params.append("namespace", filters.namespace);
-    }
-    if (filters?.status && filters.status !== "all") {
-      params.append("status", filters.status);
-    }
-    if (filters?.search) {
-      params.append("search", filters.search);
-    }
-    if (filters?.page) {
-      params.append("page", filters.page.toString());
-    }
-    if (filters?.limit) {
-      params.append("limit", filters.limit.toString());
-    }
+      if (filters?.role && filters.role !== "all") {
+        params.append("role", filters.role);
+      }
+      if (filters?.namespace && filters.namespace !== "all") {
+        params.append("namespace", filters.namespace);
+      }
+      if (filters?.status && filters.status !== "all") {
+        params.append("status", filters.status);
+      }
+      if (filters?.search) {
+        params.append("search", filters.search);
+      }
+      if (filters?.page) {
+        params.append("page", filters.page.toString());
+      }
+      if (filters?.limit) {
+        params.append("limit", filters.limit.toString());
+      }
 
-    const queryString = params.toString();
-    const url = queryString ? `${this.baseUrl}?${queryString}` : this.baseUrl;
+      const queryString = params.toString();
+      const url = queryString ? `${this.baseUrl}?${queryString}` : this.baseUrl;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    return this.handleResponse<User[]>(response);
+      return this.handleResponse<User[]>(response);
+    } catch (error) {
+      console.error("UserService.getUsers failed:", error);
+      throw error;
+    }
   }
 
   static async getUserById(id: string): Promise<User> {
-    const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    return this.handleResponse<User>(response);
+      return this.handleResponse<User>(response);
+    } catch (error) {
+      console.error(`UserService.getUserById(${id}) failed:`, error);
+      throw error;
+    }
   }
 
   static async createUser(userData: CreateUserData): Promise<User> {
-    const response = await fetch(this.baseUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-    return this.handleResponse<User>(response);
+      return this.handleResponse<User>(response);
+    } catch (error) {
+      console.error("UserService.createUser failed:", error);
+      throw error;
+    }
   }
 
   static async updateUser(id: string, userData: UpdateUserData): Promise<User> {
-    const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-    return this.handleResponse<User>(response);
+      return this.handleResponse<User>(response);
+    } catch (error) {
+      console.error(`UserService.updateUser(${id}) failed:`, error);
+      throw error;
+    }
   }
 
   static async deleteUser(id: string): Promise<User> {
-    const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    return this.handleResponse<User>(response);
+      return this.handleResponse<User>(response);
+    } catch (error) {
+      console.error(`UserService.deleteUser(${id}) failed:`, error);
+      throw error;
+    }
   }
 
   // Bulk operations

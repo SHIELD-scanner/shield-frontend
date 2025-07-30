@@ -37,8 +37,10 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<string>(defaultLang);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const cookieLang = getCookie("lang");
     if (cookieLang && translations[cookieLang]) {
       setLangState(cookieLang);
@@ -51,7 +53,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = (key: string) => {
-    return translations[lang]?.[key] || translations[defaultLang][key] || key;
+    // During SSR, always use default language to prevent hydration mismatch
+    const currentLang = isClient ? lang : defaultLang;
+    return translations[currentLang]?.[key] || translations[defaultLang][key] || key;
   };
 
   return (

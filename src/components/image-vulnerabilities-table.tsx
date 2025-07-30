@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { TimeDisplay } from "@/components/ui/time-display";
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -13,7 +14,6 @@ import {
   IconExternalLink,
   IconBug,
   IconShield,
-  IconClock,
   IconAlertTriangle,
 } from "@tabler/icons-react";
 import {
@@ -104,20 +104,6 @@ function getCvssScoreBadgeVariant(score: number) {
   if (score >= 7) return "secondary";
   if (score >= 4) return "outline";
   return "default";
-}
-
-function formatTimeAgo(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInDays = Math.floor(
-    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  if (diffInDays < 1) return "Today";
-  if (diffInDays < 7) return `${diffInDays}d ago`;
-  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)}w ago`;
-  if (diffInDays < 365) return `${Math.floor(diffInDays / 30)}mo ago`;
-  return `${Math.floor(diffInDays / 365)}y ago`;
 }
 
 const columns: ColumnDef<Vulnerability>[] = [
@@ -247,12 +233,7 @@ const columns: ColumnDef<Vulnerability>[] = [
   {
     accessorKey: "publishedDate",
     header: "Published",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-1 text-sm">
-        <IconClock className="h-3 w-3 text-muted-foreground" />
-        {formatTimeAgo(row.original.publishedDate)}
-      </div>
-    ),
+    cell: ({ row }) => <TimeDisplay dateString={row.original.publishedDate} />,
   },
   {
     accessorKey: "fixAvailable",

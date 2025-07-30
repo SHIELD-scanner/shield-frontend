@@ -22,14 +22,9 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 import exposedSecretsData from "../data.json";
-
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
 
 function getSeverityBadgeVariant(severity: string) {
   switch (severity.toLowerCase()) {
@@ -100,6 +95,7 @@ function getCategoryIcon(category: string) {
       return IconKey;
   }
 }
+
 interface Secret {
   id: string;
   secretType: string;
@@ -126,8 +122,9 @@ interface Secret {
   entropy: number;
 }
 
-export default function SecretDetailPage({ params }: PageProps) {
-  const secretId = params.id;
+export default function SecretDetailPage() {
+  const params = useParams();
+  const secretId = Array.isArray(params.id) ? params.id[0] : params.id;
   const [showSecret, setShowSecret] = useState(false);
 
   const secret = exposedSecretsData.find((s: Secret) => s.id === secretId);

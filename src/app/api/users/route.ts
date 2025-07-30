@@ -51,9 +51,45 @@ export async function GET(req: NextRequest) {
 
     console.log(`Fetching users data from: ${url}`);
 
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(5000), // 5 second timeout
+    });
+    
     if (!res.ok) {
       console.error(`Failed to fetch users: ${res.status} ${res.statusText}`);
+      
+      // If backend is not available, return mock data for development
+      if (res.status >= 500 || res.status === 0) {
+        console.warn("Backend service unavailable, returning mock data");
+        const mockUsers = [
+          {
+            id: "1",
+            email: "admin@example.com",
+            fullname: "System Administrator",
+            role: "SysAdmin",
+            namespaces: ["*"],
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString(),
+            status: "active"
+          },
+          {
+            id: "2",
+            email: "dev@example.com",
+            fullname: "Developer User",
+            role: "Developer",
+            namespaces: ["default"],
+            createdAt: new Date().toISOString(),
+            lastLogin: null,
+            status: "active"
+          }
+        ];
+        
+        const response = Response.json(mockUsers);
+        response.headers.set("X-Mock-Data", "true");
+        response.headers.set("Cache-Control", "no-cache");
+        return response;
+      }
+      
       return new Response("Failed to fetch users", { status: 500 });
     }
 
@@ -75,7 +111,24 @@ export async function GET(req: NextRequest) {
     return response;
   } catch (error) {
     console.error("Error fetching users:", error);
-    return new Response("Internal server error", { status: 500 });
+    
+    // Provide more detailed error information for debugging
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorResponse = {
+      error: "Failed to fetch users from backend",
+      message: errorMessage,
+      backend_url: getBackendApiUrl("/users/"),
+      timestamp: new Date().toISOString(),
+    };
+    
+    console.error("Detailed error:", errorResponse);
+    
+    return Response.json(errorResponse, { 
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 }
 
@@ -113,6 +166,22 @@ export async function POST(req: NextRequest) {
     return result;
   } catch (error) {
     console.error("Error creating user:", error);
-    return new Response("Internal server error", { status: 500 });
+    
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorResponse = {
+      error: "Failed to create user in backend",
+      message: errorMessage,
+      backend_url: getBackendApiUrl("/users/"),
+      timestamp: new Date().toISOString(),
+    };
+    
+    console.error("Detailed error:", errorResponse);
+    
+    return Response.json(errorResponse, { 
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 }

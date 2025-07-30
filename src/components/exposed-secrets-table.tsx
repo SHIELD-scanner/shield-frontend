@@ -2,6 +2,52 @@
 
 import * as React from "react";
 import Link from "next/link";
+
+// Component for time display that prevents hydration mismatches
+function TimeDisplay({ dateString }: { dateString: string }) {
+  const [timeAgo, setTimeAgo] = React.useState<string>("");
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+    
+    const formatTimeAgo = (dateString: string) => {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInHours = Math.floor(
+        (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+      );
+
+      if (diffInHours < 1) return "Just now";
+      if (diffInHours < 24) return `${diffInHours}h ago`;
+
+      const diffInDays = Math.floor(diffInHours / 24);
+      if (diffInDays < 7) return `${diffInDays}d ago`;
+
+      const diffInWeeks = Math.floor(diffInDays / 7);
+      return `${diffInWeeks}w ago`;
+    };
+
+    setTimeAgo(formatTimeAgo(dateString));
+  }, [dateString]);
+
+  // Show a static fallback during SSR and initial hydration
+  if (!isClient) {
+    return (
+      <div className="flex items-center gap-1 text-sm">
+        <IconClock className="h-3 w-3 text-muted-foreground" />
+        {new Date(dateString).toLocaleDateString()}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1 text-sm">
+      <IconClock className="h-3 w-3 text-muted-foreground" />
+      {timeAgo}
+    </div>
+  );
+}
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -37,6 +83,33 @@ import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+
+// Component for the Match cell with toggle functionality
+function MatchCell({ secret }: { secret: ExposedSecret }) {
+  const [showSecret, setShowSecret] = React.useState(false);
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="font-mono text-sm bg-muted px-2 py-1 rounded max-w-[200px] truncate">
+        {showSecret
+          ? secret.code.substring(0, 50) +
+            (secret.code.length > 50 ? "..." : "")
+          : secret.match}
+      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setShowSecret(!showSecret)}
+      >
+        {showSecret ? (
+          <IconEyeOff className="h-3 w-3" />
+        ) : (
+          <IconEye className="h-3 w-3" />
+        )}
+      </Button>
+    </div>
+  );
+}
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -136,23 +209,6 @@ function getConfidenceBadgeVariant(confidence: string) {
     default:
       return "outline";
   }
-}
-
-function formatTimeAgo(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInHours = Math.floor(
-    (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-  );
-
-  if (diffInHours < 1) return "Just now";
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) return `${diffInDays}d ago`;
-
-  const diffInWeeks = Math.floor(diffInDays / 7);
-  return `${diffInWeeks}w ago`;
 }
 
 function getCategoryIcon(category: string) {
@@ -298,30 +354,8 @@ const columns: ColumnDef<ExposedSecret>[] = [
     accessorKey: "match",
     header: "Match",
     cell: ({ row }) => {
-      const [showSecret, setShowSecret] = React.useState(false);
       const secret = row.original;
-
-      return (
-        <div className="flex items-center gap-2">
-          <div className="font-mono text-sm bg-muted px-2 py-1 rounded max-w-[200px] truncate">
-            {showSecret
-              ? secret.code.substring(0, 50) +
-                (secret.code.length > 50 ? "..." : "")
-              : secret.match}
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowSecret(!showSecret)}
-          >
-            {showSecret ? (
-              <IconEyeOff className="h-3 w-3" />
-            ) : (
-              <IconEye className="h-3 w-3" />
-            )}
-          </Button>
-        </div>
-      );
+      return <MatchCell secret={secret} />;
     },
   },
   {
@@ -385,12 +419,7 @@ const columns: ColumnDef<ExposedSecret>[] = [
   {
     accessorKey: "detectedDate",
     header: "Detected",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-1 text-sm">
-        <IconClock className="h-3 w-3 text-muted-foreground" />
-        {formatTimeAgo(row.original.detectedDate)}
-      </div>
-    ),
+    cell: ({ row }) => <TimeDisplay dateString={row.original.detectedDate} />,
   },
   {
     id: "actions",
